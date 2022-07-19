@@ -4,14 +4,15 @@ from datasets import load_dataset, list_datasets
 def split_data(args):
     if args.dataset in list_datasets():
         dataset = load_dataset(args.dataset, split="train")
-        set = dataset.train_test_split(test_size=args.test_size, train_size=args.train_size,
+        train_test = dataset.train_test_split(test_size=args.test_size, train_size=args.train_size,
                                  shuffle=True, seed=args.random_state)
+        train_set = train_test["train"]
+        test_set = train_test["test"]
         print(set)
     else:
         ...
     print("Finish data split!")
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
-    print(train_set)
     return train_set, test_set
 
 
