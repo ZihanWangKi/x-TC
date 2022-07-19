@@ -16,7 +16,7 @@ def run_method(args, train_set, test_set):
     if args.method == "X-Class":
         assert args.class_names
         assert args.seed_words==False
-        os.mkdir("../methods/X-Class/data/datasets/{}".format(args.dataset))
+        os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
             for line in train_set["text"]:
