@@ -5,7 +5,7 @@ def split_data(args):
     if args.dataset in list_datasets():
         dataset = load_dataset(args.dataset, split="train")
         train_set, test_set = dataset.train_test_split(test_size=args.test_size, train_size=args.train_size,
-                                 shuffle=True, random_seed=args.random_state)
+                                 shuffle=True, seed=args.random_state)
     else:
         ...
     print("Finish data split!")
