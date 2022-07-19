@@ -27,7 +27,7 @@ if __name__ == '__main__':
     parser.add_argument("--random_state", type=int, default=42)
 
     args = parser.parse_args()
-    assert args.train_ratio + args.test_ratio <= 1.0
+    assert args.train_size + args.test_size <= 1.0
     print(vars(args))
 
     main(args)

@@ -8,6 +8,7 @@ def split_data(args):
                                  shuffle=True, random_seed=args.random_seed)
     else:
         ...
+    print("Finish data split!")
     return train_set, test_set
 
 
