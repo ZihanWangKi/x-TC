@@ -13,7 +13,7 @@ def split_data(args):
 
 
 def run_method(args, train_set, test_set):
-    if args.method == "XClass":
+    if args.method == "X-Class":
         assert args.class_names
         assert args.seed_words==False
         os.mkdir("../methods/X-Class/data/datasets/{}".format(args.dataset))
