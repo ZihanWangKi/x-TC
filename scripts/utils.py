@@ -40,8 +40,9 @@ def run_method(args, train_set, test_set):
             for line in test_set[args.label_name]:
                 f.write(str(line))
                 f.write("\n")
+        os.system("cd ../methods/X-Class/scripts")
         os.system("chmod -R 777 ../methods/X-Class/scripts/run.sh")
-        os.system("sh ../methods/X-Class/scripts/run.sh {} {}".format(args.gpu, args.dataset))
+        os.system("./run.sh {} {}".format(args.gpu, args.dataset))
     elif args.method == "ConWea":
         assert args.class_names==False
         assert args.seed_words==True
