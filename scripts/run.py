@@ -14,9 +14,9 @@ if __name__ == '__main__':
     parser.add_argument("--method", default="X-Class", help="method name")
     parser.add_argument("--label_name", default="label",
                         help="The exact name of the label in raw data, e.g. 'label-coarse'.")
-    parser.add_argument("--train_size", default=0.6,
+    parser.add_argument("--train_size", type=float, default=0.6,
                         help="The ratio of the split train set (unlabeled by default)")
-    parser.add_argument("--test_size", default=0.4,
+    parser.add_argument("--test_size", type=float, default=0.4,
                         help="The ratio of the split test set. Make sure test_ratio + train ratio <= 1")
     # parser.add_argument("--labeled_ratio", default=0.0, help="extra parameter for few-labeled data methods")
     parser.add_argument("--class_names", type=bool, default=True,
