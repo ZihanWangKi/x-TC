@@ -23,22 +23,22 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
-            for line in train_set[:]["text"]:
+            for line in train_set["text"]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/X-Class/data/datasets/{}/labels.txt".format(args.dataset), "w") as f:
-            for line in train_set[:][args.label_name]:
-                f.write(line)
+            for line in train_set[args.label_name]:
+                f.write(str(line))
                 f.write("\n")
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
-            for line in test_set[:]["text"]:
+            for line in test_set["text"]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/X-Class/data/datasets/{}_test/labels.txt".format(args.dataset), "w") as f:
-            for line in test_set[:][args.label_name]:
-                f.write(line)
+            for line in test_set[args.label_name]:
+                f.write(str(line))
                 f.write("\n")
         os.system("./ ../methods/X-Class/scripts/run.sh {} {}".format(args.gpu, args.dataset))
     elif args.method == "ConWea":
