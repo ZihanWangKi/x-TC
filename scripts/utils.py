@@ -3,8 +3,7 @@ from datasets import load_dataset, list_datasets
 
 def split_data(args):
     if args.dataset in list_datasets():
-        train_set, test_set = load_dataset(args.dataset)
-        print(len(train_set),len(test_set))
+        dataset = load_dataset(args.dataset, split="train")
         train_set, test_set = dataset.train_test_split(test_size=args.test_size, train_size=args.train_size,
                                  shuffle=True, random_seed=args.random_seed)
     else:
