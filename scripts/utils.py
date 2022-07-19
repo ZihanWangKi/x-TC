@@ -40,7 +40,7 @@ def run_method(args, train_set, test_set):
             for line in test_set[args.label_name]:
                 f.write(str(line))
                 f.write("\n")
-        os.chdir("cd ../methods/X-Class/scripts")
+        os.chdir("../methods/X-Class/scripts")
         os.system("chmod -R 777 run.sh")
         os.system("./run.sh {} {}".format(args.gpu, args.dataset))
     elif args.method == "ConWea":
