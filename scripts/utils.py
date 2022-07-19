@@ -9,6 +9,8 @@ def split_data(args):
     else:
         ...
     print("Finish data split!")
+    print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
+    print(train_set["text"][0], train_set[0]["text"])
     return train_set, test_set
 
 
