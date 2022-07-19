@@ -10,7 +10,7 @@ def split_data(args):
         ...
     print("Finish data split!")
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
-    print(train_set["text"], train_set["text"])
+    print(train_set, train_set)
     return train_set, test_set
 
 
