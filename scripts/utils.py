@@ -51,7 +51,7 @@ def run_method(args, train_set, test_set):
         assert args.class_names==False
         assert args.seed_words==True
         os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset))
-        # os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset + "_intermediate"))
+        os.system("mkdir -p ../methods/ConWea/tmp")
         train={
             "sentence": train_set["text"],
             "label": train_set[args.label_name]
@@ -68,7 +68,7 @@ def run_method(args, train_set, test_set):
             json.dump(seed_words, f, indent=2)
         ...
         os.chdir("../methods/ConWea")
-        os.system("python contextualize.py --dataset_path data/{}/ --gpu_id {}"
+        os.system("python contextualize.py --dataset_path data/{}/ --temp_dir tmp/ --gpu_id {}"
                   .format(args.dataset, args.gpu))
         os.system("python train.py --dataset_path data/{}/ --gpu_id {}"
                   .format(args.dataset, args.gpu))
