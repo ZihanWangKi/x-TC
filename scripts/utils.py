@@ -53,7 +53,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset))
         os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset + "_intermediate"))
         train={
-            "sentence": test_set["text"],
+            "sentence": train_set["text"],
             "label": train_set[args.label_name]
         }
         df = pd.DataFrame(train)
