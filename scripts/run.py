@@ -19,11 +19,11 @@ if __name__ == '__main__':
     parser.add_argument("--test_size", type=float, default=None,
                         help="The ratio of the split test set. Make sure test_ratio + train ratio <= 1")
     # parser.add_argument("--labeled_ratio", default=0.0, help="extra parameter for few-labeled data methods")
-    parser.add_argument("--class_names", type=bool, default=True,
-                        help="Set to False if the method doesn't need class names."
-                             "Otherwise, please enter the class names into class_names.txt in the current directory."
+    parser.add_argument("--class_names", action="store_true",
+                        help="Set to True if you want to test class-names based methods."
+                             "Please enter the class names into class_names.txt in the current directory."
                              "One class name per line, and the order corresponds to the label order.")
-    parser.add_argument("--seed_words", type=bool, default=False,
+    parser.add_argument("--seed_words", action="store_true",
                         help="Set to True if you want to test seed-words based methods."
                              "Please enter the seed words into seed_words.txt in the current directory."
                              "Enter the seed words belonging to the same class on the same line, separated by spaces,"
