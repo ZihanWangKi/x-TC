@@ -1,4 +1,6 @@
-World
-Sports
-Business
-Technology
+DESC
+ENTY
+ABBR
+HUM
+NUM
+LOC
