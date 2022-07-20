@@ -1,4 +1,7 @@
 import os
+import pickle
+import json
+import pandas as pd
 from datasets import load_dataset, list_datasets
 
 def split_data(args):
@@ -47,10 +50,22 @@ def run_method(args, train_set, test_set):
     elif args.method == "ConWea":
         assert args.class_names==False
         assert args.seed_words==True
-        os.mkdir("../methods/ConWea/data/{}".format(args.dataset))
-        os.mkdir("../methods/ConWea/data/{}".format(args.dataset + "_intermediate"))
-        ...
-        ...
+        os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset))
+        os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset + "_intermediate"))
+        train={
+            "sentence": test_set["text"],
+            "label": train_set[args.label_name]
+        }
+        df = pd.DataFrame(train)
+        with open("../methods/ConWea/data/{}/df.pkl".format(args.dataset),'wb') as f:
+            pickle.dump(df, f)
+        with open("seed_words.txt", mode='r', encoding='utf-8') as f:
+            seeds = list(map(lambda x: x.strip(), f.readlines()))
+        seed_words={}
+        for i in range(len(seeds)):
+            seed_words[i] = seeds[i].split(' ')
+        with open("../methods/ConWea/data/{}/seedwords.json".format(args.dataset), 'w') as f:
+            json.dump(seed_words, f, indent=2)
         ...
         os.system("python ../methods/ConWea/contextualize.py --dataset_path data/{} --temp_dir data/{} --gpu_id {}"
                   .format(args.dataset, args.dataset + "_intermediate", args.gpu))
