@@ -77,7 +77,7 @@ def main(dataset_path, temp_dir):
         while True:
             if len(tok_vecs) < num_clusters:
                 break
-            km = KMeans(n_clusters=num_clusters, n_jobs=-1)
+            km = KMeans(n_clusters=num_clusters)
             km.fit(tok_vecs)
             cc = km.cluster_centers_
             if should_stop(cc):
@@ -90,7 +90,7 @@ def main(dataset_path, temp_dir):
         elif len(tok_vecs) <= num_clusters:
             cc = tok_vecs
         else:
-            km = KMeans(n_clusters=num_clusters, n_jobs=-1)
+            km = KMeans(n_clusters=num_clusters)
             km.fit(tok_vecs)
             cc = km.cluster_centers_
         return cc
