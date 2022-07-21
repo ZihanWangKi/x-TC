@@ -113,6 +113,8 @@ def main(dataset_path, temp_dir):
             except Exception as e:
                 except_counter += 1
                 print("Exception Counter while clustering: ", except_counter, word_index, e)
+                import sys
+                sys.exit(1)
 
     def contextualize(df, cluster_dump_dir):
         def get_cluster(tok_vec, cc):
