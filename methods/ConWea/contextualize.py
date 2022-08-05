@@ -113,8 +113,8 @@ def main(dataset_path, temp_dir):
             except Exception as e:
                 except_counter += 1
                 print("Exception Counter while clustering: ", except_counter, word_index, e)
-                import sys
-                sys.exit(1)
+                #import sys
+                #sys.exit(1)
 
     def contextualize(df, cluster_dump_dir):
         def get_cluster(tok_vec, cc):
@@ -174,7 +174,7 @@ def main(dataset_path, temp_dir):
                     if len(cc) > 1:
                         tok_vec = token.embedding.cpu().numpy()
                         cluster = get_cluster(tok_vec, cc)
-                        sentence.tokens[token_ind].text = word + "$" + str(cluster)
+                        sentence.tokens[token_ind]._text = word + "$" + str(cluster)
                 sentences[sentence_ind] = to_tokenized_string(sentence)
             df["sentence"][index] = " . ".join(sentences)
         return df, word_cluster
