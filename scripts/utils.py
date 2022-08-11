@@ -108,6 +108,6 @@ def run_method(args, train_set, test_set):
                 f.write("\n")
         os.chdir("../methods/LOTClass")
         os.system("CUDA_VISIBLE_DEVICES={} python src/train.py --dataset_dir datasets/{}/ --test_file test.txt "
-                  "--test_label_file test_label.txt --train_batch_size 32 --accum_steps 4 --gpus 1"
+                  "--test_label_file test_labels.txt --train_batch_size 32 --accum_steps 4 --gpus 1"
                   .format(args.gpu, args.dataset))
 
