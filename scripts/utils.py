@@ -85,3 +85,29 @@ def run_method(args, train_set, test_set):
                   .format(args.dataset, args.gpu))
         os.system("python train.py --dataset_path data/{}/ --gpu_id {}"
                   .format(args.dataset, args.gpu))
+    elif args.method == "LOTClass":
+        assert args.class_names == True
+        assert args.seed_words == False
+        os.system("mkdir -p ../methods/LOTClass/datasets/{}".format(args.dataset))
+        os.system("cp class_names.txt ../methods/LOTClass/datasets/{}/label_names.txt".format(args.dataset))
+        with open("../methods/LOTClass/datasets/{}/train.txt".format(args.dataset), "w") as f:
+            for line in train_set["text"]:
+                f.write(line)
+                f.write("\n")
+        with open("../methods/LOTClass/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
+            for line in train_set[args.label_name]:
+                f.write(str(line))
+                f.write("\n")
+        with open("../methods/LOTClass/datasets/{}/test.txt".format(args.dataset), "w") as f:
+            for line in test_set["text"]:
+                f.write(line)
+                f.write("\n")
+        with open("../methods/LOTClass/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
+            for line in test_set[args.label_name]:
+                f.write(str(line))
+                f.write("\n")
+        os.chdir("../methods/LOTClass")
+        os.system("CUDA_VISIBLE_DEVICES={} python train.py --dataset_path datasets/{}/ --test_file test.txt "
+                  "--test_label_file test_label.txt --train_batch_size 32 --accum_steps 4 --gpus 1"
+                  .format(args.gpu, args.dataset))
+
