@@ -69,9 +69,10 @@ def run_method(args, train_set, test_set):
         with open("../methods/ConWea/data/{}/seedwords.json".format(args.dataset), 'w') as f:
             json.dump(seed_words, f, indent=2)
 
+        label = [str(i) for i in test_set[args.label_name]]
         test = {
-            "sentence": train_set["text"],
-            "label": train_set[args.label_name]
+            "sentence": test_set["text"],
+            "label": label
         }
         test_df = pd.DataFrame(test)
         with open("../methods/ConWea/data/{}/test_df.pkl".format(args.dataset),'wb') as f:
