@@ -88,6 +88,7 @@ def run_method(args, train_set, test_set):
     elif args.method == "LOTClass":
         assert args.class_names == True
         assert args.seed_words == False
+        os.system("rm -rf ../methods/LOTClass/datasets/{}".format(args.dataset))
         os.system("mkdir -p ../methods/LOTClass/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/LOTClass/datasets/{}/label_names.txt".format(args.dataset))
         with open("../methods/LOTClass/datasets/{}/train.txt".format(args.dataset), "w") as f:
