@@ -253,6 +253,13 @@ def main(dataset_path, print_flag=True):
         tokenizer = pickle.load(open(dataset_path + "tokenizer.pkl", "rb"))
 
         X, y, y_true = generate_pseudo_labels(df, labels, label_term_dict, tokenizer)
+        print("$$$$$$$$$$$$$", len(X))
+        for i in range(4):
+            cnt = 0
+            for j in y:
+                if str(i) == j:
+                    cnt+=1
+            print("$$$$$$$$$$$$$", cnt)
         y_one_hot = make_one_hot(y, label_to_index)
         print("Fitting tokenizer...")
         print("Splitting into train, dev...")
