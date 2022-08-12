@@ -624,6 +624,7 @@ class LOTClassTrainer(object):
         test_set = TensorDataset(self.test_data["input_ids"], self.test_data["attention_masks"])
         test_dataset_loader = DataLoader(test_set, sampler=SequentialSampler(test_set), batch_size=self.eval_batch_size)
         pred_labels = self.inference(self.model, test_dataset_loader, 0, return_type="pred")
+
         out_file = os.path.join(self.dataset_dir, out_file)
         print(f"Writing prediction results to {out_file}")
         f_out = open(out_file, 'w')

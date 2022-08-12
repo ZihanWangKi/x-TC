@@ -3,7 +3,7 @@ import pickle
 import json
 import pandas as pd
 from datasets import load_dataset, list_datasets
-
+import csv
 
 def split_data(args):
     if args.dataset in list_datasets():
@@ -110,4 +110,60 @@ def run_method(args, train_set, test_set):
         os.chdir("../methods/LOTClass")
         os.system("CUDA_VISIBLE_DEVICES={} python src/train.py --dataset_dir datasets/{}/ --test_file test.txt --test_label_file test_labels.txt --train_batch_size 32 --accum_steps 4 --gpus 1"
                   .format(args.gpu, args.dataset))
+    elif args.method == "WeSTClass":
+        if args.class_names:
+            assert args.seed_words == False
+            os.system("rm -rf ../methods/WeSTClass/{}".format(args.dataset))
+            os.system("mkdir -p ../methods/WeSTClass/{}".format(args.dataset))
+            with open("class_names.txt", mode='r', encoding='utf-8') as f:
+                names = list(map(lambda x: x.strip(), f.readlines()))
+            with open("../methods/WeSTClass/{}/classes.txt".format(args.dataset), "w") as f:
+                id = 0
+                for line in names:
+                    f.write(str(id) + ":" + line)
+                    f.write("\n")
+                    id += 1
+
+            with open("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), "w", encoding='utf-8') as f:
+                writer = csv.writer(f)
+                for i in range(len(train_set["text"])):
+                    writer.writerow([train_set["args.label_name"], train_set["text"]])
+
+            with open("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), "w", encoding='utf-8') as f:
+                writer = csv.writer(f)
+                for i in range(len(test_set["text"])):
+                    writer.writerow([test_set["args.label_name"], test_set["text"]])
+            os.chdir("../methods/WeSTClass")
+            os.system(
+                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {}"
+                .format(args.gpu, args.dataset))
+        elif args.seed_words == True:
+            assert args.class_names == False
+            os.system("rm -rf ../methods/WeSTClass/{}".format(args.dataset))
+            os.system("mkdir -p ../methods/WeSTClass/{}".format(args.dataset))
+            with open("seed_words.txt", mode='r', encoding='utf-8') as f:
+                seeds = list(map(lambda x: x.strip(), f.readlines()))
+            with open("../methods/WeSTClass/{}/keywords.txt".format(args.dataset), "w") as f:
+                id = 0
+                for line in seeds:
+                    f.write(str(id) + ":" + line.replace(' ', ','))
+                    f.write("\n")
+                    id += 1
+
+            with open("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), "w", encoding='utf-8') as f:
+                writer = csv.writer(f)
+                for i in range(len(train_set["text"])):
+                    writer.writerow([train_set["args.label_name"], train_set["text"]])
+
+            with open("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), "w", encoding='utf-8') as f:
+                writer = csv.writer(f)
+                for i in range(len(test_set["text"])):
+                    writer.writerow([test_set["args.label_name"], test_set["text"]])
+            os.chdir("../methods/WeSTClass")
+            os.system(
+                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_souce keywords"
+                .format(args.gpu, args.dataset))
+        elif ...:
+            ...
+
 
