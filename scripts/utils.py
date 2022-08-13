@@ -9,9 +9,13 @@ def split_data(args):
     if args.dataset in list_datasets():
         test_set = load_dataset(args.dataset, split="test")
         dataset = load_dataset(args.dataset, split="train")
-        train_test = dataset.train_test_split(train_size=args.train_size,
-                                              shuffle=True, seed=args.random_state)
-        train_set = train_test["train"]
+        if args.train_size < 1.0:
+            train_test = dataset.train_test_split(train_size=args.train_size,
+                                                shuffle=True, seed=args.random_state)
+            train_set = train_test["train"]
+        else:
+            train_set = load_dataset(args.dataset, split="train")
+
         #test_set = train_test["test"]
         print(set)
     else:
