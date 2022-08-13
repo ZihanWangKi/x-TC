@@ -126,9 +126,8 @@ def run_method(args, train_set, test_set):
 
             with open("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), "w", encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(("label", "text"))
                 for i in range(len(train_set["text"])):
-                    writer.writerow((train_set["args.label_name"][i], train_set["text"][i]))
+                    writer.writerow((str(train_set["args.label_name"][i]), str(train_set["text"][i])))
 
             with open("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), "w", encoding='utf-8') as f:
                 writer = csv.writer(f)
