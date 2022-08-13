@@ -261,7 +261,7 @@ if __name__ == "__main__":
     print("\n### Generating outputs ###")
     write_output('./' + args.dataset, y_pred, perm)
 
-    if args.with_test == True:
+    if args.with_test == 'True':
         x, y = load_test_dataset(args.dataset, vocabulary, model=args.model, with_evaluation=True, truncate_len=sequence_length)
         y_pred = wstc.predict(x)
         if y is not None:
