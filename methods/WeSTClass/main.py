@@ -179,7 +179,6 @@ if __name__ == "__main__":
     vocabulary_inv = {key: value for key, value in enumerate(vocabulary_inv_list)}
     vocab_sz = len(vocabulary_inv)
     n_classes = len(word_sup_list)
-    word_sup_list = [w.lower() for w in word_sup_list]
 
     if args.model == 'cnn':
         if x.shape[1] < max_sequence_length:

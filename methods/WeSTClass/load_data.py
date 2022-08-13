@@ -195,6 +195,7 @@ def load_keywords(data_path, sup_source):
         assert int(class_id) == i
         keyword = contents.split(',')
         print("Supervision content of class {}:".format(i))
+        keyword = [w.lower() for w in keyword]
         print(keyword)
         keywords.append(keyword)
     return keywords
