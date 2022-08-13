@@ -167,4 +167,6 @@ def run_method(args, train_set, test_set):
         elif ...:
             ...
 
+    print("Start Training...")
+
 
