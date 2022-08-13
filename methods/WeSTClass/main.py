@@ -56,7 +56,7 @@ def write_output(write_path, y_pred, perm):
         for val in y_pred:
             f.write(str(val) + '\n')
     print("Classification results are written in {}".format(os.path.join(write_path, 'out.txt')))
-    return
+    #return
 
 
 if __name__ == "__main__":
