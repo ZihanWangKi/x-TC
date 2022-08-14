@@ -173,8 +173,8 @@ def run_method(args, train_set, test_set):
 
             os.chdir("../methods/WeSTClass")
             os.system(
-                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_source keywords"
-                .format(args.gpu, args.dataset))
+                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_source keywords --random_state {}"
+                .format(args.gpu, args.dataset, args.random_state))
         elif ...:
             ...
 

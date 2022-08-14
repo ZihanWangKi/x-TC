@@ -206,7 +206,7 @@ def load_cnn(dataset_name, sup_source, num_keywords=10, with_evaluation=True, tr
     data, y = read_file(data_path, with_evaluation)
 
     sz = len(data)
-    np.random.seed(1234)
+    #np.random.seed(1234)
     perm = np.random.permutation(sz)
 
     data = preprocess_doc(data)
@@ -260,7 +260,7 @@ def load_rnn(dataset_name, sup_source, num_keywords=10, with_evaluation=True, tr
     data, y = read_file(data_path, with_evaluation)
 
     sz = len(data)
-    np.random.seed(1234)
+    #np.random.seed(1234)
     perm = np.random.permutation(sz)
 
     data = preprocess_doc(data)

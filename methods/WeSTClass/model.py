@@ -1,5 +1,4 @@
 import numpy as np
-np.random.seed(1234)
 import os
 from time import time
 import csv

@@ -1,5 +1,4 @@
 import numpy as np
-np.random.seed(1234)
 from time import time
 import os
 # os.environ["CUDA_VISIBLE_DEVICES"]="0"
@@ -99,6 +98,7 @@ if __name__ == "__main__":
     ### Case study settings ###
     # trained model directory: None (default)
     parser.add_argument('--trained_weights', default=None)
+    parser.add_argument('--random_state', default=42, type=int)
 
     args = parser.parse_args()
     print(args)
@@ -175,7 +175,8 @@ if __name__ == "__main__":
         x, y, word_counts, vocabulary, vocabulary_inv_list, len_avg, len_std, word_sup_list, sup_idx, perm = \
             load_dataset(args.dataset, model=args.model, sup_source=args.sup_source, with_evaluation=with_evaluation, truncate_len=max_sequence_length)
     
-    np.random.seed(1234)
+    #np.random.seed(1234)
+    np.random.seed(args.random_state)
     vocabulary_inv = {key: value for key, value in enumerate(vocabulary_inv_list)}
     vocab_sz = len(vocabulary_inv)
     n_classes = len(word_sup_list)
