@@ -170,10 +170,10 @@ def run_method(args, train_set, test_set):
             }
             df = pd.DataFrame(test)
             df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
-            
+
             os.chdir("../methods/WeSTClass")
             os.system(
-                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_souce keywords"
+                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_source keywords"
                 .format(args.gpu, args.dataset))
         elif ...:
             ...
