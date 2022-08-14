@@ -7,6 +7,8 @@ from keras.optimizers import SGD
 from gen import augment, pseudodocs
 from load_data import load_dataset, load_test_dataset
 from gensim.models import word2vec
+import random
+import tensorflow as tf
 
 
 def train_word2vec(sentence_matrix, vocabulary_inv, dataset_name, mode='skipgram',
@@ -177,6 +179,8 @@ if __name__ == "__main__":
     
     #np.random.seed(1234)
     np.random.seed(args.random_state)
+    random.seed(args.random_state)
+    tf.random.set_seed(args.random_state)
     vocabulary_inv = {key: value for key, value in enumerate(vocabulary_inv_list)}
     vocab_sz = len(vocabulary_inv)
     n_classes = len(word_sup_list)
