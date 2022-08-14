@@ -141,16 +141,6 @@ def run_method(args, train_set, test_set):
             df = pd.DataFrame(test)
             df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
 
-            """with open("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), "w", encoding='utf-8') as f:
-                writer = csv.writer(f)
-                for i in range(len(train_set["text"])):
-                    #print((str(train_set[i][args.label_name]), str(train_set[i]["text"])))
-                    writer.writerow((train_set[args.label_name][i], train_set["text"][i]))
-
-            with open("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), "w", encoding='utf-8') as f:
-                writer = csv.writer(f)
-                for i in range(len(test_set["text"])):
-                    writer.writerow((test_set[args.label_name][i], test_set["text"][i]))"""
             os.chdir("../methods/WeSTClass")
             os.system(
                 "CUDA_VISIBLE_DEVICES={} python main.py --dataset {}"
@@ -168,15 +158,19 @@ def run_method(args, train_set, test_set):
                     f.write("\n")
                     id += 1
 
-            with open("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), "w", encoding='utf-8') as f:
-                writer = csv.writer(f)
-                for i in range(len(train_set["text"])):
-                    writer.writerow((train_set[args.label_name][i], train_set["text"][i]))
-
-            with open("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), "w", encoding='utf-8') as f:
-                writer = csv.writer(f)
-                for i in range(len(test_set["text"])):
-                    writer.writerow((test_set[args.label_name][i], test_set["text"][i]))
+            train = {
+                "label": train_set[args.label_name],
+                "sentence": train_set["text"]
+            }
+            df = pd.DataFrame(train)
+            df.to_csv("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), header=False, index=False)
+            test = {
+                "label": test_set[args.label_name],
+                "sentence": test_set["text"]
+            }
+            df = pd.DataFrame(test)
+            df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
+            
             os.chdir("../methods/WeSTClass")
             os.system(
                 "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_souce keywords"
