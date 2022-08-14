@@ -1,6 +1,6 @@
 import numpy as np
 import os
-np.random.seed(1234)
+#np.random.seed(1234)
 from spherecluster import SphericalKMeans, VonMisesFisherMixture, sample_vMF
 
 

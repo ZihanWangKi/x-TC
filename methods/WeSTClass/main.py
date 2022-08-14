@@ -106,7 +106,7 @@ if __name__ == "__main__":
     print(args)
     np.random.seed(args.random_state)
     random.seed(args.random_state)
-    tf.random.set_random_seed(args.random_state)
+    tf.set_random_seed(args.random_state)
 
     alpha = args.alpha
     beta = args.beta
