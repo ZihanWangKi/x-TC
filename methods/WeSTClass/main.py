@@ -180,7 +180,7 @@ if __name__ == "__main__":
     #np.random.seed(1234)
     np.random.seed(args.random_state)
     random.seed(args.random_state)
-    tf.random.set_seed(args.random_state)
+    tf.random.set_random_seed(args.random_state)
     vocabulary_inv = {key: value for key, value in enumerate(vocabulary_inv_list)}
     vocab_sz = len(vocabulary_inv)
     n_classes = len(word_sup_list)
