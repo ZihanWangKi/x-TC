@@ -631,6 +631,11 @@ class LOTClassTrainer(object):
         for label in pred_labels:
             f_out.write(str(label.item()) + '\n')
 
+        y_pred = pred_labels.cpu().numpy()
+        y = self.test_data["labels"].cpu().numpy()
+        f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
+        print('Test F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
+
     # print error message based on CUDA memory error
     def cuda_mem_error(self, err, mode, rank):
         if rank == 0:
@@ -641,3 +646,12 @@ class LOTClassTrainer(object):
                 else:
                     print(f"Your GPUs can't hold the current batch size for training, try to reduce `--train_batch_size`, current: {self.train_batch_size}")
         sys.exit(1)
+
+
+from sklearn.metrics import f1_score
+def f1(y_true, y_pred):
+    y_true = y_true.astype(np.int64)
+    assert y_pred.size == y_true.size
+    f1_macro = f1_score(y_true, y_pred, average='macro')
+    f1_micro = f1_score(y_true, y_pred, average='micro')
+    return f1_macro, f1_micro
