@@ -104,6 +104,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args)
+    np.random.seed(args.random_state)
+    random.seed(args.random_state)
+    tf.random.set_random_seed(args.random_state)
 
     alpha = args.alpha
     beta = args.beta
@@ -176,11 +179,7 @@ if __name__ == "__main__":
     elif args.sup_source == 'docs':
         x, y, word_counts, vocabulary, vocabulary_inv_list, len_avg, len_std, word_sup_list, sup_idx, perm = \
             load_dataset(args.dataset, model=args.model, sup_source=args.sup_source, with_evaluation=with_evaluation, truncate_len=max_sequence_length)
-    
-    #np.random.seed(1234)
-    np.random.seed(args.random_state)
-    random.seed(args.random_state)
-    tf.random.set_random_seed(args.random_state)
+
     vocabulary_inv = {key: value for key, value in enumerate(vocabulary_inv_list)}
     vocab_sz = len(vocabulary_inv)
     n_classes = len(word_sup_list)
