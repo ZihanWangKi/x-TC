@@ -104,6 +104,10 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args)
+    tf.reset_default_graph()
+    os.environ['PYTHONHASHSEED'] = str(args.random_state)
+    os.environ['TF_DETERMINISTIC_OPS'] = '1'
+    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
     np.random.seed(args.random_state)
     random.seed(args.random_state)
     tf.set_random_seed(args.random_state)
