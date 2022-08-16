@@ -3,7 +3,6 @@ import random
 import tensorflow as tf
 import os
 import keras.backend as K
-SEED = 0
 def set_seeds(seed=SEED):
     os.environ['PYTHONHASHSEED'] = str(seed)
     random.seed(seed)
@@ -16,18 +15,6 @@ def set_global_determinism(seed=SEED):
     os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
     K.set_session(K.tf.Session(config=K.tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)))
 
-# Call the above function with seed value
-set_global_determinism(seed=SEED)
-"""
-random_state = 42
-tf.reset_default_graph()
-os.environ['PYTHONHASHSEED'] = str(random_state)
-os.environ['TF_DETERMINISTIC_OPS'] = '1'
-os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
-np.random.seed(random_state)
-random.seed(random_state)
-tf.set_random_seed(random_state)
-"""
 from time import time
 
 # os.environ["CUDA_VISIBLE_DEVICES"]="0"
@@ -132,7 +119,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args)
-
+    set_global_determinism(seed=args.random_state)
 
     alpha = args.alpha
     beta = args.beta
