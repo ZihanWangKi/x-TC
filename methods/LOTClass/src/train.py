@@ -1,3 +1,16 @@
+import numpy as np
+import random
+import os
+import torch
+def set_seeds(seed):
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.device_count() > 0:
+        torch.cuda.manual_seed_all(seed)
+def set_global_determinism(seed):
+    set_seeds(seed=seed)
 
 from trainer import LOTClassTrainer
 import argparse
@@ -47,9 +60,11 @@ def main():
                         help='number of gpus to use')
     parser.add_argument('--dist_port', type=int, default=12345,
                         help='distributed training port id; any number between 10000 and 20000 will work')
+    parser.add_argument('--random_state', default=42, type=int)
 
     args = parser.parse_args()
     print(args)
+    set_global_determinism(seed=args.random_state)
     trainer = LOTClassTrainer(args)
     # Construct category vocabulary
     trainer.category_vocabulary(top_pred_num=args.top_pred_num, category_vocab_size=args.category_vocab_size)
