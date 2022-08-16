@@ -7,8 +7,7 @@ def set_seeds(seed):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    if torch.cuda.device_count() > 0:
-        torch.cuda.manual_seed_all(seed)
+    torch.cuda.manual_seed_all(seed)
 def set_global_determinism(seed):
     set_seeds(seed=seed)
 
