@@ -1,6 +1,7 @@
 GPU=$1
 dataset_name=$2
 train_suffix=$3
+seed=$4
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 model_name_or_path=bert-base-cased
@@ -23,4 +24,5 @@ CUDA_VISIBLE_DEVICES=$GPU python train_text_classifier.py \
   --per_gpu_train_batch_size 32 \
   --per_gpu_eval_batch_size 32 \
   --logging_steps 100000 \
-  --save_steps -1 
+  --save_steps -1 \
+  --seed ${seed}
