@@ -1,14 +1,26 @@
 import numpy as np
-from time import time
+import random
+import tensorflow as tf
 import os
+
+random_state = 42
+tf.reset_default_graph()
+os.environ['PYTHONHASHSEED'] = str(random_state)
+os.environ['TF_DETERMINISTIC_OPS'] = '1'
+os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
+np.random.seed(random_state)
+random.seed(random_state)
+tf.set_random_seed(random_state)
+
+from time import time
+
 # os.environ["CUDA_VISIBLE_DEVICES"]="0"
 from model import WSTC, f1
 from keras.optimizers import SGD
 from gen import augment, pseudodocs
 from load_data import load_dataset, load_test_dataset
 from gensim.models import word2vec
-import random
-import tensorflow as tf
+
 
 
 def train_word2vec(sentence_matrix, vocabulary_inv, dataset_name, mode='skipgram',
@@ -104,13 +116,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args)
-    tf.reset_default_graph()
-    os.environ['PYTHONHASHSEED'] = str(args.random_state)
-    os.environ['TF_DETERMINISTIC_OPS'] = '1'
-    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
-    np.random.seed(args.random_state)
-    random.seed(args.random_state)
-    tf.set_random_seed(args.random_state)
+
 
     alpha = args.alpha
     beta = args.beta
