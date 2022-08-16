@@ -143,8 +143,8 @@ def run_method(args, train_set, test_set):
 
             os.chdir("../methods/WeSTClass")
             os.system(
-                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {}"
-                .format(args.gpu, args.dataset))
+                "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --random_state {}"
+                .format(args.gpu, args.dataset, args.random_state))
         elif args.seed_words == True:
             assert args.class_names == False
             os.system("rm -rf ../methods/WeSTClass/{}".format(args.dataset))
