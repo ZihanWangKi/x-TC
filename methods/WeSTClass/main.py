@@ -7,7 +7,6 @@ SEED = 0
 def set_seeds(seed=SEED):
     os.environ['PYTHONHASHSEED'] = str(seed)
     random.seed(seed)
-    tf.random.set_seed(seed)
     tf.set_random_seed(seed)
     np.random.seed(seed)
 def set_global_determinism(seed=SEED):
