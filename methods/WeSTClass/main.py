@@ -3,12 +3,12 @@ import random
 import tensorflow as tf
 import os
 import keras.backend as K
-def set_seeds(seed=SEED):
+def set_seeds(seed):
     os.environ['PYTHONHASHSEED'] = str(seed)
     random.seed(seed)
     tf.set_random_seed(seed)
     np.random.seed(seed)
-def set_global_determinism(seed=SEED):
+def set_global_determinism(seed):
     set_seeds(seed=seed)
 
     os.environ['TF_DETERMINISTIC_OPS'] = '1'
