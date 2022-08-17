@@ -30,8 +30,7 @@ if __name__ == '__main__':
     parser.add_argument("--gpu", default=0, help="gpu id")
     parser.add_argument("--random_state", type=int, default=42) # todo
 
-    random.seed(args.random_state)
     args = parser.parse_args()
     print(vars(args))
-
+    random.seed(args.random_state)
     main(args)
