@@ -112,8 +112,8 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         os.chdir("../methods/LOTClass")
-        os.system("CUDA_VISIBLE_DEVICES={} python src/train.py --dataset_dir datasets/{}/ --test_file test.txt --test_label_file test_labels.txt --train_batch_size 32 --accum_steps 4 --gpus 1"
-                  .format(args.gpu, args.dataset))
+        os.system("CUDA_VISIBLE_DEVICES={} python src/train.py --dataset_dir datasets/{}/ --test_file test.txt --test_label_file test_labels.txt --train_batch_size 32 --accum_steps 4 --gpus 1 --random_state {}"
+                  .format(args.gpu, args.dataset, args.random_state))
     elif args.method == "WeSTClass":
         if args.class_names:
             assert args.seed_words == False
