@@ -1,5 +1,6 @@
 import argparse
 import random
+import numpy
 from utils import *
 
 
@@ -33,4 +34,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(vars(args))
     random.seed(args.random_state)
+    numpy.random.seed(args.random_state)
     main(args)
