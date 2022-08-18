@@ -10,7 +10,8 @@ def set_seeds(seed):
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.enabled = True
 def set_global_determinism(seed):
     set_seeds(seed=seed)
 
