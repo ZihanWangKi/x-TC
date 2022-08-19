@@ -1,5 +1,6 @@
 from collections import defaultdict
 import time
+import random
 from joblib import Parallel, delayed
 from multiprocessing import cpu_count
 from math import ceil
@@ -19,9 +20,19 @@ import sys
 from tqdm import tqdm
 from model import LOTClassModel
 import warnings
-from train import set_seeds
 warnings.filterwarnings("ignore")
 
+
+def set_seeds(seed):
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = True
+    torch.backends.cudnn.enabled = True
 
 class LOTClassTrainer(object):
 
