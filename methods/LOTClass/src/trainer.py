@@ -410,7 +410,7 @@ class LOTClassTrainer(object):
 
     # masked category prediction (distributed function)
     def mcp_dist(self, rank, epochs=5, loader_name="mcp_model.pt"):
-        set_seed(self.seed)
+        set_seeds(self.seed)
         model = self.set_up_dist(rank)
         mcp_dataset_loader = self.make_dataloader(rank, self.mcp_data, self.train_batch_size)
         total_steps = len(mcp_dataset_loader) * epochs / self.accum_steps
