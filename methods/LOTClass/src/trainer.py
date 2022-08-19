@@ -19,6 +19,7 @@ import sys
 from tqdm import tqdm
 from model import LOTClassModel
 import warnings
+from train import set_seeds
 warnings.filterwarnings("ignore")
 
 
@@ -56,6 +57,7 @@ class LOTClassTrainer(object):
         self.st_loss = nn.KLDivLoss(reduction='batchmean')
         self.update_interval = args.update_interval
         self.early_stop = args.early_stop
+        self.seed = args.random_state
 
     # set up distributed training
     def set_up_dist(self, rank):
@@ -256,6 +258,7 @@ class LOTClassTrainer(object):
 
     # construct category vocabulary (distributed function)
     def category_vocabulary_dist(self, rank, top_pred_num=50, loader_name="category_vocab.pt"):
+        set_seeds(self.seed)
         model = self.set_up_dist(rank)
         model.eval()
         label_name_dataset_loader = self.make_dataloader(rank, self.label_name_data, self.eval_batch_size)
@@ -312,6 +315,7 @@ class LOTClassTrainer(object):
 
     # prepare self supervision for masked category prediction (distributed function)
     def prepare_mcp_dist(self, rank, top_pred_num=50, match_threshold=20, loader_name="mcp_train.pt"):
+        set_seeds(self.seed)
         model = self.set_up_dist(rank)
         model.eval()
         train_dataset_loader = self.make_dataloader(rank, self.train_data, self.eval_batch_size)
@@ -395,6 +399,7 @@ class LOTClassTrainer(object):
 
     # masked category prediction (distributed function)
     def mcp_dist(self, rank, epochs=5, loader_name="mcp_model.pt"):
+        set_seed(self.seed)
         model = self.set_up_dist(rank)
         mcp_dataset_loader = self.make_dataloader(rank, self.mcp_data, self.train_batch_size)
         total_steps = len(mcp_dataset_loader) * epochs / self.accum_steps
@@ -528,6 +533,7 @@ class LOTClassTrainer(object):
 
     # self training (distributed function)
     def self_train_dist(self, rank, epochs, loader_name="final_model.pt"):
+        set_seeds(self.seed)
         model = self.set_up_dist(rank)
         test_dataset_loader = self.make_dataloader(rank, self.test_data, self.eval_batch_size) if self.with_test_label else None
         total_steps = int(len(self.train_data["input_ids"]) * epochs / (self.world_size * self.train_batch_size * self.accum_steps))
