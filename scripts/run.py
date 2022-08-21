@@ -29,10 +29,15 @@ if __name__ == '__main__':
                              "Enter the seed words belonging to the same class on the same line, separated by spaces,"
                              "and the order of lines corresponds to the label order.")
     parser.add_argument("--gpu", default=0, help="gpu id")
-    parser.add_argument("--random_state", type=int, default=42) # todo
+    parser.add_argument("--random_state", type=int, default=42) # todo, almost done
 
     args = parser.parse_args()
     print(vars(args))
+
     random.seed(args.random_state)
     numpy.random.seed(args.random_state)
+
+    methods = ["X-Class", "ConWea", "LOTClass", "WeSTClass", "ClassKG", "gpt2-small", "gpt2-medium", "gpt2-large"]
+    assert args.method in methods
+
     main(args)

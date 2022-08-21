@@ -177,6 +177,17 @@ def run_method(args, train_set, test_set):
                 .format(args.gpu, args.dataset, args.random_state))
         elif ...:
             ...
-
-
+    elif args.method == "ClassKG":
+        assert args.class_names == False
+        assert args.seed_words == True
+        ...
+    elif args.method.startswith("gpt"):
+        
+        os.chdir("../methods/GPT")
+        os.system(
+            "CUDA_VISIBLE_DEVICES={} python score.py {} --model {}"
+            .format(args.gpu, args.dataset, args.method)) # todo: add random_state!!!
+        #os.system(
+        #    "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_source keywords --random_state {}"
+        #    .format(args.gpu, args.dataset, args.random_state))
 
