@@ -182,11 +182,14 @@ def run_method(args, train_set, test_set):
         assert args.seed_words == True
         ...
     elif args.method.startswith("gpt"):
-        
+        with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
+            for line in test_set["text"]:
+                f.write(str(line))
+                f.write("\n")
         os.chdir("../methods/GPT")
         os.system(
-            "CUDA_VISIBLE_DEVICES={} python score.py {} --model {}"
-            .format(args.gpu, args.dataset, args.method)) # todo: add random_state!!!
+            "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {}"
+            .format(args.gpu, args.dataset, args.method, args.random_state))
         #os.system(
         #    "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_source keywords --random_state {}"
         #    .format(args.gpu, args.dataset, args.random_state))
