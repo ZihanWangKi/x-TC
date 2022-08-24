@@ -17,7 +17,6 @@ def split_data(args):
             train_set = load_dataset(args.dataset, split="train")
 
         #test_set = train_test["test"]
-        print(set)
     else:
         ...
     print("Finish data split!")
@@ -32,7 +31,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
-            for line in train_set["text"]:
+            for line in train_set[args.text_name]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/X-Class/data/datasets/{}/labels.txt".format(args.dataset), "w") as f:
@@ -42,7 +41,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
-            for line in test_set["text"]:
+            for line in test_set[args.text_name]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/X-Class/data/datasets/{}_test/labels.txt".format(args.dataset), "w") as f:
@@ -59,7 +58,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset))
         label = [str(i) for i in train_set[args.label_name]]
         train={
-            "sentence": train_set["text"],
+            "sentence": train_set[args.text_name],
             "label": label
         }
         df = pd.DataFrame(train)
@@ -75,7 +74,7 @@ def run_method(args, train_set, test_set):
 
         label = [str(i) for i in test_set[args.label_name]]
         test = {
-            "sentence": test_set["text"],
+            "sentence": test_set[args.text_name],
             "label": label
         }
         test_df = pd.DataFrame(test)
@@ -96,7 +95,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/LOTClass/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/LOTClass/datasets/{}/label_names.txt".format(args.dataset))
         with open("../methods/LOTClass/datasets/{}/train.txt".format(args.dataset), "w") as f:
-            for line in train_set["text"]:
+            for line in train_set[args.text_name]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/LOTClass/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
@@ -104,7 +103,7 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/LOTClass/datasets/{}/test.txt".format(args.dataset), "w") as f:
-            for line in test_set["text"]:
+            for line in test_set[args.text_name]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/LOTClass/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
@@ -130,13 +129,13 @@ def run_method(args, train_set, test_set):
 
             train = {
                 "label": train_set[args.label_name],
-                "sentence": train_set["text"]
+                "sentence": train_set[args.text_name]
             }
             df = pd.DataFrame(train)
             df.to_csv("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), header=False, index=False)
             test = {
                 "label": test_set[args.label_name],
-                "sentence": test_set["text"]
+                "sentence": test_set[args.text_name]
             }
             df = pd.DataFrame(test)
             df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
@@ -160,13 +159,13 @@ def run_method(args, train_set, test_set):
 
             train = {
                 "label": train_set[args.label_name],
-                "sentence": train_set["text"]
+                "sentence": train_set[args.text_name]
             }
             df = pd.DataFrame(train)
             df.to_csv("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), header=False, index=False)
             test = {
                 "label": test_set[args.label_name],
-                "sentence": test_set["text"]
+                "sentence": test_set[args.text_name]
             }
             df = pd.DataFrame(test)
             df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
@@ -189,7 +188,7 @@ def run_method(args, train_set, test_set):
         os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
         os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
         with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
-            for line in test_set["text"]:
+            for line in test_set[args.text_name]:
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
