@@ -169,7 +169,8 @@ if __name__ == '__main__':
             text_labels = list(map(lambda x: x.strip(), fp.readlines()))
         for i in range(len(texts)):
             label = text_labels[i]
-            premise = prompt.format(texts[i])
+            premise = " text: {}\n topic:".format(texts[i])
+            #premise = prompt.format(texts[i])
             options = []
             for h in class_names:
                 o = {}
