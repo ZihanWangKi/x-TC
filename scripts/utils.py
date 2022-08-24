@@ -185,6 +185,7 @@ def run_method(args, train_set, test_set):
         assert args.prompt == True
         assert args.class_names == True
         assert args.seed_words == False
+        os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
         os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
         with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
