@@ -152,7 +152,38 @@ if __name__ == '__main__':
         stem = f'data/{args.dataset[:-4]}/'
     else:
         stem = f'data/{args.dataset}/'
-    examples, closed_label_space = get_examples(args.dataset, args.split, stem, args.n_shot, args.variant)
+
+    def load_examples(stem, split):
+        examples = []
+        path = f"{stem}class_names.txt"
+        with open(path, "r") as fp:
+            class_names = list(map(lambda x: x.strip(), fp.readlines()))
+        path = f"{stem}prompt.txt"
+        with open(path, "r") as fp:
+            prompt = fp.readline()
+        path = f"{stem}{split}.txt"
+        with open(path, "r") as fp:
+            texts = list(map(lambda x: x.strip(), fp.readlines()))
+        path = f"{stem}{split}_labels.txt"
+        with open(path, "r") as fp:
+            text_labels = list(map(lambda x: x.strip(), fp.readlines()))
+        for i in range(len(texts)):
+            label = text_labels[i]
+            premise = prompt.format(texts[i])
+            options = []
+            for h in class_names:
+                o = {}
+                o['premise'] = premise
+                o['hypothesis'] = ' ' + h.lower()
+                o['uncond_premise'] = '\n topic:'
+                o['uncond_hypothesis'] = ' ' + h.lower()
+                options.append(o)
+            label = label
+            examples.append({'options': options, 'label': label})
+        return examples
+    examples = load_examples(stem, args.split)
+    # examples, closed_label_space = get_examples(args.dataset, args.split, stem, args.n_shot, args.variant)
+
     if args.sample:
         assert(args.sample <= len(examples))
         examples = random.sample(examples, args.sample)

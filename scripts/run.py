@@ -28,6 +28,10 @@ if __name__ == '__main__':
                              "Please enter the seed words into seed_words.txt in the current directory."
                              "Enter the seed words belonging to the same class on the same line, separated by spaces,"
                              "and the order of lines corresponds to the label order.")
+    parser.add_argument("--prompt", action="store_true",
+                        help="Set to True if you want to test prompt based methods."
+                             "Please enter the prompt into prompt.txt in the current directory."
+                             "Please enter one prompt in the single line.")
     parser.add_argument("--gpu", default=0, help="gpu id")
     parser.add_argument("--random_state", type=int, default=42) # todo, almost done
 

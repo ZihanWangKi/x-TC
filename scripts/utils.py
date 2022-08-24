@@ -182,15 +182,21 @@ def run_method(args, train_set, test_set):
         assert args.seed_words == True
         ...
     elif args.method.startswith("gpt"):
+        assert args.prompt == True
+        assert args.class_names == True
+        assert args.seed_words == False
+        os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+        os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
         with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
             for line in test_set["text"]:
+                f.write(str(line))
+                f.write("\n")
+        with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
+            for line in test_set[args.label_name]:
                 f.write(str(line))
                 f.write("\n")
         os.chdir("../methods/GPT")
         os.system(
             "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {}"
             .format(args.gpu, args.dataset, args.method, args.random_state))
-        #os.system(
-        #    "CUDA_VISIBLE_DEVICES={} python main.py --dataset {} --sup_source keywords --random_state {}"
-        #    .format(args.gpu, args.dataset, args.random_state))
 
