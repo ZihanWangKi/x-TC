@@ -160,7 +160,7 @@ if __name__ == '__main__':
             class_names = list(map(lambda x: x.strip(), fp.readlines()))
         path = f"{stem}prompt.txt"
         with open(path, "r") as fp:
-            prompt = fp.readline()
+            prompt = fp.read()
         path = f"{stem}{split}.txt"
         with open(path, "r") as fp:
             texts = list(map(lambda x: x.strip(), fp.readlines()))
@@ -169,14 +169,15 @@ if __name__ == '__main__':
             text_labels = list(map(lambda x: x.strip(), fp.readlines()))
         for i in range(len(texts)):
             label = int(text_labels[i])
-            premise = " text: {}\n topic:".format(texts[i])
-            #premise = prompt.format(texts[i])
+            #premise = " text: {}\n topic:".format(texts[i])
+            premise = prompt.format(texts[i])
+            uncond_premise = '\n' + premise.split('\n')[-1]
             options = []
             for h in class_names:
                 o = {}
                 o['premise'] = premise
                 o['hypothesis'] = ' ' + h.lower()
-                o['uncond_premise'] = '\n topic:'
+                o['uncond_premise'] = uncond_premise #'\n topic:'
                 o['uncond_hypothesis'] = ' ' + h.lower()
                 options.append(o)
             label = label

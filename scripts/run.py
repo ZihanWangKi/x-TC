@@ -33,7 +33,8 @@ if __name__ == '__main__':
     parser.add_argument("--prompt", action="store_true",
                         help="Set to True if you want to test prompt based methods."
                              "Please enter the prompt into prompt.txt in the current directory."
-                             "Please enter one prompt in the single line.")
+                             "Please use Enter to separate the text and label."
+                             "Check ../method/GPT/score.py for more information.")
     parser.add_argument("--gpu", default=0, help="gpu id")
     parser.add_argument("--random_state", type=int, default=42) # todo, almost done
 

@@ -1,1 +1,2 @@
- text: {}\n topic:
+ text: {}
+ topic:
