@@ -126,7 +126,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('dataset', type=str)
     parser.add_argument('--model', type=str, default='xl')
-    parser.add_argument('--n-shot', type=int, default=0)
+    parser.add_argument('--n_shot', type=int, default=0)
     parser.add_argument('--variant', type=int, default=None)
     parser.add_argument('--split', type=str, default='dev')
     parser.add_argument('--batch', type=int, default=10)
@@ -183,7 +183,62 @@ if __name__ == '__main__':
             label = label
             examples.append({'options': options, 'label': label})
         return examples
-    examples = load_examples(stem, args.split)
+
+    def load_examples_n_shot(stem, split, n_shot):
+        examples = []
+        path = f"{stem}class_names.txt"
+        with open(path, "r") as fp:
+            class_names = list(map(lambda x: x.strip(), fp.readlines()))
+        path = f"{stem}prompt.txt"
+        with open(path, "r") as fp:
+            prompt = fp.read()
+        path = f"{stem}{split}.txt"
+        with open(path, "r") as fp:
+            texts = list(map(lambda x: x.strip(), fp.readlines()))
+        path = f"{stem}{split}_labels.txt"
+        with open(path, "r") as fp:
+            text_labels = list(map(lambda x: x.strip(), fp.readlines()))
+
+        path = f"{stem}n_shot.txt"
+        with open(path, "r") as fp:
+            n_shot_texts = list(map(lambda x: x.strip(), fp.readlines()))
+        path = f"{stem}n_shot_labels.txt"
+        with open(path, "r") as fp:
+            n_shot_text_labels = list(map(lambda x: x.strip(), fp.readlines()))
+
+        fewshot_examples = []
+        for i in range(len(texts)):
+            l = n_shot_text_labels[i]
+            s = n_shot_texts[i]
+            fewshot_prefix = prompt.format(s) + ' ' + class_names[l].lower()
+            fewshot_examples.append(fewshot_prefix)
+
+        random.shuffle(fewshot_examples)
+        fewshot_prefix = ''
+        for ex in fewshot_examples[:n_shot]:
+            fewshot_prefix = fewshot_prefix + ex
+
+        for i in range(len(texts)):
+            label = int(text_labels[i])
+            #premise = " text: {}\n topic:".format(texts[i])
+            premise = fewshot_prefix + prompt.format(texts[i])
+            uncond_premise = '\n' + premise.split('\n')[-1]
+            options = []
+            for h in class_names:
+                o = {}
+                o['premise'] = premise
+                o['hypothesis'] = ' ' + h.lower()
+                o['uncond_premise'] = uncond_premise #'\n topic:'
+                o['uncond_hypothesis'] = ' ' + h.lower()
+                options.append(o)
+            label = label
+            examples.append({'options': options, 'label': label})
+        return examples
+
+    if args.n_shot == 0:
+        examples = load_examples(stem, args.split)
+    else:
+        examples = load_examples_n_shot(stem, args.split, args.n_shot)
     # examples, closed_label_space = get_examples(args.dataset, args.split, stem, args.n_shot, args.variant)
 
     if args.sample:

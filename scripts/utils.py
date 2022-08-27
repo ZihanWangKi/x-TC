@@ -2,6 +2,7 @@ import os
 import pickle
 import json
 import pandas as pd
+import numpy as np
 from datasets import load_dataset, list_datasets
 import csv
 
@@ -184,19 +185,52 @@ def run_method(args, train_set, test_set):
         assert args.prompt == True
         assert args.class_names == True
         assert args.seed_words == False
-        os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
-        os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
-        os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
-        with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.text_name]:
-                f.write(str(line))
-                f.write("\n")
-        with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.label_name]:
-                f.write(str(line))
-                f.write("\n")
-        os.chdir("../methods/GPT")
-        os.system(
-            "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {}"
-            .format(args.gpu, args.dataset, args.method, args.random_state))
+        if args.n_shot == 0:
+            os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
+            os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+            os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
+            with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.text_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.chdir("../methods/GPT")
+            os.system(
+                "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {}"
+                .format(args.gpu, args.dataset, args.method, args.random_state))
+        else:
+            os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
+            os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+            os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
+            A = np.random.permutation(np.arange(len(train_set[args.text_name])))
+            n_shot = []
+            label_num = [0 for _ in range(train_set[args.label_name].max()+1)]
+            for i in range(len(train_set[args.text_name])):
+                id = A[i]
+                if label_num[train_set[args.label_name][id]] < args.n_shot:
+                    n_shot.append(id)
+                    label_num[train_set[args.label_name][id]] += 1
+            with open("../methods/GPT/data/{}/n_shot.txt".format(args.dataset), "w") as f:
+                for id in n_shot:
+                    f.write(str(train_set[args.text_name][id]))
+                    f.write("\n")
+            with open("../methods/GPT/data/{}/n_shot_labels.txt".format(args.dataset), "w") as f:
+                for id in n_shot:
+                    f.write(str(train_set[args.label_name][id]))
+                    f.write("\n")
+            with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.text_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.chdir("../methods/GPT")
+            os.system(
+                "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --n_shot {} --seed {}"
+                .format(args.gpu, args.dataset, args.method, args.n_shot, args.random_state))
 
