@@ -207,7 +207,7 @@ def run_method(args, train_set, test_set):
             os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
             A = np.random.permutation(np.arange(len(train_set[args.text_name])))
             n_shot = []
-            label_num = [0 for _ in range(train_set[args.label_name].max()+1)]
+            label_num = [0 for _ in range(max(train_set[args.label_name])+1)]
             for i in range(len(train_set[args.text_name])):
                 id = A[i]
                 if label_num[train_set[args.label_name][id]] < args.n_shot:
