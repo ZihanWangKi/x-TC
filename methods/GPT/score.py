@@ -215,8 +215,8 @@ if __name__ == '__main__':
 
         random.shuffle(fewshot_examples)
         fewshot_prefix = ''
-        for ex in fewshot_examples[:n_shot]:
-            fewshot_prefix = fewshot_prefix + ex
+        for ex in fewshot_examples:
+            fewshot_prefix = fewshot_prefix + '\n' + ex
 
         for i in range(len(texts)):
             label = int(text_labels[i])
