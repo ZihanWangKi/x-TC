@@ -210,7 +210,7 @@ if __name__ == '__main__':
         for i in range(len(texts)):
             l = n_shot_text_labels[i]
             s = n_shot_texts[i]
-            fewshot_prefix = prompt.format(s) + ' ' + class_names[l].lower()
+            fewshot_prefix = prompt.format(s) + ' ' + class_names[int(l)].lower()
             fewshot_examples.append(fewshot_prefix)
 
         random.shuffle(fewshot_examples)
