@@ -207,7 +207,7 @@ if __name__ == '__main__':
             n_shot_text_labels = list(map(lambda x: x.strip(), fp.readlines()))
 
         fewshot_examples = []
-        for i in range(len(texts)):
+        for i in range(len(n_shot_texts)):
             l = n_shot_text_labels[i]
             s = n_shot_texts[i]
             fewshot_prefix = prompt.format(s) + ' ' + class_names[int(l)].lower()
