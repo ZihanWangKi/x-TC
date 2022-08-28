@@ -20,7 +20,7 @@ if __name__ == '__main__':
                         help="The exact name of the label in raw data, e.g. 'label-coarse'.")
     parser.add_argument("--train_size", type=float, default=1.0,
                         help="The ratio of the split train set (unlabeled by default)")
-    parser.add_argument("--n_shot", default=0, help="extra parameter for few-labeled data methods")
+    parser.add_argument("--n_shot", type=int, default=0, help="extra parameter for few-labeled data methods")
     parser.add_argument("--class_names", action="store_true",
                         help="Set to True if you want to test class-names based methods."
                              "Please enter the class names into class_names.txt in the current directory."
