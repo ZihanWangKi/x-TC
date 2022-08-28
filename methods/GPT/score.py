@@ -217,6 +217,7 @@ if __name__ == '__main__':
         fewshot_prefix = ''
         for ex in fewshot_examples:
             fewshot_prefix = fewshot_prefix + '\n' + ex
+        fewshot_prefix = fewshot_prefix + '\n'
 
         for i in range(len(texts)):
             label = int(text_labels[i])
