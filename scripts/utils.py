@@ -213,6 +213,8 @@ def run_method(args, train_set, test_set):
                 if label_num[train_set[args.label_name][id]] < args.n_shot:
                     n_shot.append(id)
                     label_num[train_set[args.label_name][id]] += 1
+                if len(n_shot) == args.n_shot * len(label_num):
+                    break
             with open("../methods/GPT/data/{}/n_shot.txt".format(args.dataset), "w") as f:
                 for id in n_shot:
                     f.write(str(train_set[args.text_name][id]))
