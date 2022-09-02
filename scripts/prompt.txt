@@ -1,2 +1,3 @@
+ Classify the news articles into the categories of world, sports, business, and technology.
  text: {}
  topic:

@@ -1,4 +1,5 @@
 # x-TC
+
 Standing for eXtremely weakly supervsied Text Classification, this project will be for benchmarking a series of text classifcation methods on a collection of (standarized) datasets, with the goal of evaluating their performances under the extremely weakly supervised scenario.
 
 ## Datasets
