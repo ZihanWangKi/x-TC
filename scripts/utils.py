@@ -243,11 +243,11 @@ def run_method(args, train_set, test_set):
         os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
         os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
         with open("../methods/GPT/data/{}/train.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.train_name]:
+            for line in train_set[args.text_name]:
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/train_labels.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.train_name]:
+            for line in train_set[args.text_name]:
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
