@@ -247,7 +247,7 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/train_labels.txt".format(args.dataset), "w") as f:
-            for line in train_set[args.text_name]:
+            for line in train_set[args.label_name]:
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
