@@ -288,7 +288,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
         vec.append(logits[0, -1, t].detach().cpu().numpy())
     vec = np.array(vec)
     vec = np.exp(vec)
-    vec = vec / vec.sum()
+    vec = np.log(vec / vec.sum())
     logits = logits.view(-1, logit_shape[-1])
     ce_list = F.cross_entropy(logits, labels[:, 1:].contiguous().view(-1), reduction='none')
     ce_list = ce_list.view(n_seqs, max_len - 1).sum(dim=1).squeeze().tolist()
@@ -377,6 +377,7 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
                                      model, cache=cache, batch=batch, calculate=calculate)
 
         ## get domain conditional CEs
+        """
         domain_cond_ce = cross_entropy_list([opt['uncond_premise'] for opt in options],
                                             [opt['uncond_hypothesis'] for opt in options],
                                             model, cache=cache, batch=batch, calculate=calculate)
@@ -385,6 +386,7 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
         uncond_ce = cross_entropy_list([[25] for opt in options],
                                        [opt['uncond_hypothesis'] for opt in options],
                                        model, cache=cache, batch=batch, calculate=calculate)
+        """
 
     ## get average CE by token
     if gpt3:
@@ -396,11 +398,13 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
     #####
     ## prediction
     #####
+    """
     # calculate dcpmi
     dcpmi = [ce_0 - ce_1 for ce_0, ce_1 in zip(domain_cond_ce, cond_ce)]
     pmi = [ce_0 - ce_1 for ce_0, ce_1 in zip(uncond_ce, cond_ce)]
 
     ## make predictions based on different scores
+    
     lm_pred = cond_ce.index(min(cond_ce))
     lm_avg_pred = avg_cond_ce.index(min(avg_cond_ce))
     lm_domain_cond_pred = domain_cond_ce.index(min(domain_cond_ce))
@@ -413,6 +417,7 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
         'pmi': pmi_pred,
         'domain_cond': lm_domain_cond_pred,
     }
+    """
     lm_vec = cond_ce
     return lm_vec
 
