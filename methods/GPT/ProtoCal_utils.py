@@ -8,6 +8,7 @@ import openai
 import time
 import os
 import re
+import numpy as np
 
 
 def detokenizer(string):
@@ -285,6 +286,9 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     vec = []
     for t in targets:
         vec.append(logits[0, -1, t])
+    vec = np.array(vec)
+    vec = np.exp(vec)
+    vec = vec / vec.sum()
     logits = logits.view(-1, logit_shape[-1])
     ce_list = F.cross_entropy(logits, labels[:, 1:].contiguous().view(-1), reduction='none')
     ce_list = ce_list.view(n_seqs, max_len - 1).sum(dim=1).squeeze().tolist()
