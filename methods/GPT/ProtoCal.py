@@ -245,7 +245,7 @@ if __name__ == '__main__':
 
     train_vec = score(model, args.model, encoder, train_examples, stem, args.split, args.batch)
     max_cla = 0
-    best_seed = 0
+    best_seed =-1000000
     for seed in range(args.iter):
         gmm = GaussianMixture(n_components=n_class, random_state=seed)
         gmm.fit(train_vec)
