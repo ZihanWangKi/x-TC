@@ -285,7 +285,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     ce_list = F.cross_entropy(logits, labels[:, 1:].contiguous().view(-1), reduction='none')
     ce_list = ce_list.view(n_seqs, max_len - 1).sum(dim=1).squeeze().tolist()
     print(sources, targets)
-    print(logits, ce_list, labels, labels[:, 1:].contiguous().view(-1))
+    print(logits, logits.shape, ce_list, labels, labels[:, 1:].contiguous().view(-1))
     # if one element (i.e. len(sources) == 1), nest it into a list. Otherwise, give full list
     # this just handles an idiosyncracy of the .tolist() function
     try:
