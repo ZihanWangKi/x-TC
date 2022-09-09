@@ -285,11 +285,12 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     #print(logits)
     vec = []
     for t in targets:
-        vec.append(logits[0, -1, t].detach().cpu().numpy())
+        vec.append(logits[0, -1, t].item())
+    print(vec)
     vec = np.array(vec)
-    vec = vec.reshape(-1)
     vec = np.exp(vec)
     vec = np.log(vec / vec.sum())
+    print(vec)
     logits = logits.view(-1, logit_shape[-1])
     ce_list = F.cross_entropy(logits, labels[:, 1:].contiguous().view(-1), reduction='none')
     ce_list = ce_list.view(n_seqs, max_len - 1).sum(dim=1).squeeze().tolist()
