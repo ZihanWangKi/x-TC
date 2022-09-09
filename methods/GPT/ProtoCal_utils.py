@@ -293,7 +293,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     logits = logits.view(-1, logit_shape[-1])
     ce_list = F.cross_entropy(logits, labels[:, 1:].contiguous().view(-1), reduction='none')
     ce_list = ce_list.view(n_seqs, max_len - 1).sum(dim=1).squeeze().tolist()
-    print(vec)
+    #print(vec)
     #print(logits, logits, ce_list, labels, labels[:, 1:].contiguous().view(-1))
     # if one element (i.e. len(sources) == 1), nest it into a list. Otherwise, give full list
     # this just handles an idiosyncracy of the .tolist() function
@@ -511,5 +511,5 @@ def score(model, model_name, encoder, examples, stem, split, batch):
     with open(hist_path, 'w') as f:
         f.write(json.dumps(cache))
 
-
+    print(vecs)
     return vecs
