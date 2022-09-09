@@ -302,7 +302,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     except:
         ce_list = [ce_list]
 
-    return vec
+    return vec.tolist()
 
 
 def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=None):
