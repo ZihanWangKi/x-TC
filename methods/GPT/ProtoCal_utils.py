@@ -208,6 +208,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     # calculations to the cache with calculate = False (won't do them yet)
     # then run with calculate=True to work through all cached calculations
     # in efficient batches
+    """
     if cache is not None:
 
         # log calculations we have not done yet
@@ -235,6 +236,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
         ## return results for thie example
         results = [cache[get_key(source, target)]['result'] for source, target in zip(sources, targets)]
         return results
+    """
     ###############################
 
     assert (len(sources) == len(targets))
