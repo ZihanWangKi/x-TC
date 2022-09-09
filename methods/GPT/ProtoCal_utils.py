@@ -285,7 +285,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     #print(logits)
     vec = []
     for t in targets:
-        vec.append(logits[0, -1, t])
+        vec.append(logits[0, -1, t].detach().cpu().numpy())
     vec = np.array(vec)
     vec = np.exp(vec)
     vec = vec / vec.sum()
