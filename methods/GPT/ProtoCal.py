@@ -135,7 +135,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--key', type=str, default='api.key')
     parser.add_argument('--debug', action='store_true')
-    parser.add_argument('--iter', type=int, default=10)
+    parser.add_argument('--iter', type=int, default=100)
     args = parser.parse_args()
     print(args)
 
