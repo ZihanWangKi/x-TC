@@ -207,7 +207,7 @@ def run_method(args, train_set, test_set):
                     f.write("\n")
             os.chdir("../methods/GPT")
             os.system(
-                "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {}"
+                "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {} --sample 100"
                 .format(args.gpu, args.dataset, args.method, args.random_state))
         else:
             os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
