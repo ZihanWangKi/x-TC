@@ -198,7 +198,7 @@ def run_method(args, train_set, test_set):
                     f.write(str(line))
                     f.write("\n")
             with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
-                for line in test_set[args.text_name]:
+                 for line in test_set[args.text_name]:
                     f.write(str(line))
                     f.write("\n")
             with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
@@ -207,7 +207,7 @@ def run_method(args, train_set, test_set):
                     f.write("\n")
             os.chdir("../methods/GPT")
             os.system(
-                "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split train --seed {}"
+                "CUDA_VISIBLE_DEVICES={} python score.py {} --model {} --split test --seed {}"
                 .format(args.gpu, args.dataset, args.method, args.random_state))
         else:
             os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
