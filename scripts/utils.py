@@ -203,6 +203,7 @@ def run_method(args, train_set, test_set):
                     f.write("\n")
             with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
                 for line in test_set[args.label_name]:
+                    if line == -1: print("?")
                     f.write(str(line))
                     f.write("\n")
             os.chdir("../methods/GPT")
