@@ -8,7 +8,7 @@ import csv
 
 def split_data(args):
     if args.dataset in list_datasets():
-        test_set = load_dataset(args.dataset, split="test")
+        test_set = load_dataset(args.dataset, split=args.split)
         dataset = load_dataset(args.dataset, split="train")
         if args.train_size < 1.0:
             train_test = dataset.train_test_split(train_size=args.train_size,

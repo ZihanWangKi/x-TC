@@ -19,6 +19,8 @@ if __name__ == '__main__':
                         help="The exact name of the text in raw data, e.g. 'text'.")
     parser.add_argument("--label_name", default="label",
                         help="The exact name of the label in raw data, e.g. 'label-coarse'.")
+    parser.add_argument("--split", default="test",
+                        help="test on dev/test/valid/... split")
     parser.add_argument("--train_size", type=float, default=1.0,
                         help="The ratio of the split train set (unlabeled by default)")
     parser.add_argument("--n_shot", type=int, default=0, help="extra parameter for few-labeled data methods")
