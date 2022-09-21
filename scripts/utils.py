@@ -21,6 +21,7 @@ def split_data(args):
     else:
         ...
     print("Finish data split!")
+    print("Sampled instance:", train_set[0])
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
     return train_set, test_set
 
@@ -203,7 +204,6 @@ def run_method(args, train_set, test_set):
                     f.write("\n")
             with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
                 for line in test_set[args.label_name]:
-                    if line == -1: print("?")
                     f.write(str(line))
                     f.write("\n")
             os.chdir("../methods/GPT")
