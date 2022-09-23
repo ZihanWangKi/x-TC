@@ -1,6 +1,6 @@
 import numpy
 
-from ..keyword_sentence.sentence_process import get_sentence_hit_keywords
+from keyword_sentence.sentence_process import get_sentence_hit_keywords
 
 
 class Voter():

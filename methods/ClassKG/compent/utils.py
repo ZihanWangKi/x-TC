@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import torch.distributed as dist
 
-from ..compent.comm import get_world_size
+from compent.comm import get_world_size
 import transformers
 import psutil
 

@@ -1,6 +1,6 @@
 import numpy
 
-from ..keyword_sentence.sentence_process import split_sentence_into_words
+from keyword_sentence.sentence_process import split_sentence_into_words
 
 
 class Keywords_Updater_Base():

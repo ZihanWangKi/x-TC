@@ -1,8 +1,8 @@
 import torch
 from sklearn.metrics import accuracy_score, f1_score, classification_report
 
-from ..compent.comm import accumulate_results_from_multiple_gpus, synchronize
-from ..compent.utils import move_to_device
+from compent.comm import accumulate_results_from_multiple_gpus, synchronize
+from compent.utils import move_to_device
 
 device = torch.device('cuda')
 

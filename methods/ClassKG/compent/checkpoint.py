@@ -10,7 +10,7 @@ import numpy as np
 import tensorflow as tf
 import torch
 
-from ..compent.utils import make_dirs
+from compent.utils import make_dirs
 
 
 # import ipdb
