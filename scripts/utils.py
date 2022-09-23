@@ -208,8 +208,8 @@ def run_method(args, train_set, test_set):
         with open("../methods/ClassKG/data/processed/{}/test.json".format(args.dataset), 'w') as f:
             json.dump(test_list, f, indent=2)
 
-        os.chdir("../methods/ClassKG")
-        os.system("python task/pipeline.py --dataset {} --random_state {}".format(args.dataset, args.random_state))
+        os.chdir("../methods/ClassKG/task")
+        os.system("python pipeline.py --dataset {} --random_state {}".format(args.dataset, args.random_state))
     elif args.method.startswith("gpt") and args.additional_method == None:
         assert args.prompt == True
         assert args.class_names == True
