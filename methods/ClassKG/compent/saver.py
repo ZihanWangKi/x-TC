@@ -1,7 +1,7 @@
 import os
 import pickle
 
-from compent.comm import get_rank
+from ..compent.comm import get_rank
 
 
 class Saver():

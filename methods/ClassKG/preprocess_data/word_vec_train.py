@@ -4,8 +4,8 @@ import os
 
 from gensim.models import word2vec
 
-from PROJECT_ROOT import ROOT_DIR
-from keyword_sentence.sentence_process import split_sentence_into_words
+from ..PROJECT_ROOT import ROOT_DIR
+from ..keyword_sentence.sentence_process import split_sentence_into_words
 
 logging.basicConfig(format = '%(asctime)s : %(levelname)s : %(message)s', level = logging.INFO)
 

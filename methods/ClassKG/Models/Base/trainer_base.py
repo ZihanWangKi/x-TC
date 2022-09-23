@@ -4,8 +4,8 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
 
-from Models.Longformer_Classify.dataset_for_long import Collect_FN, Dataset_Long
-from compent.comm import get_world_size, get_rank
+from ...Models.Longformer_Classify.dataset_for_long import Collect_FN, Dataset_Long
+from ...compent.comm import get_world_size, get_rank
 
 
 class Trainer_Base():

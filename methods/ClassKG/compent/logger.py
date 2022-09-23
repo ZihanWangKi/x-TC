@@ -5,8 +5,8 @@ import time
 
 from torch.utils.tensorboard import SummaryWriter
 
-from compent.utils import make_dirs
-from compent.visdom_show import My_Visdom
+from ..compent.utils import make_dirs
+from ..compent.visdom_show import My_Visdom
 
 
 

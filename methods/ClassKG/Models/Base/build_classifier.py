@@ -1,5 +1,5 @@
-from Models.BERT.trainer_bert_ST import Trainer_BERT
-from Models.Longformer_Classify.trainer_longformer_ST import Trainer_Longformer
+from ...Models.BERT.trainer_bert_ST import Trainer_BERT
+from ...Models.Longformer_Classify.trainer_longformer_ST import Trainer_Longformer
 
 
 def build_classifier_with_cfg(cfg):

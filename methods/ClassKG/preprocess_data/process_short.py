@@ -1,8 +1,8 @@
 import json
 import os
 
-from PROJECT_ROOT import ROOT_DIR
-from compent.utils import make_dirs
+from ..PROJECT_ROOT import ROOT_DIR
+from ..compent.utils import make_dirs
 
 root_dir_origin = r'/xxx/dataset'
 

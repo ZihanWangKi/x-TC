@@ -1,7 +1,7 @@
 import json
 import os
 
-from PROJECT_ROOT import ROOT_DIR
+from ..PROJECT_ROOT import ROOT_DIR
 
 
 class Sentence_ALL():

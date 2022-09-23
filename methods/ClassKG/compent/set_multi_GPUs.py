@@ -1,7 +1,7 @@
 import torch
 import torch.distributed as dist
 
-from compent.comm import synchronize,get_world_size
+from ..compent.comm import synchronize,get_world_size
 
 
 def set_multi_GPUs_envs(rank,world_size):

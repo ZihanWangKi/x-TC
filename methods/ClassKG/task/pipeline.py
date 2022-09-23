@@ -18,20 +18,20 @@ os.environ['MASTER_PORT'] = '10877'
 world_size = len(GPUs.split(','))
 device = torch.device('cuda')
 
-from Models.Base.build_classifier import build_classifier_with_cfg
-from keyword_sentence.updater_top import Keywords_Updater_TFIDF
-from Models.Graph_SSL.trainer_gcn import Trainer_GCN
+from ..Models.Base.build_classifier import build_classifier_with_cfg
+from ..keyword_sentence.updater_top import Keywords_Updater_TFIDF
+from ..Models.Graph_SSL.trainer_gcn import Trainer_GCN
 
-from PROJECT_ROOT import ROOT_DIR
-from compent.logger import Logger
-from config import cfg
-from keyword_sentence.keywords import KeyWords
-from keyword_sentence.sentence import Sentence_ALL
-from compent.set_multi_GPUs import set_multi_GPUs_envs
-from compent.vote import Vote_All_Unlabeled
-from compent.comm import broadcast_data
-from compent.utils import set_seed_all
-from compent.saver import Saver
+from ..PROJECT_ROOT import ROOT_DIR
+from ..compent.logger import Logger
+from ..config import cfg
+from ..keyword_sentence.keywords import KeyWords
+from ..keyword_sentence.sentence import Sentence_ALL
+from ..compent.set_multi_GPUs import set_multi_GPUs_envs
+from ..compent.vote import Vote_All_Unlabeled
+from ..compent.comm import broadcast_data
+from ..compent.utils import set_seed_all
+from ..compent.saver import Saver
 
 TOTAL_ITR = 12
 

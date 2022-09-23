@@ -6,12 +6,12 @@ import numpy
 import torch
 from sklearn.metrics import classification_report, f1_score
 
-from PROJECT_ROOT import ROOT_DIR
-from compent.comm import get_rank
-from compent.comm import synchronize, accumulate_results_from_multiple_gpus, broadcast_data
-from compent.utils import class_index_to_one_hot
-from compent.vote import Voter
-from keyword_sentence.sentence import Sentence_ALL
+from ..PROJECT_ROOT import ROOT_DIR
+from ..compent.comm import get_rank
+from ..compent.comm import synchronize, accumulate_results_from_multiple_gpus, broadcast_data
+from ..compent.utils import class_index_to_one_hot
+from ..compent.vote import Voter
+from ..keyword_sentence.sentence import Sentence_ALL
 
 
 class KeyWords():

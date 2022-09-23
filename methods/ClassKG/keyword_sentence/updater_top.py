@@ -1,8 +1,8 @@
 import numpy
 
 
-from keyword_sentence.keywords import KeyWords
-from keyword_sentence.updater_base import Keywords_Updater_Base
+from ..keyword_sentence.keywords import KeyWords
+from ..keyword_sentence.updater_base import Keywords_Updater_Base
 
 
 class Keywords_Updater_Conwea(Keywords_Updater_Base):

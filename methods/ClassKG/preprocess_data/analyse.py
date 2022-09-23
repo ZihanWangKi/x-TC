@@ -1,10 +1,10 @@
 import os
 
-from PROJECT_ROOT import ROOT_DIR
-from compent.logger import Logger
-from compent.vote import Voter
-from config import cfg
-from keyword_sentence.keywords import KeyWords, Sentence_ALL
+from ..PROJECT_ROOT import ROOT_DIR
+from ..compent.logger import Logger
+from ..compent.vote import Voter
+from ..config import cfg
+from ..keyword_sentence.keywords import KeyWords, Sentence_ALL
 
 cfg_file = 'amazon.yaml'
 cfg_file_path = os.path.join(ROOT_DIR, 'config_files', cfg_file)

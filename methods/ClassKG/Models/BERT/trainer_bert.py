@@ -6,13 +6,13 @@ from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
 from transformers import AdamW, BertForSequenceClassification
 
-from Models.BERT.dataset_for_bert import Dataset_BERT, Collect_FN
-from Models.BERT.eval_model import Eval_Model_For_BERT
-from Models.Base.trainer_base import Trainer_Base
-from compent.checkpoint import CheckPointer_Normal
-from compent.comm import synchronize, get_rank
-from compent.metric_logger import MetricLogger
-from compent.utils import move_to_device, reduce_loss_dict, get_memory_used
+from ..Models.BERT.dataset_for_bert import Dataset_BERT, Collect_FN
+from ..Models.BERT.eval_model import Eval_Model_For_BERT
+from ..Models.Base.trainer_base import Trainer_Base
+from ..compent.checkpoint import CheckPointer_Normal
+from ..compent.comm import synchronize, get_rank
+from ..compent.metric_logger import MetricLogger
+from ..compent.utils import move_to_device, reduce_loss_dict, get_memory_used
 
 device = torch.device('cuda')
 
