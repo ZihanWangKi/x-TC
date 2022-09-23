@@ -199,10 +199,10 @@ def run_method(args, train_set, test_set):
 
         train_list = []
         for i in range(len(train_set[args.text_name])):
-            train_list.append([train_set[args.text_name][i], train_set[args.label_name][i]])
+            train_list.append([train_set[i][args.text_name], train_set[i][args.label_name]])
         test_list = []
         for i in range(len(test_set[args.text_name])):
-            test_list.append([test_set[args.text_name][i], test_set[args.label_name][i]])
+            test_list.append([test_set[i][args.text_name], test_set[i][args.label_name]])
         with open("../methods/ClassKG/data/processed/{}/unlabeled.json".format(args.dataset), 'w') as f:
             json.dump(train_list, f, indent=2)
         with open("../methods/ClassKG/data/processed/{}/test.json".format(args.dataset), 'w') as f:
