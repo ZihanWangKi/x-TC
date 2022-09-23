@@ -181,7 +181,35 @@ def run_method(args, train_set, test_set):
     elif args.method == "ClassKG":
         assert args.class_names == False
         assert args.seed_words == True
-        ...
+        os.system("mkdir -p ../methods/ClassKG/data/processed/{}".format(args.dataset))
+
+        with open("seed_words.txt", mode='r', encoding='utf-8') as f:
+            seeds = list(map(lambda x: x.strip(), f.readlines()))
+        seed_words = {}
+        for i in range(len(seeds)):
+            seed_words[i] = seeds[i].split(' ')
+        with open("../methods/ClassKG/data/processed/{}/keywords.json".format(args.dataset), 'w') as f:
+            json.dump(seed_words, f, indent=2)
+
+        label = [str(i) for i in test_set[args.label_name]]
+        test = {
+            "sentence": test_set[args.text_name],
+            "label": label
+        }
+
+        train_list = []
+        for i in range(len(train_set[args.text_name])):
+            train_list.append([train_set[args.text_name][i], train_set[args.label_name][i]])
+        test_list = []
+        for i in range(len(test_set[args.text_name])):
+            test_list.append([test_set[args.text_name][i], test_set[args.label_name][i]])
+        with open("../methods/ClassKG/data/processed/{}/unlabeled.json".format(args.dataset), 'w') as f:
+            json.dump(train_list, f, indent=2)
+        with open("../methods/ClassKG/data/processed/{}/test.json".format(args.dataset), 'w') as f:
+            json.dump(test_list, f, indent=2)
+
+        os.chdir("../methods/ClassKG")
+        os.system("python task/pipeline.py")
     elif args.method.startswith("gpt") and args.additional_method == None:
         assert args.prompt == True
         assert args.class_names == True
