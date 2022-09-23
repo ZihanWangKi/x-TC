@@ -39,7 +39,7 @@ TOTAL_ITR = 12
 def main(rank):
     cfg_file = "{}.yaml".format(args.dataset)
     visdom_env_name = args.dataset
-    set_seed_all(seed = 999)
+    set_seed_all(seed = arg.random_state)
     set_multi_GPUs_envs(rank, world_size)
     cfg_file_path = os.path.join(ROOT_DIR, 'config', cfg_file)
     cfg.merge_from_file(cfg_file_path)
@@ -100,6 +100,8 @@ def main(rank):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", default="ag_news", help="dataset name")
+    parser.add_argument("--random_state", type=int, default=0)
     args = parser.parse_args()
+    print(args)
     spawn(main, args = (), nprocs = world_size, join = True)
     print('finish')
