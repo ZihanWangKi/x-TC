@@ -47,7 +47,7 @@ def main(rank):
     cfg_file_path = os.path.join(ROOT_DIR, 'config', cfg_file)
     cfg.merge_from_file(cfg_file_path)
 
-    logger = Logger(name = visdom_env_name, save_dir = cfg.file_path.log_dir, distributed_rank = rank,
+    logger = Logger(name = visdom_env_name, save_dir = cfg.file_path.log_dir, distributed_rank = 0,#rank,
                     only_main_rank = False, visdom_port = 8888)
     # logger.info('batch size:{}, number epoch:{}'.format(cfg.classifier.batch_size, cfg.classifier.n_epochs))
     logger.visdom_text(text = str(cfg), win_name = 'cfg')
@@ -92,11 +92,11 @@ def main(rank):
         logger.visdom_text(text = 'start update keywords', win_name = 'state')
         diff = updater.update_keywords(sentences = sentences, labels = labels, incremental = False)
         logger.plot_record(value = diff, win_name = 'keywords_diff')
-        logger.info('main loop, update_keywords over'.format(rank))
+        #logger.info('main loop, update_keywords over'.format(rank))
         keywords.analyse_on_GTunlabel(sentence_all)
 
         keywords.dump_keyworks('keywords_{}'.format(cur_itr))
-        logger.info('main loop, analyse_on_GTunlabel over'.format(rank))
+        #logger.info('main loop, analyse_on_GTunlabel over'.format(rank))
         logger.info('----------------------------------------------------------------------\n\n\n\n\n')
 
 
