@@ -7,7 +7,7 @@ sys.path.append('..')
 
 from torch.multiprocessing import spawn
 
-GPUs = '1'
+GPUs = '0,1,2,3'
 cfg_file = '20News_Fine.yaml'
 visdom_env_name = '20New_Fine'
 
