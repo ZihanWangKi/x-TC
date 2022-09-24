@@ -7,7 +7,7 @@ sys.path.append('..')
 
 from torch.multiprocessing import spawn
 
-GPUs = '0,1,2,3'
+GPUs = '0'
 cfg_file = '20News_Fine.yaml'
 visdom_env_name = '20New_Fine'
 
@@ -43,7 +43,7 @@ def main(rank):
     cfg_file = "ag_news.yaml"
     visdom_env_name = "ag_news"
     set_seed_all(0)
-    set_multi_GPUs_envs(rank, world_size)
+    #set_multi_GPUs_envs(rank, world_size)
     cfg_file_path = os.path.join(ROOT_DIR, 'config', cfg_file)
     cfg.merge_from_file(cfg_file_path)
 
@@ -107,5 +107,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(args)
     torch.multiprocessing.set_start_method('spawn')
-    spawn(main, args = (), nprocs = world_size, join = True)
+    #spawn(main, args = (), nprocs = world_size, join = True)
+    main()
     print('finish')
