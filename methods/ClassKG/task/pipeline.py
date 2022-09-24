@@ -36,7 +36,7 @@ from compent.saver import Saver
 TOTAL_ITR = 12
 
 
-def main(rank):
+def main():
     #cfg_file = "{}.yaml".format(args.dataset)
     #visdom_env_name = args.dataset
     #set_seed_all(seed = args.random_state)
