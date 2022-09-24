@@ -1,4 +1,4 @@
-data_dir_name: "agnews"
+data_dir_name: "ag_news"
 
 model:
   number_classes: 4
@@ -31,4 +31,4 @@ trainer_Graph:
 
 
 file_path:
-  save_dir: "agnews"
+  save_dir: "ag_news"
