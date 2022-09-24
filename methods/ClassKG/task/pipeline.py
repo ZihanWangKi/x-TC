@@ -106,5 +106,6 @@ if __name__ == '__main__':
     parser.add_argument("--random_state", type=int, default=0)
     args = parser.parse_args()
     print(args)
+    torch.multiprocessing.set_start_method('spawn')
     spawn(main, args = (), nprocs = world_size, join = True)
     print('finish')
