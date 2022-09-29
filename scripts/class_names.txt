@@ -1,2 +1,6 @@
-negative
-positive
+Description
+Entity
+Abbreviation
+Human
+Numeric
+Location
