@@ -1,2 +1,2 @@
  question: {}
- answer type:
+ The answer to this question will be:
