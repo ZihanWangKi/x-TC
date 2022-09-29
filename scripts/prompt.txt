@@ -1,2 +1,2 @@
  question: {}
- The answer to this question will be:
+ type:
