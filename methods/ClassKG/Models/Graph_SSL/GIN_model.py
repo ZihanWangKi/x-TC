@@ -214,7 +214,7 @@ class GIN(nn.Module):
 
         hidden_rep = [h]
         for i in range(self.num_layers - 1):
-            h = self.ginlayers[i](graphs.to("cpu"), h.to("cpu"))
+            h = self.ginlayers[i](graphs, h)
             h = self.batch_norms[i](h)
             h = F.relu(h)
             hidden_rep.append(h)
