@@ -4,8 +4,8 @@ import pickle
 
 import numpy
 
-from ..PROJECT_ROOT import ROOT_DIR
-from ..compent.utils import make_dirs
+from PROJECT_ROOT import ROOT_DIR
+from compent.utils import make_dirs
 
 path_origin = r'/XXX/dataset/nyt/fine/'
 cur_task = 'NYT25'
