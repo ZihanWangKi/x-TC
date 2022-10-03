@@ -488,6 +488,19 @@ def fwd(model, encoder, examples, batch, cache = None):
     # calculate accuracies
     results = {key: sum(list(map(lambda v: v[0] == v[1], zip(predictions_dict[key] , labels) )))/len(labels) for key in predictions_dict.keys()}
 
+    from sklearn.metrics import f1_score
+    import numpy as np
+    def f1(y_true, y_pred):
+        y_true = y_true.astype(np.int64)
+        assert y_pred.size == y_true.size
+        f1_macro = f1_score(y_true, y_pred, average='macro')
+        f1_micro = f1_score(y_true, y_pred, average='micro')
+        return f1_macro, f1_micro
+
+    y_pred = np.array(predictions_dict["lm"])
+    y = np.array(labels)
+    f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
+    print('lm F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
     # save labels for later
     predictions_dict['labels'] = labels
     return results, predictions_dict
