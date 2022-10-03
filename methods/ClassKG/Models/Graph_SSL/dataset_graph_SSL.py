@@ -136,7 +136,7 @@ class Graph_Keywords_Dataset_SSL(DGLDataset):
 
         Large_G = dgl.graph((src, dst))
         print(type(self.keywords.feature))
-        print(self.keywords.feature)
+        print(self.keywords.feature.shape)
         Large_G.ndata['nf'] = self.keywords.feature
         Large_G.edata['ef'] = self.edges.feature['count']
         # draw(Large_G)
