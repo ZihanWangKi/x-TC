@@ -1,2 +1,2 @@
  question: {}
- type:
+ answer type:
