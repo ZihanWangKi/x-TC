@@ -1,2 +1,2 @@
- question: {}
- answer type:
+ review: {}
+ sentiment:
