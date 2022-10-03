@@ -135,8 +135,6 @@ class Graph_Keywords_Dataset_SSL(DGLDataset):
         print('edge_number:{}'.format(len(src)))
 
         Large_G = dgl.graph((src, dst))
-        print(Large_G.ndata['nf']._graph.number_of_nodes(ntid))
-        print(self.keywords.feature.shape)
         Large_G.ndata['nf'] = self.keywords.feature
         Large_G.edata['ef'] = self.edges.feature['count']
         # draw(Large_G)
