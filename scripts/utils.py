@@ -53,7 +53,7 @@ def run_method(args, train_set, test_set):
         os.chdir("../methods/X-Class/scripts")
         os.system("chmod -R 777 run.sh")
         os.system("chmod -R 777 run_train_text_classifier.sh")
-        os.system("./run.sh {} {}".format(args.gpu, args.dataset))
+        os.system("./run.sh {} {} {}".format(args.gpu, args.dataset, args.random_state))
     elif args.method == "ConWea":
         assert args.class_names==False
         assert args.seed_words==True
