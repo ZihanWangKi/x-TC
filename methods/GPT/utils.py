@@ -478,14 +478,12 @@ def fwd(model, encoder, examples, batch, cache = None):
     ## in this loop, we actually do the calculations from above in efficient batches, storing results 
     ## in the cache and calculating actual predictions
     print('actually calculating')
-    #for example in tqdm(examples):
-    #    pred = inference_autobatch(model, encoder, example, prelog=False, cache = cache, batch=batch )
-    #    predictions_list.append(pred)
+    for example in tqdm(examples):
+        pred = inference_autobatch(model, encoder, example, prelog=False, cache = cache, batch=batch )
+        predictions_list.append(pred)
 
         
     labels = [ex['label'] for ex in examples]
-    y = np.array(labels)
-    print(y)
     # get predictions into list by scoring key
     predictions_dict = {key:list(map(lambda v: v[key], predictions_list)) for key in predictions_list[0].keys()}
 
@@ -504,7 +502,6 @@ def fwd(model, encoder, examples, batch, cache = None):
 
     y_pred = np.array(predictions_dict["lm"])
     y = np.array(labels)
-    print(y)
     f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
     print('lm F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
     # save labels for later

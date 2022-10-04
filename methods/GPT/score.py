@@ -168,7 +168,7 @@ if __name__ == '__main__':
         with open(path, "r") as fp:
             text_labels = list(map(lambda x: x.strip(), fp.readlines()))
         for i in range(len(texts)):
-            label = int(text_labels[i]
+            label = int(text_labels[i])
             premise = " text: {}\n topic:".format(texts[i])
             premise = prompt.format(texts[i])
             uncond_premise = '\n' + premise.split('\n')[-1]
