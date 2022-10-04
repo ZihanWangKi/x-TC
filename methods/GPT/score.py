@@ -166,13 +166,10 @@ if __name__ == '__main__':
             texts = list(map(lambda x: x.strip(), fp.readlines()))
         path = f"{stem}{split}_labels.txt"
         with open(path, "r") as fp:
-            text_labels = list(map(lambda x: int(x.strip()), fp.readlines()))
-        print(text_labels)
+            text_labels = list(map(lambda x: x.strip(), fp.readlines()))
         for i in range(len(texts)):
-            label = int(text_labels[i])
-            if label != 1:
-                print("?")
-            #premise = " text: {}\n topic:".format(texts[i])
+            label = int(text_labels[i]
+            premise = " text: {}\n topic:".format(texts[i])
             premise = prompt.format(texts[i])
             uncond_premise = '\n' + premise.split('\n')[-1]
             options = []
