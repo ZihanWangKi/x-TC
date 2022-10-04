@@ -421,6 +421,8 @@ def inference_autobatch( model, encoder, example, batch = 1, prelog = False, cac
 
 
 def fwd(model, encoder, examples, batch, cache = None):
+    from sklearn.metrics import confusion_matrix, f1_score
+    import numpy as np
     '''
     This is designed for gpt2-style language models
     
@@ -490,8 +492,6 @@ def fwd(model, encoder, examples, batch, cache = None):
     # calculate accuracies
     results = {key: sum(list(map(lambda v: v[0] == v[1], zip(predictions_dict[key] , labels) )))/len(labels) for key in predictions_dict.keys()}
 
-    from sklearn.metrics import confusion_matrix, f1_score
-    import numpy as np
     def f1(y_true, y_pred):
         #y_true = y_true.astype(np.int64)
         assert y_pred.size == y_true.size
