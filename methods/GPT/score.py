@@ -167,6 +167,7 @@ if __name__ == '__main__':
         path = f"{stem}{split}_labels.txt"
         with open(path, "r") as fp:
             text_labels = list(map(lambda x: x.strip(), fp.readlines()))
+        print(text_labels)
         for i in range(len(texts)):
             label = int(text_labels[i])
             if label != 1:
