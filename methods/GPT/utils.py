@@ -482,6 +482,8 @@ def fwd(model, encoder, examples, batch, cache = None):
 
         
     labels = [ex['label'] for ex in examples]
+    y = np.array(labels)
+    print(y)
     # get predictions into list by scoring key
     predictions_dict = {key:list(map(lambda v: v[key], predictions_list)) for key in predictions_list[0].keys()}
 
