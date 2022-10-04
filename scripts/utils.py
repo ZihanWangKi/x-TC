@@ -8,15 +8,20 @@ import csv
 
 def split_data(args):
     if args.dataset in list_datasets():
-        test_set = load_dataset(args.dataset, split=args.split)
         dataset = load_dataset(args.dataset, split="train")
         if args.train_size < 1.0:
             train_test = dataset.train_test_split(train_size=args.train_size,
-                                                shuffle=False, seed=args.random_state)
+                                                  shuffle=False, seed=args.random_state)
             train_set = train_test["train"]
         else:
             train_set = load_dataset(args.dataset, split="train")
-
+        dataset = load_dataset(args.dataset, split=args.split)
+        if args.test_size < 1.0:
+            train_test = dataset.train_test_split(test_size=args.test_size,
+                                                  shuffle=False, seed=args.random_state)
+            test_set = train_test["test"]
+        else:
+            test_set = load_dataset(args.dataset, split=args.split)
         #test_set = train_test["test"]
     else:
         ...

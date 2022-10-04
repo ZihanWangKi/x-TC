@@ -22,7 +22,9 @@ if __name__ == '__main__':
     parser.add_argument("--split", default="test",
                         help="test on test/validation/... split, please check your dataset.")
     parser.add_argument("--train_size", type=float, default=1.0,
-                        help="The ratio of the split train set (unlabeled by default)")
+                        help="The ratio of the train set")
+    parser.add_argument("--test_size", type=float, default=1.0,
+                       help="The ratio of the test set")
     parser.add_argument("--n_shot", type=int, default=0, help="extra parameter for few-labeled data methods")
     parser.add_argument("--class_names", action="store_true",
                         help="Set to True if you want to test class-names based methods."
