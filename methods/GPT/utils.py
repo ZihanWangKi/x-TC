@@ -476,9 +476,9 @@ def fwd(model, encoder, examples, batch, cache = None):
     ## in this loop, we actually do the calculations from above in efficient batches, storing results 
     ## in the cache and calculating actual predictions
     print('actually calculating')
-    for example in tqdm(examples):
-        pred = inference_autobatch(model, encoder, example, prelog=False, cache = cache, batch=batch )
-        predictions_list.append(pred)
+    #for example in tqdm(examples):
+    #    pred = inference_autobatch(model, encoder, example, prelog=False, cache = cache, batch=batch )
+    #    predictions_list.append(pred)
 
         
     labels = [ex['label'] for ex in examples]
