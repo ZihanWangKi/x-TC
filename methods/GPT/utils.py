@@ -491,7 +491,7 @@ def fwd(model, encoder, examples, batch, cache = None):
     from sklearn.metrics import confusion_matrix, f1_score
     import numpy as np
     def f1(y_true, y_pred):
-        y_true = y_true.astype(np.int64)
+        #y_true = y_true.astype(np.int64)
         assert y_pred.size == y_true.size
         confusion = confusion_matrix(y_true, y_pred)
         print("-" * 80 + "Evaluating" + "-" * 80)
@@ -502,6 +502,7 @@ def fwd(model, encoder, examples, batch, cache = None):
 
     y_pred = np.array(predictions_dict["lm"])
     y = np.array(labels)
+    print(y)
     f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
     print('lm F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
     # save labels for later
