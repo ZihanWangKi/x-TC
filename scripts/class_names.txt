@@ -1,2 +1,2 @@
-nagative
+negative
 positive
