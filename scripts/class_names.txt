@@ -1,4 +1,4 @@
-politics
-soprts
-business
-technology
+Politics
+Soprts
+Business
+Technology
