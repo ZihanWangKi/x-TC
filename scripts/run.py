@@ -15,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset", default="ag_news", help="dataset name")
     parser.add_argument("--method", default="X-Class", help="method name")
     parser.add_argument("--additional_method", default=None, help="additional method name")
-    parser.add_argument("--text_name", default="text",
+    parser.add_argument("--text_name", default=["text"], nargs='+',
                         help="The exact name of the text in raw data, e.g. 'text'.")
     parser.add_argument("--label_name", default="label",
                         help="The exact name of the label in raw data, e.g. 'label-coarse'.")

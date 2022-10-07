@@ -25,6 +25,13 @@ def split_data(args):
         #test_set = train_test["test"]
     else:
         ...
+    concat = []
+    for i in range(len(train_set[args.label_name])):
+        line = ""
+        for arg in args.text_name:
+            line += train_set[arg]
+        concat.append(line)
+    train_set = train_set.map(lambda batch: {"x-TC": concat})
     print("Finish data split!")
     print("Sampled instance:", test_set[0])
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
@@ -38,7 +45,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
-            for line in train_set[args.text_name]:
+            for line in train_set["x-TC"]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/X-Class/data/datasets/{}/labels.txt".format(args.dataset), "w") as f:
@@ -48,7 +55,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
         os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.text_name]:
+            for line in test_set["x-TC"]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/X-Class/data/datasets/{}_test/labels.txt".format(args.dataset), "w") as f:
@@ -65,7 +72,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/ConWea/data/{}".format(args.dataset))
         label = [str(i) for i in train_set[args.label_name]]
         train={
-            "sentence": train_set[args.text_name],
+            "sentence": train_set["x-TC"],
             "label": label
         }
         df = pd.DataFrame(train)
@@ -81,7 +88,7 @@ def run_method(args, train_set, test_set):
 
         label = [str(i) for i in test_set[args.label_name]]
         test = {
-            "sentence": test_set[args.text_name],
+            "sentence": test_set["x-TC"],
             "label": label
         }
         test_df = pd.DataFrame(test)
@@ -102,7 +109,7 @@ def run_method(args, train_set, test_set):
         os.system("mkdir -p ../methods/LOTClass/datasets/{}".format(args.dataset))
         os.system("cp class_names.txt ../methods/LOTClass/datasets/{}/label_names.txt".format(args.dataset))
         with open("../methods/LOTClass/datasets/{}/train.txt".format(args.dataset), "w") as f:
-            for line in train_set[args.text_name]:
+            for line in train_set["x-TC"]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/LOTClass/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
@@ -110,7 +117,7 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/LOTClass/datasets/{}/test.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.text_name]:
+            for line in test_set["x-TC"]:
                 f.write(line)
                 f.write("\n")
         with open("../methods/LOTClass/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
@@ -136,13 +143,13 @@ def run_method(args, train_set, test_set):
 
             train = {
                 "label": train_set[args.label_name],
-                "sentence": train_set[args.text_name]
+                "sentence": train_set["x-TC"]
             }
             df = pd.DataFrame(train)
             df.to_csv("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), header=False, index=False)
             test = {
                 "label": test_set[args.label_name],
-                "sentence": test_set[args.text_name]
+                "sentence": test_set["x-TC"]
             }
             df = pd.DataFrame(test)
             df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
@@ -166,13 +173,13 @@ def run_method(args, train_set, test_set):
 
             train = {
                 "label": train_set[args.label_name],
-                "sentence": train_set[args.text_name]
+                "sentence": train_set["x-TC"]
             }
             df = pd.DataFrame(train)
             df.to_csv("../methods/WeSTClass/{}/dataset.csv".format(args.dataset), header=False, index=False)
             test = {
                 "label": test_set[args.label_name],
-                "sentence": test_set[args.text_name]
+                "sentence": test_set["x-TC"]
             }
             df = pd.DataFrame(test)
             df.to_csv("../methods/WeSTClass/{}/dataset_test.csv".format(args.dataset), header=False, index=False)
@@ -198,16 +205,16 @@ def run_method(args, train_set, test_set):
 
         label = [str(i) for i in test_set[args.label_name]]
         test = {
-            "sentence": test_set[args.text_name],
+            "sentence": test_set["x-TC"],
             "label": label
         }
 
         train_list = []
-        for i in range(len(train_set[args.text_name])):
-            train_list.append([train_set[i][args.text_name], train_set[i][args.label_name]])
+        for i in range(len(train_set["x-TC"])):
+            train_list.append([train_set[i]["x-TC"], train_set[i][args.label_name]])
         test_list = []
-        for i in range(len(test_set[args.text_name])):
-            test_list.append([test_set[i][args.text_name], test_set[i][args.label_name]])
+        for i in range(len(test_set["x-TC"])):
+            test_list.append([test_set[i]["x-TC"], test_set[i][args.label_name]])
         with open("../methods/ClassKG/data/processed/{}/unlabeled.json".format(args.dataset), 'w') as f:
             json.dump(train_list, f, indent=2)
         with open("../methods/ClassKG/data/processed/{}/test.json".format(args.dataset), 'w') as f:
@@ -224,7 +231,7 @@ def run_method(args, train_set, test_set):
             os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
             os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
             with open("../methods/GPT/data/{}/train.txt".format(args.dataset), "w") as f:
-                for line in train_set[args.text_name]:
+                for line in train_set["x-TC"]:
                     f.write(str(line))
                     f.write("\n")
             with open("../methods/GPT/data/{}/train_labels.txt".format(args.dataset), "w") as f:
@@ -232,7 +239,7 @@ def run_method(args, train_set, test_set):
                     f.write(str(line))
                     f.write("\n")
             with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
-                 for line in test_set[args.text_name]:
+                 for line in test_set["x-TC"]:
                     f.write(str(line))
                     f.write("\n")
             with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
@@ -247,10 +254,10 @@ def run_method(args, train_set, test_set):
             os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
             os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
             os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
-            A = np.random.permutation(np.arange(len(train_set[args.text_name])))
+            A = np.random.permutation(np.arange(len(train_set["x-TC"])))
             n_shot = []
             label_num = [0 for _ in range(max(train_set[args.label_name])+1)]
-            for i in range(len(train_set[args.text_name])):
+            for i in range(len(train_set["x-TC"])):
                 id = A[i]
                 if label_num[train_set[args.label_name][id]] < args.n_shot:
                     n_shot.append(id)
@@ -259,14 +266,14 @@ def run_method(args, train_set, test_set):
                     break
             with open("../methods/GPT/data/{}/n_shot.txt".format(args.dataset), "w") as f:
                 for id in n_shot:
-                    f.write(str(train_set[args.text_name][id]))
+                    f.write(str(train_set["x-TC"][id]))
                     f.write("\n")
             with open("../methods/GPT/data/{}/n_shot_labels.txt".format(args.dataset), "w") as f:
                 for id in n_shot:
                     f.write(str(train_set[args.label_name][id]))
                     f.write("\n")
             with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
-                for line in test_set[args.text_name]:
+                for line in test_set["x-TC"]:
                     f.write(str(line))
                     f.write("\n")
             with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
@@ -285,7 +292,7 @@ def run_method(args, train_set, test_set):
         os.system("cp class_names.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
         os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
         with open("../methods/GPT/data/{}/train.txt".format(args.dataset), "w") as f:
-            for line in train_set[args.text_name]:
+            for line in train_set["x-TC"]:
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/train_labels.txt".format(args.dataset), "w") as f:
@@ -293,7 +300,7 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/test.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.text_name]:
+            for line in test_set["x-TC"]:
                 f.write(str(line))
                 f.write("\n")
         with open("../methods/GPT/data/{}/test_labels.txt".format(args.dataset), "w") as f:
