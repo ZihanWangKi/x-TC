@@ -1,5 +1,10 @@
-poor
-bad
-average
-good
-excellent
+Society
+Science
+Health
+Education
+Computers
+Sports
+Business
+Entertainment
+Relationships
+Politics

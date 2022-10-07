@@ -219,6 +219,8 @@ def run_method(args, train_set, test_set):
             json.dump(train_list, f, indent=2)
         with open("../methods/ClassKG/data/processed/{}/test.json".format(args.dataset), 'w') as f:
             json.dump(test_list, f, indent=2)
+        with open("../methods/ClassKG/config/{}.yaml".format(args.dataset), 'w') as f:
+            ...
 
         os.chdir("../methods/ClassKG/task")
         os.system("python pipeline.py --dataset {} --random_state {}".format(args.dataset, args.random_state))
