@@ -29,7 +29,7 @@ def split_data(args):
     for i in range(len(train_set[args.label_name])):
         line = ""
         for arg in args.text_name:
-            line += train_set[arg] + " "
+            line += train_set[arg][i] + " "
         concat.append(line.strip())
     train_set = train_set.map(lambda batch: {"x-TC": concat})
     print("Finish data split!")
