@@ -25,13 +25,14 @@ def split_data(args):
         #test_set = train_test["test"]
     else:
         ...
-    concat = []
-    for i in range(len(train_set[args.label_name])):
-        line = ""
+    def concat(example):
+        example["x-TC"] = ""
         for arg in args.text_name:
-            line += train_set[arg][i] + " "
-        concat.append(line.strip())
-    train_set = train_set.map(lambda batch: {"x-TC": concat})
+            example["x-TC"] += example[arg]
+        example["x-TC"].strip()
+        return example
+    train_set = train_set.map(concat)
+    test_set = test_set.map(concat)
     print("Finish data split!")
     print("Sampled instance:", test_set[0])
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
