@@ -473,11 +473,12 @@ def fwd(model, encoder, examples, batch, cache=None):
 
     ## in this loop, prelog is set to true so we are just logging cross_entropy_list calculations
     ## but not doing them yet
+    """
     if cache is not None:
         print('logging examples')
         for example in tqdm(examples):
             _ = inference_autobatch(model, encoder, example, prelog=True, cache=cache, batch=batch)
-
+    """
     ## in this loop, we actually do the calculations from above in efficient batches, storing results
     ## in the cache and calculating actual predictions
     print('actually calculating')
