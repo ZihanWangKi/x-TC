@@ -131,7 +131,7 @@ if __name__ == '__main__':
     parser.add_argument('--n_shot', type=int, default=0)
     parser.add_argument('--variant', type=int, default=None)
     parser.add_argument('--split', type=str, default='dev')
-    parser.add_argument('--batch', type=int, default=10)
+    parser.add_argument('--batch', type=int, default=False)
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--key', type=str, default='api.key')
     parser.add_argument('--debug', action='store_true')
@@ -243,7 +243,7 @@ if __name__ == '__main__':
     else:
         n_class, train_examples = load_examples_n_shot(stem, "train", args.n_shot)
 
-    train_vec = score(model, args.model, encoder, train_examples, stem, args.split, args.batch)
+    train_vec = score(model, args.model, encoder, train_examples, stem, "train", args.batch)
     max_cla = -1000000
     best_seed = 0
     for seed in range(args.iter):
@@ -270,12 +270,26 @@ if __name__ == '__main__':
         _, examples = load_examples(stem, args.split)
     else:
         _, examples = load_examples_n_shot(stem, args.split, args.n_shot)
-    train_vec = score(model, args.model, encoder, examples, stem, args.split, args.batch)
+    test_vec = score(model, args.model, encoder, examples, stem, args.split, args.batch)
 
-    documents_to_class = gmm.predict(train_vec)
-    pred = [col_ind[documents_to_class[i]] for i in range(len(train_vec))]
+    documents_to_class = gmm.predict(test_vec)
+    pred = [col_ind[documents_to_class[i]] for i in range(len(test_vec))]
     gold_labels = [ex['label'] for ex in examples]
 
-    acc = sum(list(map(lambda v: v[0] == v[1], zip(pred, gold_labels)))) / len(gold_labels)
-    print(acc)
-    # todo f1
+    #acc = sum(list(map(lambda v: v[0] == v[1], zip(pred, gold_labels)))) / len(gold_labels)
+    #print(acc)
+    from sklearn.metrics import confusion_matrix, f1_score
+    def f1(y_true, y_pred):
+        #y_true = y_true.astype(np.int64)
+        assert y_pred.size == y_true.size
+        confusion = confusion_matrix(y_true, y_pred)
+        print("-" * 80 + "Evaluating" + "-" * 80)
+        print(confusion)
+        f1_macro = f1_score(y_true, y_pred, average='macro')
+        f1_micro = f1_score(y_true, y_pred, average='micro')
+        return f1_macro, f1_micro
+
+    y_pred = np.array(pred)
+    y = np.array(gold_labels)
+    f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
+    print('lm F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
