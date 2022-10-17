@@ -18,7 +18,9 @@ def write_to_dir(text, labels, dataset_name, suffix_name):
     new_dataset_name = f"{dataset_name}_{suffix_name}"
     # removes all potentially cached files in it
     if os.path.isdir(os.path.join(DATA_FOLDER_PATH, new_dataset_name)):
-        assert False, f"{os.path.join(DATA_FOLDER_PATH, new_dataset_name)} exists."
+        #assert False, f"{os.path.join(DATA_FOLDER_PATH, new_dataset_name)} exists."
+        os.system("rm -rf os.path.join(DATA_FOLDER_PATH, new_dataset_name)")
+
     os.makedirs(os.path.join(DATA_FOLDER_PATH, new_dataset_name), exist_ok=True)
     with open(os.path.join(DATA_FOLDER_PATH, new_dataset_name, "dataset.txt"), "w") as f:
         for i, line in enumerate(text):
