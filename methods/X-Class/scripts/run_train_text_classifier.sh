@@ -13,7 +13,7 @@ CUDA_VISIBLE_DEVICES=$GPU python train_text_classifier.py \
   --model_name_or_path ${model_name_or_path} \
   --task_name ${dataset_name} \
   --train_suffix ${train_suffix} \
-  --test_suffix "_test" \
+  --test_suffix "test" \
   --output_dir ${output_dir} \
   --do_train \
   --do_eval \
