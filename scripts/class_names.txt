@@ -1,5 +1,4 @@
-poor
-bad
-average
-good
-excellent
+Politics
+Sports
+Business
+Technology
