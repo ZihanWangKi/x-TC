@@ -26,4 +26,5 @@ CUDA_VISIBLE_DEVICES=$GPU python train_text_classifier.py \
   --logging_steps 100000 \
   --save_steps -1 \
   --seed ${seed} \
-  --overwrite_output_dir
+  --overwrite_output_dir \
+  --overwrite_cache
