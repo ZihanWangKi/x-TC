@@ -1,10 +1,6 @@
-Society
-Science
-Health
-Education
-Computers
-Sports
-Business
-Entertainment
-Relationships
-Politics
+Description
+Entity
+Abbreviation
+Human
+Numeric
+Location
