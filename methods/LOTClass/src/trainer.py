@@ -49,7 +49,7 @@ class LOTClassTrainer(object):
         eff_batch_size = self.train_batch_size * self.world_size * self.accum_steps
         assert abs(eff_batch_size - 128) < 10, f"Make sure the effective training batch size is around 128, current: {eff_batch_size}"
         print(f"Effective training batch size: {eff_batch_size}")
-        self.pretrained_lm = 'bert-base-uncased'
+        self.pretrained_lm = args.pretrained_lm #'bert-base-uncased'
         self.tokenizer = BertTokenizer.from_pretrained(self.pretrained_lm, do_lower_case=True)
         self.vocab = self.tokenizer.get_vocab()
         self.vocab_size = len(self.vocab)

@@ -41,6 +41,7 @@ if __name__ == '__main__':
                              "Please use Enter to separate the text and label."
                              "Check ../method/GPT/score.py for more information.")
     parser.add_argument("--gpu", default=0, help="gpu id")
+    parser.add_argument("--suffix", default="")
     parser.add_argument("--random_state", type=int, default=42) # todo, almost done
 
     args = parser.parse_args()

@@ -64,6 +64,7 @@ def main():
     parser.add_argument('--dist_port', type=int, default=12345,
                         help='distributed training port id; any number between 10000 and 20000 will work')
     parser.add_argument('--random_state', default=42, type=int)
+    parser.add_argument('--pretrained_lm', default="bert-base-uncased")
 
     args = parser.parse_args()
     print(args)
