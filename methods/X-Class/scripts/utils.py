@@ -16,7 +16,9 @@ from transformers import BertModel, BertTokenizer
 
 MODELS = {
     'bbc': (BertModel, BertTokenizer, 'bert-base-cased'),
-    'bbu': (BertModel, BertTokenizer, 'bert-base-uncased')
+    'bbu': (BertModel, BertTokenizer, 'bert-base-uncased'),
+    'blc': (BertModel, BertTokenizer, 'bert-large-cased'),
+    'blu': (BertModel, BertTokenizer, 'bert-large-uncased')
 }
 
 # all paths can be either absolute or relative to this utils file

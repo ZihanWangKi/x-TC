@@ -4,7 +4,7 @@ train_suffix=$3
 seed=$4
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
-model_name_or_path=bert-base-cased
+model_name_or_path=$5 #bert-base-cased
 
 # this is also defined in utils.py, make sure to change both when changing.
 output_dir=../models/${model_name_or_path}_${train_suffix}
