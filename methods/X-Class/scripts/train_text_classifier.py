@@ -540,6 +540,15 @@ def main():
     parser.add_argument("--server_port", type=str, default="", help="For distant debugging.")
     args = parser.parse_args()
 
+    MODELS = {
+        'bbc': 'bert-base-cased',
+        'bbu': 'bert-base-uncased',
+        'blc': 'bert-large-cased',
+        'blu': 'bert-large-uncased'
+    }
+    if args.name_or_path in MODELS:
+        args.name_or_path = MODELS[args.name_or_path]
+
     if (
             os.path.exists(args.output_dir)
             and os.listdir(args.output_dir)
