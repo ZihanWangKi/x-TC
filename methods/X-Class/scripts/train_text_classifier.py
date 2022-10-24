@@ -546,8 +546,8 @@ def main():
         'blc': 'bert-large-cased',
         'blu': 'bert-large-uncased'
     }
-    if args.name_or_path in MODELS:
-        args.name_or_path = MODELS[args.name_or_path]
+    if args.model_name_or_path in MODELS:
+        args.model_name_or_path = MODELS[args.model_name_or_path]
 
     if (
             os.path.exists(args.output_dir)
