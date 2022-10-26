@@ -14,6 +14,8 @@ if [ ${model_name_or_path} == "blu" ] || [ ${model_name_or_path} == "blc" ]; the
     seq_length=128
 fi
 
+echo seq_length
+
 CUDA_VISIBLE_DEVICES=$GPU python train_text_classifier.py \
   --model_name_or_path ${model_name_or_path} \
   --task_name ${dataset_name} \
