@@ -5,7 +5,7 @@ dataset=$2
 seed=$3
 lm=$4
 
-echo lm
+echo $lm
 CUDA_VISIBLE_DEVICES=${gpu} python static_representations.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm}
 CUDA_VISIBLE_DEVICES=${gpu} python class_oriented_document_representations.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm}
 python document_class_alignment.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm}-12
