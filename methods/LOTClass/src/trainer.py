@@ -374,7 +374,7 @@ class LOTClassTrainer(object):
             self.cuda_mem_error(err, "eval", rank)
 
     # prepare self supervision for masked category prediction
-    def prepare_mcp(self, top_pred_num=50, match_threshold=20, loader_name="mcp_train.pt"):
+    def prepare_mcp(self, top_pred_num=50, match_threshold=10, loader_name="mcp_train.pt"):
         loader_file = os.path.join(self.dataset_dir, loader_name)
         if os.path.exists(loader_file):
             print(f"Loading masked category prediction data from {loader_file}")
@@ -404,7 +404,7 @@ class LOTClassTrainer(object):
             if os.path.exists(self.temp_dir):
                 shutil.rmtree(self.temp_dir)
             for i in category_doc_num:
-                assert category_doc_num[i] > 1, f"Too few ({category_doc_num[i]}) documents with category indicative terms found for category {i}; " \
+                assert category_doc_num[i] > 10, f"Too few ({category_doc_num[i]}) documents with category indicative terms found for category {i}; " \
                        "try to add more unlabeled documents to the training corpus (recommend) or reduce `--match_threshold` (not recommend)"
         print(f"There are totally {len(self.mcp_data['input_ids'])} documents with category indicative terms.")
 
