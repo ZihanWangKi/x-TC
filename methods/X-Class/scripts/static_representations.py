@@ -106,7 +106,7 @@ def main(args):
     print("Finish reading data")
 
     data_folder = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, args.dataset_name)
-    if args.lm_type == 'bbu':
+    if args.lm_type == 'bbu' or args.lm_type == 'blu':
         dataset["class_names"] = [x.lower() for x in dataset["class_names"]]
 
     os.makedirs(data_folder, exist_ok=True)
