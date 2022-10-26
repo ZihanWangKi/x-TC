@@ -6,12 +6,16 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 model_name_or_path=$5 #bert-base-cased
 
+echo $model_name_or_path
+
 # this is also defined in utils.py, make sure to change both when changing.
 output_dir=../models/${model_name_or_path}_${train_suffix}
 
 seq_length=512
 if [ ${model_name_or_path} == "blu" ] || [ ${model_name_or_path} == "blc" ]; then
-    seq_length=128
+  seq_length=128
+else
+  seq_length=512
 fi
 
 echo $seq_length
