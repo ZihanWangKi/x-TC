@@ -374,7 +374,7 @@ class LOTClassTrainer(object):
             self.cuda_mem_error(err, "eval", rank)
 
     # prepare self supervision for masked category prediction
-    def prepare_mcp(self, top_pred_num=50, match_threshold=10, loader_name="mcp_train.pt"):
+    def prepare_mcp(self, top_pred_num=100, match_threshold=5, loader_name="mcp_train.pt"):
         loader_file = os.path.join(self.dataset_dir, loader_name)
         if os.path.exists(loader_file):
             print(f"Loading masked category prediction data from {loader_file}")
