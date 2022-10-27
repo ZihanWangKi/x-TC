@@ -67,7 +67,7 @@ def run_method(args, train_set, test_set):
         os.system("chmod -R 777 run.sh")
         os.system("chmod -R 777 run_train_text_classifier.sh")
         if args.suffix == "":
-            args.suffix = "bbu"
+            args.suffix = "bbu 12"
         os.system("./run.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
     elif args.method == "ConWea":
         assert args.class_names==False
