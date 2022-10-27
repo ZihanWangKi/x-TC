@@ -2,9 +2,9 @@ GPU=$1
 dataset_name=$2
 train_suffix=$3
 seed=$4
+model_name_or_path=$5 #bert-base-cased
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
-model_name_or_path=$5 #bert-base-cased
 
 echo $model_name_or_path
 
