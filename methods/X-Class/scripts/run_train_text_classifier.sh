@@ -12,7 +12,7 @@ echo $model_name_or_path
 output_dir=../models/${model_name_or_path}_${train_suffix}
 
 seq_length=512
-if  ${model_name_or_path} == "blu"  ||  ${model_name_or_path} == "blc" ; then
+if  ((${model_name_or_path} == "blu"))  ||  ((${model_name_or_path} == "blc")) ; then
   seq_length=128
 else
   seq_length=512
