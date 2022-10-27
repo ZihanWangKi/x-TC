@@ -114,7 +114,7 @@ def main(args):
         pk.dump(dataset, f)
 
     data = dataset["cleaned_text"]
-    if args.lm_type == 'bbu':
+    if args.lm_type == 'bbu' or args.lm_type == 'blu':
         data = [x.lower() for x in data]
     model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
 
