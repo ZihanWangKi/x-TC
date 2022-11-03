@@ -154,7 +154,7 @@ def main(args):
         tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(tokenizer, text, prompt)
         tokenization_info.append((tokenized_text, tokenized_to_id_indicies, tokenids_chunks))
         contextualized_word_representations = handle_sentence(model, args.layer, tokenized_text,
-                                                              tokenized_to_id_indicies, tokenids_chunks, l, r)
+                                                              tokenized_to_id_indicies, tokenids_chunks)
         for i in range(len(tokenized_text)):
             if i < l or i >= len(tokenized_text) - r:
                 continue
