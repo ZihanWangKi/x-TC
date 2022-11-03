@@ -10,8 +10,8 @@ final_lm=$7
 max_len=$8
 
 echo $lm
-CUDA_VISIBLE_DEVICES=${gpu} python static_representations.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm} --layer ${layer}
-CUDA_VISIBLE_DEVICES=${gpu} python class_oriented_document_representations.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm} --layer ${layer}
+CUDA_VISIBLE_DEVICES=${gpu} python static_representations_prompt.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm} --layer ${layer}
+CUDA_VISIBLE_DEVICES=${gpu} python class_oriented_prompt.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm} --layer ${layer}
 python document_class_alignment.py --dataset_name ${dataset} --random_state ${seed} --lm_type ${lm}-${layer} --pca ${pca}
 python evaluate.py --dataset ${dataset} --stage Rep --suffix ${lm}-${layer}-mixture-100
 python evaluate.py --dataset ${dataset} --stage Align --suffix pca${pca}.clusgmm.${lm}-${layer}.mixture-100.${seed}
