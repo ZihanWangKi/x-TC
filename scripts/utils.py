@@ -64,7 +64,7 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         if args.prompt == True:
-            os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
+            os.system("cp prompt.txt ../methods/X-Class/data/datasets/{}/prompt.txt".format(args.dataset))
             os.chdir("../methods/X-Class/scripts")
             os.system("chmod -R 777 run_prompt.sh")
             os.system("chmod -R 777 run_train_text_classifier.sh")
