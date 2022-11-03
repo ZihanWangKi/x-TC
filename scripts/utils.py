@@ -63,12 +63,21 @@ def run_method(args, train_set, test_set):
             for line in test_set[args.label_name]:
                 f.write(str(line))
                 f.write("\n")
-        os.chdir("../methods/X-Class/scripts")
-        os.system("chmod -R 777 run.sh")
-        os.system("chmod -R 777 run_train_text_classifier.sh")
-        if args.suffix == "":
-            args.suffix = "64 bbu 12 bbc 512" #"100 blu 24 blc 128"
-        os.system("./run.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
+        if args.prompt == True:
+            os.system("cp prompt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
+            os.chdir("../methods/X-Class/scripts")
+            os.system("chmod -R 777 run_prompt.sh")
+            os.system("chmod -R 777 run_train_text_classifier.sh")
+            if args.suffix == "":
+                args.suffix = "64 bbu 12 bbc 512"  # "100 blu 24 blc 128"
+            os.system("./run_prompt.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
+        else:
+            os.chdir("../methods/X-Class/scripts")
+            os.system("chmod -R 777 run.sh")
+            os.system("chmod -R 777 run_train_text_classifier.sh")
+            if args.suffix == "":
+                args.suffix = "64 bbu 12 bbc 512"  # "100 blu 24 blc 128"
+            os.system("./run.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
     elif args.method == "ConWea":
         assert args.class_names==False
         assert args.seed_words==True
