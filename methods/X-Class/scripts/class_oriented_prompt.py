@@ -233,6 +233,7 @@ def main(args):
             "class_representations": class_representations,
             "document_representations": document_representations,
         }, f, protocol=4)
+    print("Finish!")
 
 
 if __name__ == '__main__':
