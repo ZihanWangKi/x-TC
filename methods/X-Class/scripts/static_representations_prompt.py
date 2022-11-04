@@ -29,7 +29,7 @@ def prepare_sentence(tokenizer, text, prompt):
     text = prompt.format(text)
 
     tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
-    tokenized_text.append(tokenizer.mask_token)
+    #tokenized_text.append(tokenizer.mask_token)
     tokenized_to_id_indicies = []
 
     tokenids_chunks = []
@@ -131,7 +131,7 @@ def main(args):
         prompt = fp.read()
         pos = prompt.find('{')
         l = len(tokenizer.basic_tokenizer.tokenize(prompt[:pos] ,never_split=tokenizer.all_special_tokens))
-        r = 1 + len(tokenizer.basic_tokenizer.tokenize(prompt[pos+2:] , never_split=tokenizer.all_special_tokens))
+        r = len(tokenizer.basic_tokenizer.tokenize(prompt[pos+2:] , never_split=tokenizer.all_special_tokens))
         # +1 for masked label
         print("l, r: ", l, r)
 
