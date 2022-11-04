@@ -1,2 +1,2 @@
-bad
-good
+negative
+positive
