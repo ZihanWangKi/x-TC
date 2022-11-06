@@ -1,1 +1,2 @@
- Is this review positive or negative? {}
+ review: {}
+ sentiment: 
