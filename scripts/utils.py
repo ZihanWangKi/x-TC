@@ -69,7 +69,7 @@ def run_method(args, train_set, test_set):
             os.system("chmod -R 777 run_prompt.sh")
             os.system("chmod -R 777 run_train_text_classifier.sh")
             if args.suffix == "":
-                args.suffix = "64 bbu 12 bbc 512"  # "100 blu 24 blc 128"
+                args.suffix = "64 bbu 12 bbc 128 mixture"  # "100 blu 24 blc 128 none"
             os.system("./run_prompt.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
         else:
             os.chdir("../methods/X-Class/scripts")
