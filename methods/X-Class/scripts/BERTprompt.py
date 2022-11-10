@@ -13,7 +13,7 @@ from transformers import BertTokenizer, BertForMaskedLM
 
 def prepare_sentence(tokenizer, text, prompt):
     # setting for BERT
-    model_max_tokens = 511 # for [mask]
+    model_max_tokens = 500 # for prompt
     has_sos_eos = True
     ######################
     max_tokens = model_max_tokens
@@ -26,10 +26,14 @@ def prepare_sentence(tokenizer, text, prompt):
 
     import copy
     backup = copy.deepcopy(text)
-    text = prompt.format(text)
+    r = prompt.find('}')
+    left_prompt = prompt[:r+1]
+    right_prompt = prompt[r+1: ]
+    text = left_prompt.format(text)
 
-    ids = [prepare_sentence.sos_id] + tokenizer.encode(text, max_length=max_tokens)
-    ids = [prepare_sentence.sos_id] + ids + [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
+    ids = tokenizer.encode(text, trancate=True, max_length=max_tokens)
+    ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
+          [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
     return len(ids) - 2, torch.tensor([ids]).long()
 
