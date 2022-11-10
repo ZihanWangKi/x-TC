@@ -29,7 +29,7 @@ def prepare_sentence(tokenizer, text, prompt):
     text = prompt.format(text)
 
     ids = [prepare_sentence.sos_id] + tokenizer.encode(text, max_length=max_tokens)
-    ids = [prepare_sentence.sos_id] + ids + [tokenizer.encode(tokenizer.mask_token), prepare_sentence.eos_id]
+    ids = [prepare_sentence.sos_id] + ids + [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
     return len(ids) - 2, torch.tensor([ids]).long()
 
