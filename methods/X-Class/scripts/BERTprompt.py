@@ -31,7 +31,7 @@ def prepare_sentence(tokenizer, text, prompt):
     right_prompt = prompt[r+1: ]
     text = left_prompt.format(text)
 
-    ids = tokenizer.encode(text, trancate=True, max_length=max_tokens)
+    ids = tokenizer.encode(text, trancatation=True, max_length=max_tokens)
     ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
           [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
