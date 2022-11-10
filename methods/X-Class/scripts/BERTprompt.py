@@ -63,10 +63,9 @@ def main(args):
     pred = []
     for text in tqdm(data):
         masked_index, tokens_tensor = prepare_sentence(tokenizer, text, prompt)
-        tokens_tensor.cuda()
         with torch.no_grad():
             with torch.no_grad():
-                outputs = model(tokens_tensor)
+                outputs = model(tokens_tensor.cuda())
         predictions = outputs[0]
         Q = []
         for i in range(len(dataset["class_names"])):
