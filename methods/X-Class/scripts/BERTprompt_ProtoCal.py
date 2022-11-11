@@ -131,6 +131,9 @@ def main(args):
             cls_name = dataset["class_names"][i]
             val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
             vec.append(val)
+        vec = np.array(vec)
+        vec = np.exp(vec)
+        vec = np.log(vec / vec.sum())
         vecs.append(vec)
 
     vecs = np.array(vecs)
