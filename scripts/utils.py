@@ -104,7 +104,7 @@ def run_method(args, train_set, test_set):
                     f.write("\n")
             os.system("cp prompt.txt ../methods/X-Class/data/datasets/{}/prompt.txt".format(args.dataset))
             os.chdir("../methods/X-Class/scripts")
-            os.system("CUDA_VISIBLE_DEVICES={} python BERTprompt_ProtoCal.py --dataset_name {}_test --random_state {} {}".
+            os.system("CUDA_VISIBLE_DEVICES={} python BERTprompt_ProtoCal.py --dataset_name {} --random_state {} {}".
                       format(args.gpu, args.dataset, args.random_state, args.suffix))
         else:
             os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
