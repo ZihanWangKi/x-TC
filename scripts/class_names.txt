@@ -1,2 +1,4 @@
-bad
-good
+Politics
+Sports
+Business
+Technology
