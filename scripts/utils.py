@@ -82,21 +82,45 @@ def run_method(args, train_set, test_set):
         assert args.class_names
         assert args.seed_words==False
         assert args.prompt
-        os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
-        os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
-        os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
-        with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
-            for line in test_set["x-TC"]:
-                f.write(line)
-                f.write("\n")
-        with open("../methods/X-Class/data/datasets/{}_test/labels.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.label_name]:
-                f.write(str(line))
-                f.write("\n")
-        os.system("cp prompt.txt ../methods/X-Class/data/datasets/{}_test/prompt.txt".format(args.dataset))
-        os.chdir("../methods/X-Class/scripts")
-        os.system("CUDA_VISIBLE_DEVICES={} python BERTprompt.py --dataset_name {}_test --random_state {} {}".
-                  format(args.gpu, args.dataset, args.random_state, args.suffix))
+        if args.additional_method == "ProtoCal":
+            os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
+            os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
+            with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
+                for line in train_set["x-TC"]:
+                    f.write(line)
+                    f.write("\n")
+            with open("../methods/X-Class/data/datasets/{}/labels.txt".format(args.dataset), "w") as f:
+                for line in train_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
+            with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
+                for line in test_set["x-TC"]:
+                    f.write(line)
+                    f.write("\n")
+            with open("../methods/X-Class/data/datasets/{}_test/labels.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.system("cp prompt.txt ../methods/X-Class/data/datasets/{}/prompt.txt".format(args.dataset))
+            os.chdir("../methods/X-Class/scripts")
+            os.system("CUDA_VISIBLE_DEVICES={} python BERTprompt_ProtoCal.py --dataset_name {}_test --random_state {} {}".
+                      format(args.gpu, args.dataset, args.random_state, args.suffix))
+        else:
+            os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
+            os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
+            with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
+                for line in test_set["x-TC"]:
+                    f.write(line)
+                    f.write("\n")
+            with open("../methods/X-Class/data/datasets/{}_test/labels.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.system("cp prompt.txt ../methods/X-Class/data/datasets/{}_test/prompt.txt".format(args.dataset))
+            os.chdir("../methods/X-Class/scripts")
+            os.system("CUDA_VISIBLE_DEVICES={} python BERTprompt.py --dataset_name {}_test --random_state {} {}".
+                      format(args.gpu, args.dataset, args.random_state, args.suffix))
     elif args.method == "ConWea":
         assert args.class_names==False
         assert args.seed_words==True

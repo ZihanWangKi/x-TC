@@ -1,1 +1,4 @@
-print('3,4,5,1,2'.find('5,1,2'))
+import re
+string = "ABAVFCATUFGUgiuqidbidqwdiqu29438278346231e2eqw][][;]..]["
+string = re.sub(r"[^A-Za-z0-9(),.!?\"\']", " ", string)
+print(string)
