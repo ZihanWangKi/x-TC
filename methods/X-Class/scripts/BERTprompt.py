@@ -13,7 +13,7 @@ from transformers import BertTokenizer, BertForMaskedLM
 
 def prepare_sentence(tokenizer, text, prompt):
     # setting for BERT
-    model_max_tokens = 500 # for prompt
+    model_max_tokens = 512 # for prompt
     has_sos_eos = True
     ######################
     max_tokens = model_max_tokens
@@ -30,12 +30,13 @@ def prepare_sentence(tokenizer, text, prompt):
     #left_prompt = prompt[:r+1]
     #right_prompt = prompt[r+1: ]
     text = prompt.format(text) + "[MASK]"
+    if text > 500: print(text)
 
     ids = tokenizer.encode(text, truncation=True, max_length=max_tokens)
     #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
     #      [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
-    return len(ids) - 1, torch.tensor([ids]).long()
+    return torch.tensor([ids]).long()
 
 
 def main(args):
@@ -64,15 +65,15 @@ def main(args):
     #######################
     # masked LM check
     mask = tokenizer.mask_token
-    Ltext = 'United '
-    Rtext = ' is a country'
-    ids = tokenizer.encode(Ltext) + [tokenizer._convert_token_to_id(tokenizer.mask_token)] + tokenizer.encode(Rtext)
+    text = 'United [MASK] is a country'
+    ids = tokenizer.encode(text)
     print(ids)
     ids = torch.tensor([ids]).long().cuda()
     with torch.no_grad():
         output = model(ids.cuda())
     predictions = output[0]
-    _, predicted_index = torch.topk(predictions[0, 1], k=5)
+    masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
+    _, predicted_index = torch.topk(predictions[0, masked_index], k=5)
     predicted_token = [tokenizer.convert_ids_to_tokens([idx.item()])[0] for idx in predicted_index]
     print(predicted_token)
     #######################
@@ -82,7 +83,8 @@ def main(args):
 
     pred = []
     for text in tqdm(data):
-        masked_index, tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
         with torch.no_grad():
             output = model(tokens_tensor.cuda())
         predictions = output[0]
