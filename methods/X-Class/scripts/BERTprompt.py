@@ -14,7 +14,7 @@ from transformers import BertTokenizer, BertForMaskedLM
 def prepare_sentence(tokenizer, text, prompt):
     # setting for BERT
     model_max_tokens = 512
-    
+
     import copy
     backup = copy.deepcopy(text)
     r = prompt.find('}')
@@ -23,7 +23,7 @@ def prepare_sentence(tokenizer, text, prompt):
     text = prompt.format(text) + "[MASK]"
     if len(text) > 500: print(text)
 
-    ids = tokenizer.encode(text, truncation=True, max_length=max_tokens)
+    ids = tokenizer.encode(text, truncation=True, max_length=512)
     #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
     #      [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
