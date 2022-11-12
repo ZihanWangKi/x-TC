@@ -15,29 +15,21 @@ from transformers import BertTokenizer, BertForMaskedLM
 
 def prepare_sentence(tokenizer, text, prompt):
     # setting for BERT
-    model_max_tokens = 500 # for prompt
-    has_sos_eos = True
-    ######################
-    max_tokens = model_max_tokens
-    if has_sos_eos:
-        max_tokens -= 2
-
-    if not hasattr(prepare_sentence, "sos_id"):
-        prepare_sentence.sos_id, prepare_sentence.eos_id = tokenizer.encode("", add_special_tokens=True)
-        print(prepare_sentence.sos_id, prepare_sentence.eos_id)
+    model_max_tokens = 512
 
     import copy
     backup = copy.deepcopy(text)
     r = prompt.find('}')
-    left_prompt = prompt[:r+1]
-    right_prompt = prompt[r+1: ]
-    text = left_prompt.format(text)
+    #left_prompt = prompt[:r+1]
+    #right_prompt = prompt[r+1: ]
+    text = prompt.format(text) + "[MASK]"
+    if len(text) > 500: print(text)
 
-    ids = tokenizer.encode(text, truncation=True, max_length=max_tokens)
-    ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
-          [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
+    ids = tokenizer.encode(text, truncation=True, max_length=512)
+    #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
+    #      [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
-    return len(ids) - 2, torch.tensor([ids]).long()
+    return torch.tensor([ids]).long()
 
 
 def main(args):
@@ -68,7 +60,8 @@ def main(args):
 
     vecs = []
     for text in tqdm(data):
-        masked_index, tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
         with torch.no_grad():
             with torch.no_grad():
                 outputs = model(tokens_tensor.cuda())

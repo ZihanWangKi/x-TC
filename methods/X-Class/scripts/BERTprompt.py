@@ -75,7 +75,7 @@ def main(args):
     pred = []
     for text in tqdm(data):
         tokens_tensor = prepare_sentence(tokenizer, text, prompt)
-        masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
+        masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
         with torch.no_grad():
             output = model(tokens_tensor.cuda())
         predictions = output[0]
