@@ -70,7 +70,7 @@ def main(args):
         with torch.no_grad():
             output = model(tokens_tensor.cuda())
         print(output)
-        print(output.shape())
+        #print(output.shape())
         presictions = output[1]
         Q = []
         for i in range(len(dataset["class_names"])):
