@@ -70,7 +70,7 @@ def main(args):
         with torch.no_grad():
             with torch.no_grad():
                 outputs = model(tokens_tensor.cuda())
-        predictions = outputs[0]
+        loss, predictions = outputs
         Q = []
         for i in range(len(dataset["class_names"])):
             cls_name = dataset["class_names"][i]
