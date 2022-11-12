@@ -13,17 +13,8 @@ from transformers import BertTokenizer, BertForMaskedLM
 
 def prepare_sentence(tokenizer, text, prompt):
     # setting for BERT
-    model_max_tokens = 512 # for prompt
-    has_sos_eos = True
-    ######################
-    max_tokens = model_max_tokens
-    if has_sos_eos:
-        max_tokens -= 2
-
-    if not hasattr(prepare_sentence, "sos_id"):
-        prepare_sentence.sos_id, prepare_sentence.eos_id = tokenizer.encode("", add_special_tokens=True)
-        print(prepare_sentence.sos_id, prepare_sentence.eos_id)
-
+    model_max_tokens = 512
+    
     import copy
     backup = copy.deepcopy(text)
     r = prompt.find('}')
