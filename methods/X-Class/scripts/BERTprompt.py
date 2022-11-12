@@ -61,6 +61,20 @@ def main(args):
     model.eval()
     model.cuda()
 
+    #######################
+    # masked LM check
+    text = "United [MASK] is a country"
+    print(text)
+    ids = tokenizer.encode(text)
+    ids = torch.tensor([ids]).long().cuda()
+    with torch.no_grad():
+        output = model(ids.cuda())
+    predictions = output[0]
+    _, predicted_index = torch.topk(predictions[0, 1], k=5)
+    predicted_token = [tokenizer.convert_ids_to_tokens([idx.item()])[0] for idx in predicted_index]
+    print(predicted_token)
+    #######################
+
     with open(os.path.join(DATA_FOLDER_PATH, args.dataset_name, 'prompt.txt'), "r") as fp:
         prompt = fp.read()
 
@@ -69,9 +83,7 @@ def main(args):
         masked_index, tokens_tensor = prepare_sentence(tokenizer, text, prompt)
         with torch.no_grad():
             output = model(tokens_tensor.cuda())
-        # print(output)
-        #print(output.shape())
-        presictions = output[0]
+        predictions = output[0]
         Q = []
         for i in range(len(dataset["class_names"])):
             cls_name = dataset["class_names"][i]
