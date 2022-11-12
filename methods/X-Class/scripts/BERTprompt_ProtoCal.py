@@ -61,7 +61,7 @@ def main(args):
     vecs = []
     for text in tqdm(data):
         tokens_tensor = prepare_sentence(tokenizer, text, prompt)
-        masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
+        masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
         with torch.no_grad():
             with torch.no_grad():
                 outputs = model(tokens_tensor.cuda())
@@ -117,7 +117,9 @@ def main(args):
 
     vecs = []
     for text in tqdm(data):
-        masked_index, tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+
         with torch.no_grad():
             with torch.no_grad():
                 outputs = model(tokens_tensor.cuda())
