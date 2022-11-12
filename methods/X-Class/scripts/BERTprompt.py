@@ -64,9 +64,9 @@ def main(args):
     #######################
     # masked LM check
     mask = tokenizer.mask_token
-    text = 'United ' + mask + ' is a country'
-    print(text)
-    ids = tokenizer.encode(text)
+    Ltext = 'United '
+    Rtext = ' is a country'
+    ids = tokenizer.encode(Ltext) + tokenizer.encode(tokenizer.mask_token) + tokenizer.encode(Rtext)
     print(ids)
     ids = torch.tensor([ids]).long().cuda()
     with torch.no_grad():
