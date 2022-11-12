@@ -27,15 +27,15 @@ def prepare_sentence(tokenizer, text, prompt):
     import copy
     backup = copy.deepcopy(text)
     r = prompt.find('}')
-    left_prompt = prompt[:r+1]
-    right_prompt = prompt[r+1: ]
-    text = left_prompt.format(text)
+    #left_prompt = prompt[:r+1]
+    #right_prompt = prompt[r+1: ]
+    text = prompt.format(text) + "[MASK]"
 
     ids = tokenizer.encode(text, truncation=True, max_length=max_tokens)
-    ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
-          [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
+    #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
+    #      [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
-    return len(ids) - 2, torch.tensor([ids]).long()
+    return len(ids) - 1, torch.tensor([ids]).long()
 
 
 def main(args):
@@ -66,7 +66,7 @@ def main(args):
     mask = tokenizer.mask_token
     Ltext = 'United '
     Rtext = ' is a country'
-    ids = tokenizer.encode(Ltext) + tokenizer.encode(tokenizer.mask_token) + tokenizer.encode(Rtext)
+    ids = tokenizer.encode(Ltext) + [tokenizer._convert_token_to_id(tokenizer.mask_token)] + tokenizer.encode(Rtext)
     print(ids)
     ids = torch.tensor([ids]).long().cuda()
     with torch.no_grad():
