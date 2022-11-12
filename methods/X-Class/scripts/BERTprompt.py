@@ -66,6 +66,7 @@ def main(args):
     text = "United [MASK] is a country"
     print(text)
     ids = tokenizer.encode(text)
+    print(ids)
     ids = torch.tensor([ids]).long().cuda()
     with torch.no_grad():
         output = model(ids.cuda())
