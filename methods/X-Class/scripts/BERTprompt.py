@@ -69,14 +69,14 @@ def main(args):
         masked_index, tokens_tensor = prepare_sentence(tokenizer, text, prompt)
         with torch.no_grad():
             output = model(tokens_tensor.cuda())
-        print(output)
+        # print(output)
         #print(output.shape())
-        presictions = output[1]
+        presictions = output[0]
         Q = []
         for i in range(len(dataset["class_names"])):
             cls_name = dataset["class_names"][i]
             val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
-            Q.append((val, i, cls_name))
+            Q.append((-val, i, cls_name))
         _, pred_cls, _ = sorted(Q)[0]
         pred.append(pred_cls)
 
