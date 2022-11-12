@@ -30,7 +30,7 @@ def prepare_sentence(tokenizer, text, prompt):
     #left_prompt = prompt[:r+1]
     #right_prompt = prompt[r+1: ]
     text = prompt.format(text) + "[MASK]"
-    if text > 500: print(text)
+    if len(text) > 500: print(text)
 
     ids = tokenizer.encode(text, truncation=True, max_length=max_tokens)
     #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
