@@ -63,7 +63,8 @@ def main(args):
 
     #######################
     # masked LM check
-    text = "United [MASK] is a country"
+    mask = tokenizer.mask_token
+    text = 'United ' + mask + ' is a country'
     print(text)
     ids = tokenizer.encode(text)
     print(ids)
