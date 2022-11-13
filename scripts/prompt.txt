@@ -1,1 +1,1 @@
- {} This is [MASK] news.
+ {} [SEP] This is [MASK] news.
