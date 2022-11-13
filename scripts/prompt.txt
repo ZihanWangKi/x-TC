@@ -1,2 +1,1 @@
- text: {}
- topic: 
+ {} The topic is 
