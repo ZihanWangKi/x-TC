@@ -1,1 +1,1 @@
- A [mask] news : {}
+ A [MASK] news : {}
