@@ -1,1 +1,1 @@
- This sentence: "{}" means 
+ A [mask] news : {}

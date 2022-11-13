@@ -11,7 +11,7 @@ from preprocessing_utils import load, load_labels
 from utils import INTERMEDIATE_DATA_FOLDER_PATH, DATA_FOLDER_PATH, MODELS, tensor_to_numpy, evaluate_predictions
 from transformers import BertTokenizer, BertForMaskedLM
 
-def prepare_sentence(tokenizer, text, prompt):
+def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
     model_max_tokens = 512
 
@@ -20,7 +20,10 @@ def prepare_sentence(tokenizer, text, prompt):
     r = prompt.find('}')
     #left_prompt = prompt[:r+1]
     #right_prompt = prompt[r+1: ]
-    text = prompt.format(text) + "[MASK]"
+    text = prompt.format(text)
+    if args.add_mask:
+        text = text.strip()
+        text += ' [MASK]'
     if len(text) > 500: print(text)
 
     ids = tokenizer.encode(text, truncation=True, max_length=512)
@@ -74,7 +77,7 @@ def main(args):
 
     pred = []
     for text in tqdm(data):
-        tokens_tensor = prepare_sentence(tokenizer, text, prompt)
+        tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
         masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
         with torch.no_grad():
             output = model(tokens_tensor.cuda())
@@ -100,6 +103,7 @@ if __name__ == '__main__':
     parser.add_argument("--vocab_min_occurrence", type=int, default=5)
     # last layer of BERT
     parser.add_argument("--layer", type=int, default=12)
+    parser.add_argument("--add_mask", action='store_true', default=False)
     args = parser.parse_args()
     print(vars(args))
     main(args)
