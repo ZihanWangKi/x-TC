@@ -59,7 +59,7 @@ def main(args):
     #######################
     # masked LM check
     mask = tokenizer.mask_token
-    text = 'United [MASK] is a country'
+    text = 'United [MASK] is a country. New York is a city.'
     ids = tokenizer.encode(text)
     print(ids)
     ids = torch.tensor([ids]).long().cuda()
