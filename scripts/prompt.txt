@@ -1,1 +1,2 @@
- {} The movie is <mask>.
+ review: {}
+ sentiment: <mask>
