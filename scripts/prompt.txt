@@ -1,1 +1,1 @@
- {} [SEP] The movie is [MASK].
+ {} </s> The movie is <mask>.
