@@ -11,7 +11,7 @@ from preprocessing_utils import *
 from sklearn.mixture import GaussianMixture
 from scipy.optimize import linear_sum_assignment
 from utils import *
-from transformers import BertTokenizer, BertForMaskedLM
+from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer
 
 def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
@@ -51,8 +51,14 @@ def main(args):
     data = dataset["cleaned_text"]
     if args.lm_type == 'bbu' or args.lm_type == 'blu':
         data = [x.lower() for x in data]
-    model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
-    model_class = BertForMaskedLM
+
+    if args.lm_type == "roberta-base" or args.lm_type == "roberta-large":
+        tokenizer_class = RobertaTokenizer
+        pretrained_weights = args.lm_type
+        model_class = RobertaForMaskedLM
+    else:
+        model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
+        model_class = BertForMaskedLM
 
     tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
     model = model_class.from_pretrained(pretrained_weights)
