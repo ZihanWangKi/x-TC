@@ -1,2 +1,1 @@
- review: {}
- sentiment: [MASK]
+ {} The movie is [MASK].
