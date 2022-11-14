@@ -22,7 +22,7 @@ def prepare_sentence(args, tokenizer, text, prompt):
     r = prompt.find('}')
     #left_prompt = prompt[:r+1]
     #right_prompt = prompt[r+1: ]
-    if len(text) > 300: text = text[:300]
+    if len(text) > 250: text = text[:250]
     text = prompt.format(text)
     if args.add_mask:
         text = text.strip()
