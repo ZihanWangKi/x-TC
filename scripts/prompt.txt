@@ -1,1 +1,1 @@
- {} </s> The movie is <mask>.
+ {} The movie is <mask>.
