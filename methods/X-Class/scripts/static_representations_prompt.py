@@ -29,7 +29,7 @@ def prepare_sentence(tokenizer, text, prompt):
     text = prompt.format(text)
 
     tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
-    #tokenized_text.append(tokenizer.mask_token)
+    tokenized_text.append(tokenizer.mask_token)
     tokenized_to_id_indicies = []
 
     tokenids_chunks = []
