@@ -13,27 +13,44 @@ from scipy.optimize import linear_sum_assignment
 from utils import *
 from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer
 
+
 def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
     model_max_tokens = 512
 
     import copy
     backup = copy.deepcopy(text)
-    r = prompt.find('}')
-    #left_prompt = prompt[:r+1]
-    #right_prompt = prompt[r+1: ]
+    """
     if len(text) > 250: text = text[:250]
-    text = prompt.format(text)
+    text = prompt.format(backup)
     if args.add_mask:
         text = text.strip()
         text += ' [MASK]'
     if len(text) > 500: print(text)
+    """
+    l = 0
+    r = len(text)
+    while l <= r:
+        mid = (l + r) >> 1
+        text = backup[:mid]
+        text = prompt.format(text)
+        if args.add_mask:
+            text = text.strip()
+            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+                text += ' <mask>'
+            else:
+                text += ' [MASK]'
+        ids = tokenizer.encode(text, truncation=True, max_length=512)
+        if tokenizer.mask_token_id in ids:
+            good_ids = ids
+            l = mid + 1
+        else:
+            r = mid - 1
 
-    ids = tokenizer.encode(text, truncation=True, max_length=512)
-    #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
+    # ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
     #      [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
-    return torch.tensor([ids]).long()
+    return torch.tensor([good_ids]).long()
 
 
 def main(args):
