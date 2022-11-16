@@ -81,8 +81,12 @@ def main(args):
 
     #######################
     # masked LM check
+    print("MLM check...")
     mask = tokenizer.mask_token
     text = 'United [MASK] is a country. New York is a city.'
+    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+        text = 'United <mask> is a country. New York is a city.'
+    print(text)
     ids = tokenizer.encode(text)
     print(ids)
     ids = torch.tensor([ids]).long().cuda()
