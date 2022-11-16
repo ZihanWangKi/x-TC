@@ -25,7 +25,7 @@ def prepare_sentence(args, tokenizer, text, prompt):
         text += ' [MASK]'
     if len(text) > 500: print(text)
     """
-    l = 0
+    l = 1
     r= len(text)
     while l <= r:
         mid = (l+r) >> 1
