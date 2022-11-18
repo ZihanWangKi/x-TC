@@ -1,2 +1,2 @@
- text: {}
- topic: 
+ review: {}
+ sentiment:
