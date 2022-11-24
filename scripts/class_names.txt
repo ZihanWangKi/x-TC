@@ -1,2 +1,14 @@
-bad
-good
+Company
+Education
+Artist
+Athlete
+Politician
+Transportation
+Place
+Nature
+Village
+Species
+Plant
+Album
+Movie
+Book
