@@ -25,11 +25,17 @@ def split_data(args):
         #test_set = train_test["test"]
     else:
         ...
+
+    punctuation = ['.', ':', ',', '/', '?', '<', '>', ';', '[', ']', '{', '}', '-', '_', '`', '~', '+', '=', '\'', '\"',
+                   '|', '\\']
     def concat(example):
         example["x-TC"] = ""
         for arg in args.text_name:
             example["x-TC"] += example[arg]
-        example["x-TC"].strip()
+            example["x-TC"].strip()
+            if example["x-TC"][len(example["x-TC"])-1] not in punctuation:
+                example["x-TC"][len(example["x-TC"]) - 1] += '.'
+            example["x-TC"] += ' '
         return example
     train_set = train_set.map(concat)
     test_set = test_set.map(concat)
