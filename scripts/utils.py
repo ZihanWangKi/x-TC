@@ -31,8 +31,7 @@ def split_data(args):
     def concat(example):
         example["x-TC"] = ""
         for arg in args.text_name:
-            example["x-TC"] += example[arg]
-            example["x-TC"].strip()
+            example["x-TC"] += example[arg].strip()
             if example["x-TC"][len(example["x-TC"])-1] not in punctuation:
                 example["x-TC"] += '.'
             example["x-TC"] += ' '
