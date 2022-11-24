@@ -34,7 +34,7 @@ def split_data(args):
             example["x-TC"] += example[arg]
             example["x-TC"].strip()
             if example["x-TC"][len(example["x-TC"])-1] not in punctuation:
-                example["x-TC"][len(example["x-TC"]) - 1] += '.'
+                example["x-TC"] += '.'
             example["x-TC"] += ' '
         return example
     train_set = train_set.map(concat)
