@@ -9,22 +9,18 @@ from tqdm import tqdm
 
 from preprocessing_utils import load, load_labels
 from utils import INTERMEDIATE_DATA_FOLDER_PATH, DATA_FOLDER_PATH, MODELS, tensor_to_numpy, evaluate_predictions
-from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer
+from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
 def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
-    model_max_tokens = 512
+    if args.lm_type == "bart-base" or args.lm_type == "bart-large":
+        model_max_tokens = 1024
+    else:
+        model_max_tokens = 512
 
     import copy
     backup = copy.deepcopy(text)
-    """
-    if len(text) > 250: text = text[:250]
-    text = prompt.format(backup)
-    if args.add_mask:
-        text = text.strip()
-        text += ' [MASK]'
-    if len(text) > 500: print(text)
-    """
+
     l = 1
     r= len(text)
     while l <= r:
@@ -33,11 +29,11 @@ def prepare_sentence(args, tokenizer, text, prompt):
         text = prompt.format(text)
         if args.add_mask:
             text = text.strip()
-            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart":
                 text += ' <mask>'
             else:
                 text += ' [MASK]'
-        ids = tokenizer.encode(text, truncation=True, max_length=512)
+        ids = tokenizer.encode(text, truncation=True, max_length=model_max_tokens)
         if tokenizer.mask_token_id in ids:
             good_ids = ids
             l = mid + 1
@@ -69,6 +65,10 @@ def main(args):
         tokenizer_class = RobertaTokenizer
         pretrained_weights = args.lm_type
         model_class = RobertaForMaskedLM
+    elif args.lm_type == "bart-base" or args.lm_type == "bart-large":
+        tokenizer_class = BartTokenizer
+        pretrained_weights = "facebook/" + args.lm_type
+        model_class = BartForConditionalGeneration
     else:
         model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
         model_class = BertForMaskedLM
@@ -83,7 +83,7 @@ def main(args):
     print("MLM check...")
     mask = tokenizer.mask_token
     text = 'United [MASK] is a country. New York is a city.'
-    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart-base" or args.lm_type == "bart-large":
         text = 'United <mask> is a country. New York is a city.'
     print(text)
     ids = tokenizer.encode(text)
