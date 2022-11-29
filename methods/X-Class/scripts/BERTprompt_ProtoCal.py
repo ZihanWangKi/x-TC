@@ -11,7 +11,7 @@ from preprocessing_utils import *
 from sklearn.mixture import GaussianMixture
 from scipy.optimize import linear_sum_assignment
 from utils import *
-from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer
+from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
 
 def prepare_sentence(args, tokenizer, text, prompt):
