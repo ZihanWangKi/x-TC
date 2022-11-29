@@ -29,7 +29,7 @@ def prepare_sentence(args, tokenizer, text, prompt):
         text = prompt.format(text)
         if args.add_mask:
             text = text.strip()
-            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart":
+            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart-base"  or args.lm_type == "bart-large":
                 text += ' <mask>'
             else:
                 text += ' [MASK]'
