@@ -16,38 +16,34 @@ from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, Rob
 
 def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
-    model_max_tokens = 512
+    if args.lm_type == "bart-base" or args.lm_type == "bart-large":
+        model_max_tokens = 1024
+    else:
+        model_max_tokens = 512
 
     import copy
     backup = copy.deepcopy(text)
-    """
-    if len(text) > 250: text = text[:250]
-    text = prompt.format(backup)
-    if args.add_mask:
-        text = text.strip()
-        text += ' [MASK]'
-    if len(text) > 500: print(text)
-    """
-    l = 0
-    r = len(text)
+
+    l = 1
+    r= len(text)
     while l <= r:
-        mid = (l + r) >> 1
+        mid = (l+r) >> 1
         text = backup[:mid]
         text = prompt.format(text)
         if args.add_mask:
             text = text.strip()
-            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart-base"  or args.lm_type == "bart-large":
                 text += ' <mask>'
             else:
                 text += ' [MASK]'
-        ids = tokenizer.encode(text, truncation=True, max_length=512)
+        ids = tokenizer.encode(text, truncation=True, max_length=model_max_tokens)
         if tokenizer.mask_token_id in ids:
             good_ids = ids
             l = mid + 1
         else:
             r = mid - 1
 
-    # ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
+    #ids = [prepare_sentence.sos_id] + ids + tokenizer.encode(right_prompt) + \
     #      [tokenizer._convert_token_to_id(tokenizer.mask_token), prepare_sentence.eos_id]
 
     return torch.tensor([good_ids]).long()
@@ -72,6 +68,10 @@ def main(args):
         tokenizer_class = RobertaTokenizer
         pretrained_weights = args.lm_type
         model_class = RobertaForMaskedLM
+    elif args.lm_type == "bart-base" or args.lm_type == "bart-large":
+        tokenizer_class = BartTokenizer
+        pretrained_weights = "facebook/" + args.lm_type
+        model_class = BartForConditionalGeneration
     else:
         model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
         model_class = BertForMaskedLM
