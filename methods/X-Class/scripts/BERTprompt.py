@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 from preprocessing_utils import load, load_labels
 from utils import INTERMEDIATE_DATA_FOLDER_PATH, DATA_FOLDER_PATH, MODELS, tensor_to_numpy, evaluate_predictions
-from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
+from transformers import ElectraTokenizer, ElectraForMaskedLM, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
 def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
@@ -69,6 +69,10 @@ def main(args):
         tokenizer_class = BartTokenizer
         pretrained_weights = "facebook/" + args.lm_type
         model_class = BartForConditionalGeneration
+    elif args.lm_type == "electra-base" or args.lm_type == "electra-small" or args.lm_type == "electra-large":
+        tokenizer_class = ElectraTokenizer
+        pretrained_weights = "google/" + args.lm_type + "-generator"
+        model_class = ElectraForMaskedLM
     else:
         model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
         model_class = BertForMaskedLM
