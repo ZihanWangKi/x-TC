@@ -11,7 +11,7 @@ from preprocessing_utils import *
 from sklearn.mixture import GaussianMixture
 from scipy.optimize import linear_sum_assignment
 from utils import *
-from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
+from transformers import ElectraTokenizer, ElectraForMaskedLM, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
 
 def prepare_sentence(args, tokenizer, text, prompt):
@@ -72,6 +72,10 @@ def main(args):
         tokenizer_class = BartTokenizer
         pretrained_weights = "facebook/" + args.lm_type
         model_class = BartForConditionalGeneration
+    elif args.lm_type == "electra-base" or args.lm_type == "electra-small" or args.lm_type == "electra-large":
+        tokenizer_class = ElectraTokenizer
+        pretrained_weights = "google/" + args.lm_type + "-generator"
+        model_class = ElectraForMaskedLM
     else:
         model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
         model_class = BertForMaskedLM
