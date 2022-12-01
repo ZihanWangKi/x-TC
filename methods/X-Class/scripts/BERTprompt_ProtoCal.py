@@ -11,7 +11,7 @@ from preprocessing_utils import *
 from sklearn.mixture import GaussianMixture
 from scipy.optimize import linear_sum_assignment
 from utils import *
-from transformers import ElectraTokenizer, ElectraForMaskedLM, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
+from transformers import ElectraTokenizer, ElectraForPreTraining, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
 
 def prepare_sentence(args, tokenizer, text, prompt):
@@ -74,8 +74,8 @@ def main(args):
         model_class = BartForConditionalGeneration
     elif args.lm_type == "electra-base" or args.lm_type == "electra-small" or args.lm_type == "electra-large":
         tokenizer_class = ElectraTokenizer
-        pretrained_weights = "google/" + args.lm_type + "-generator"
-        model_class = ElectraForMaskedLM
+        pretrained_weights = "google/" + args.lm_type + "-discriminator"
+        model_class = ElectraForPreTraining
     else:
         model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
         model_class = BertForMaskedLM
@@ -89,24 +89,42 @@ def main(args):
         prompt = fp.read()
 
     vecs = []
-    for text in tqdm(data):
-        tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
-        masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
-        with torch.no_grad():
+    if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
+        for text in tqdm(data):
+            tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
+            masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
             with torch.no_grad():
-                outputs = model(tokens_tensor.cuda())
-        predictions = outputs[0]
-        vec = []
-        for i in range(len(dataset["class_names"])):
-            cls_name = dataset["class_names"][i]
-            val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
-            vec.append(val)
-        vec = np.array(vec)
-        vec = np.exp(vec)
-        vec = np.log(vec / vec.sum())
-        #_, pred_cls, _ = sorted(Q)[0]
-        #pred.append(pred_cls)
-        vecs.append(vec)
+                with torch.no_grad():
+                    outputs = model(tokens_tensor.cuda())
+            predictions = outputs[0]
+            vec = []
+            for i in range(len(dataset["class_names"])):
+                cls_name = dataset["class_names"][i]
+                val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
+                vec.append(val)
+            vec = np.array(vec)
+            vec = np.exp(vec)
+            vec = np.log(vec / vec.sum())
+            # _, pred_cls, _ = sorted(Q)[0]
+            # pred.append(pred_cls)
+            vecs.append(vec)
+    else:
+        for text in tqdm(data):
+            tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
+            masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+            vec = []
+            for i in range(len(dataset["class_names"])):
+                cls_name = dataset["class_names"][i]
+                tokens_tensor[0, masked_index] = tokenizer._convert_token_to_id(cls_name)
+                with torch.no_grad():
+                    output = model(tokens_tensor.cuda())
+                predictions = output[0]
+                val = predictions[masked_index].item()
+                vec.append(val)
+            vec = np.array(vec)
+            vec = np.exp(vec)
+            vec = np.log(vec / vec.sum())
+            vecs.append(vec)
 
     vecs = np.array(vecs)
     max_cla = -1000000
@@ -146,23 +164,41 @@ def main(args):
         data = [x.lower() for x in data]
 
     vecs = []
-    for text in tqdm(data):
-        tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
-        masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+    if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
+        for text in tqdm(data):
+            tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
+            masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
 
-        with torch.no_grad():
             with torch.no_grad():
-                outputs = model(tokens_tensor.cuda())
-        predictions = outputs[0]
-        vec = []
-        for i in range(len(dataset["class_names"])):
-            cls_name = dataset["class_names"][i]
-            val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
-            vec.append(val)
-        vec = np.array(vec)
-        vec = np.exp(vec)
-        vec = np.log(vec / vec.sum())
-        vecs.append(vec)
+                with torch.no_grad():
+                    outputs = model(tokens_tensor.cuda())
+            predictions = outputs[0]
+            vec = []
+            for i in range(len(dataset["class_names"])):
+                cls_name = dataset["class_names"][i]
+                val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
+                vec.append(val)
+            vec = np.array(vec)
+            vec = np.exp(vec)
+            vec = np.log(vec / vec.sum())
+            vecs.append(vec)
+    else:
+        for text in tqdm(data):
+            tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
+            masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+            vec = []
+            for i in range(len(dataset["class_names"])):
+                cls_name = dataset["class_names"][i]
+                tokens_tensor[0, masked_index] = tokenizer._convert_token_to_id(cls_name)
+                with torch.no_grad():
+                    output = model(tokens_tensor.cuda())
+                predictions = output[0]
+                val = predictions[masked_index].item()
+                vec.append(val)
+            vec = np.array(vec)
+            vec = np.exp(vec)
+            vec = np.log(vec / vec.sum())
+            vecs.append(vec)
 
     vecs = np.array(vecs)
     documents_to_class = gmm.predict(vecs)
