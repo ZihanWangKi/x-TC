@@ -150,7 +150,7 @@ def main(args):
                 with torch.no_grad():
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
-                val = predictions[0, masked_index].item()
+                val = predictions[masked_index].item()
                 Q.append((-val, i, cls_name))
             _, pred_cls, _ = sorted(Q)[0]
             pred.append(pred_cls)
