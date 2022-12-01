@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 from preprocessing_utils import load, load_labels
 from utils import INTERMEDIATE_DATA_FOLDER_PATH, DATA_FOLDER_PATH, MODELS, tensor_to_numpy, evaluate_predictions
-from transformers import ElectraTokenizer, ElectraForMaskedLM, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
+from transformers import ElectraTokenizer, ElectraForPreTraining, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
 def prepare_sentence(args, tokenizer, text, prompt):
     # setting for BERT
@@ -71,8 +71,8 @@ def main(args):
         model_class = BartForConditionalGeneration
     elif args.lm_type == "electra-base" or args.lm_type == "electra-small" or args.lm_type == "electra-large":
         tokenizer_class = ElectraTokenizer
-        pretrained_weights = "google/" + args.lm_type + "-generator"
-        model_class = ElectraForMaskedLM
+        pretrained_weights = "google/" + args.lm_type + "-discriminator"
+        model_class = ElectraForPreTraining
     else:
         model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
         model_class = BertForMaskedLM
@@ -83,23 +83,42 @@ def main(args):
     model.cuda()
 
     #######################
-    # masked LM check
-    print("MLM check...")
-    mask = tokenizer.mask_token
-    text = 'United [MASK] is a country. New York is a city.'
-    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart-base" or args.lm_type == "bart-large":
-        text = 'United <mask> is a country. New York is a city.'
-    print(text)
-    ids = tokenizer.encode(text)
-    print(ids)
-    ids = torch.tensor([ids]).long().cuda()
-    with torch.no_grad():
-        output = model(ids.cuda())
-    predictions = output[0]
-    masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
-    _, predicted_index = torch.topk(predictions[0, masked_index], k=5)
-    predicted_token = [tokenizer.convert_ids_to_tokens([idx.item()])[0] for idx in predicted_index]
-    print(predicted_token)
+    # check
+    if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
+        print("MLM check...")
+        mask = tokenizer.mask_token
+        text = 'United [MASK] is a country. New York is a city.'
+        if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart-base" or args.lm_type == "bart-large":
+            text = 'United <mask> is a country. New York is a city.'
+        print(text)
+        ids = tokenizer.encode(text)
+        print(ids)
+        ids = torch.tensor([ids]).long().cuda()
+        with torch.no_grad():
+            output = model(ids.cuda())
+        predictions = output[0]
+        masked_index = (ids == tokenizer.mask_token_id).nonzero()[0, 1]
+        _, predicted_index = torch.topk(predictions[0, masked_index], k=5)
+        predicted_token = [tokenizer.convert_ids_to_tokens([idx.item()])[0] for idx in predicted_index]
+        print(predicted_token)
+    else:
+        print("electra check...")
+        text1 = 'United Kingdom is a country. New York is a city.'
+        text2 = 'United States is a country. New York is a city.'
+        print(text1)
+        ids = tokenizer.encode(text1)
+        ids = torch.tensor([ids]).long().cuda()
+        with torch.no_grad():
+            output = model(ids.cuda())
+        predictions = output[0]
+        print(predictions)
+        print(text2)
+        ids = tokenizer.encode(text2)
+        ids = torch.tensor([ids]).long().cuda()
+        with torch.no_grad():
+            output = model(ids.cuda())
+        predictions = output[0]
+        print(predictions)
     #######################
 
     with open(os.path.join(DATA_FOLDER_PATH, args.dataset_name, 'prompt.txt'), "r") as fp:
