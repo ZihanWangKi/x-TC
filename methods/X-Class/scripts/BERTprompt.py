@@ -146,11 +146,11 @@ def main(args):
             Q = []
             for i in range(len(dataset["class_names"])):
                 cls_name = dataset["class_names"][i]
-                tokens_tensor[masked_index] = tokenizer._convert_token_to_id(cls_name)
+                tokens_tensor[0, masked_index] = tokenizer._convert_token_to_id(cls_name)
                 with torch.no_grad():
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
-                val = predictions[masked_index].item()
+                val = predictions[0, masked_index].item()
                 Q.append((-val, i, cls_name))
             _, pred_cls, _ = sorted(Q)[0]
             pred.append(pred_cls)
