@@ -136,7 +136,6 @@ def main(args):
             for i in range(len(dataset["class_names"])):
                 cls_name = dataset["class_names"][i]
                 val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
-                print(cls_name, val)
                 Q.append((-val, i, cls_name))
             _, pred_cls, _ = sorted(Q)[0]
             pred.append(pred_cls)
