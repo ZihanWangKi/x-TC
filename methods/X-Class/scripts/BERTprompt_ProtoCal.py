@@ -120,7 +120,7 @@ def main(args):
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
                 val = predictions[masked_index].item()
-                vec.append(val)
+                vec.append(-val)
             vec = np.array(vec)
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
@@ -134,10 +134,7 @@ def main(args):
         gmm.fit(vecs)
         documents_to_class = gmm.predict(vecs)
         centers = gmm.means_
-        if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
-            row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-        else:
-            row_ind, col_ind = linear_sum_assignment(centers)
+        row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
         cla = centers[row_ind, col_ind].sum()
         if cla > max_cla:
             max_cla = cla
@@ -147,10 +144,7 @@ def main(args):
     gmm.fit(vecs)
     documents_to_class = gmm.predict(vecs)
     centers = gmm.means_
-    if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
-        row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-    else:
-        row_ind, col_ind = linear_sum_assignment(centers)
+    row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
     print("best seed : " + str(best_seed))
     print("class center :")
     print(centers)
@@ -200,7 +194,7 @@ def main(args):
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
                 val = predictions[masked_index].item()
-                vec.append(val)
+                vec.append(-val)
             vec = np.array(vec)
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
