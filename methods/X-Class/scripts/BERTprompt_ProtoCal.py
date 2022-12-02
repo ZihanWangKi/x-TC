@@ -120,34 +120,58 @@ def main(args):
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
                 val = predictions[masked_index].item()
-                vec.append(-val)
+                vec.append(val)
             vec = np.array(vec)
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
             vecs.append(vec)
 
-    vecs = np.array(vecs)
-    max_cla = -1000000
-    best_seed = 0
-    for seed in range(args.iter):
-        gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
+    if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
+        vecs = np.array(vecs)
+        max_cla = -1000000
+        best_seed = 0
+        for seed in range(args.iter):
+            gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
+            gmm.fit(vecs)
+            documents_to_class = gmm.predict(vecs)
+            centers = gmm.means_
+            row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
+            cla = centers[row_ind, col_ind].sum()
+            if cla > max_cla:
+                max_cla = cla
+                best_seed = seed
+
+        gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=best_seed)
         gmm.fit(vecs)
         documents_to_class = gmm.predict(vecs)
         centers = gmm.means_
         row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-        cla = centers[row_ind, col_ind].sum()
-        if cla > max_cla:
-            max_cla = cla
-            best_seed = seed
+        print("best seed : " + str(best_seed))
+        print("class center :")
+        print(centers)
+    else:
+        vecs = np.array(vecs)
+        min_cla = 1000000
+        best_seed = 0
+        for seed in range(args.iter):
+            gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
+            gmm.fit(vecs)
+            documents_to_class = gmm.predict(vecs)
+            centers = gmm.means_
+            row_ind, col_ind = linear_sum_assignment(centers)
+            cla = centers[row_ind, col_ind].sum()
+            if cla < min_cla:
+                min_cla = cla
+                best_seed = seed
 
-    gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=best_seed)
-    gmm.fit(vecs)
-    documents_to_class = gmm.predict(vecs)
-    centers = gmm.means_
-    row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-    print("best seed : " + str(best_seed))
-    print("class center :")
-    print(centers)
+        gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=best_seed)
+        gmm.fit(vecs)
+        documents_to_class = gmm.predict(vecs)
+        centers = gmm.means_
+        row_ind, col_ind = linear_sum_assignment(centers)
+        print("best seed : " + str(best_seed))
+        print("class center :")
+        print(centers)
 
     test_dataset_name = args.dataset_name+"_test"
     data_dir = os.path.join(DATA_FOLDER_PATH, test_dataset_name)
@@ -194,7 +218,7 @@ def main(args):
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
                 val = predictions[masked_index].item()
-                vec.append(-val)
+                vec.append(val)
             vec = np.array(vec)
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
