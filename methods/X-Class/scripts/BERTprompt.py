@@ -103,8 +103,8 @@ def main(args):
         print(predicted_token)
     else:
         print("electra check...")
-        text1 = 'I like eat apple.'
-        text2 = 'I like drink apple.'
+        text1 = 'I like to eat apple.'
+        text2 = 'I like to drink apple.'
         print(text1)
         ids = tokenizer.encode(text1)
         ids = torch.tensor([ids]).long().cuda()
