@@ -103,8 +103,8 @@ def main(args):
         print(predicted_token)
     else:
         print("electra check...")
-        text1 = 'United Kingdom is a country. New York is a city.'
-        text2 = 'United States is a country. New York is a city.'
+        text1 = 'I like eat apple.'
+        text2 = 'I like drink apple.'
         print(text1)
         ids = tokenizer.encode(text1)
         ids = torch.tensor([ids]).long().cuda()
