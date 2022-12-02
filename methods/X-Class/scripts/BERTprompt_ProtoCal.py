@@ -120,7 +120,7 @@ def main(args):
                     output = model(tokens_tensor.cuda())
                 predictions = output[0]
                 val = predictions[masked_index].item()
-                vec.append(val)
+                vec.append(-val)
             vec = np.array(vec)
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
@@ -177,7 +177,7 @@ def main(args):
             for i in range(len(dataset["class_names"])):
                 cls_name = dataset["class_names"][i]
                 val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
-                vec.append(-val)
+                vec.append(val)
             vec = np.array(vec)
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
