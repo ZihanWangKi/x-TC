@@ -544,7 +544,9 @@ def main():
         'bbc': 'bert-base-cased',
         'bbu': 'bert-base-uncased',
         'blc': 'bert-large-cased',
-        'blu': 'bert-large-uncased'
+        'blu': 'bert-large-uncased',
+        'roberta-base' : 'roberta-base',
+        'roberta-large' : 'roberta-large'
     }
     if args.model_name_or_path in MODELS:
         args.model_name_or_path = MODELS[args.model_name_or_path]
