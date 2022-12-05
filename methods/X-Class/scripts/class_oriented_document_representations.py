@@ -194,6 +194,7 @@ def main(args):
             class_words_representations[cls].append(static_word_representations[highest_similarity_word_index])
             masked_words.add(vocab_words[highest_similarity_word_index])
             cls_repr[cls] = average_with_harmonic_series(class_words_representations[cls])
+            print(highest_similarity)
         if len(finished_class) == len(class_names):
             break
             
