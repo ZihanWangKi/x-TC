@@ -12,13 +12,15 @@ from collections import Counter
 
 from scipy.spatial.distance import cdist
 from sklearn.metrics import confusion_matrix, f1_score
-from transformers import BertModel, BertTokenizer
+from transformers import BertModel, BertTokenizer, RobertaTokenizer, RobertaModel
 
 MODELS = {
     'bbc': (BertModel, BertTokenizer, 'bert-base-cased'),
     'bbu': (BertModel, BertTokenizer, 'bert-base-uncased'),
     'blc': (BertModel, BertTokenizer, 'bert-large-cased'),
-    'blu': (BertModel, BertTokenizer, 'bert-large-uncased')
+    'blu': (BertModel, BertTokenizer, 'bert-large-uncased'),
+    'roberta-large': (RobertaModel, RobertaTokenizer, 'roberta-large'),
+    'roberta-base': (RobertaModel, RobertaTokenizer, 'roberta-base')
 }
 
 # all paths can be either absolute or relative to this utils file
