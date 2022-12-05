@@ -1,2 +1,2 @@
-nasty
-nice
+bad
+good

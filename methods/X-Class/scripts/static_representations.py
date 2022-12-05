@@ -11,7 +11,7 @@ from preprocessing_utils import load
 from utils import INTERMEDIATE_DATA_FOLDER_PATH, MODELS, tensor_to_numpy
 
 
-def prepare_sentence(tokenizer, text):
+def prepare_sentence(args, tokenizer, text):
     # setting for BERT
     model_max_tokens = 512
     has_sos_eos = True
@@ -25,7 +25,17 @@ def prepare_sentence(tokenizer, text):
         prepare_sentence.sos_id, prepare_sentence.eos_id = tokenizer.encode("", add_special_tokens=True)
         print(prepare_sentence.sos_id, prepare_sentence.eos_id)
 
-    tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
+    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+        tokenized_text = []
+        import regex as re
+        for token in re.findall(tokenizer.pat, text):
+            token = "".join(
+                tokenizer.byte_encoder[b] for b in token.encode("utf-8")
+            )  # Maps all our bytes to unicode strings, avoiding control tokens of the BPE (spaces in our case)
+            #tokenized_text.extend(bpe_token for bpe_token in self.bpe(token).split(" "))
+            tokenized_text.append(token)
+    else:
+        tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     tokenized_to_id_indicies = []
 
     tokenids_chunks = []
@@ -33,7 +43,10 @@ def prepare_sentence(tokenizer, text):
 
     for index, token in enumerate(tokenized_text + [None]):
         if token is not None:
-            tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
+            if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+                tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
+            else:
+                tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
         if token is None or len(tokenids_chunk) + len(tokens) > max_tokens:
             tokenids_chunks.append([prepare_sentence.sos_id] + tokenids_chunk + [prepare_sentence.eos_id])
             if sliding_window_size > 0:
@@ -130,7 +143,7 @@ def main(args):
     import string
 
     for text in tqdm(data):
-        tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(tokenizer, text)
+        tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(args, tokenizer, text)
         counts.update(word.translate(str.maketrans('','',string.punctuation)) for word in tokenized_text)
         
     del counts['']
@@ -139,7 +152,7 @@ def main(args):
     word_count = {}
 
     for text in tqdm(data):
-        tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(tokenizer, text)
+        tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(args, tokenizer, text)
         tokenization_info.append((tokenized_text, tokenized_to_id_indicies, tokenids_chunks))
         contextualized_word_representations = handle_sentence(model, args.layer, tokenized_text,
                                          tokenized_to_id_indicies, tokenids_chunks)
