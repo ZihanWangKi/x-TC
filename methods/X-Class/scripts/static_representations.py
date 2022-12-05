@@ -47,7 +47,7 @@ def prepare_sentence(args, tokenizer, text):
     for index, token in enumerate(tokenized_text + [None]):
         if token is not None:
             if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-                ...
+                tokens = [token]
                 #tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
             else:
                 tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
