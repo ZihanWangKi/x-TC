@@ -36,7 +36,7 @@ def prepare_sentence(args, tokenizer, text):
             #tokenized_text.extend(bpe_token for bpe_token in self.bpe(token).split(" "))
             tokenized_text.append(token)
         """
-        tokenized_text = tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
+        tokenized_text = tokenizer.tokenize(text)
     else:
         tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     tokenized_to_id_indicies = []
@@ -47,7 +47,8 @@ def prepare_sentence(args, tokenizer, text):
     for index, token in enumerate(tokenized_text + [None]):
         if token is not None:
             if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-                tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
+                ...
+                #tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
             else:
                 tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
         if token is None or len(tokenids_chunk) + len(tokens) > max_tokens:
