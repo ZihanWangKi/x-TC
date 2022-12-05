@@ -26,6 +26,7 @@ def prepare_sentence(args, tokenizer, text):
         print(prepare_sentence.sos_id, prepare_sentence.eos_id)
 
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+        """
         tokenized_text = []
         import regex as re
         for token in re.findall(tokenizer.pat, text):
@@ -34,6 +35,8 @@ def prepare_sentence(args, tokenizer, text):
             )  # Maps all our bytes to unicode strings, avoiding control tokens of the BPE (spaces in our case)
             #tokenized_text.extend(bpe_token for bpe_token in self.bpe(token).split(" "))
             tokenized_text.append(token)
+        """
+        tokenized_text = tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     else:
         tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     tokenized_to_id_indicies = []
