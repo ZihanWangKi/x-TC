@@ -199,7 +199,9 @@ def main(args):
             print(highest_similarity)
         if len(finished_class) == len(class_names):
             break
-            
+
+    for cls in range(len(class_names)):
+        print(class_words[cls])
     class_representations = np.array(cls_repr)
     model_class, tokenizer_class, pretrained_weights = MODELS[args.lm_type]
     model = model_class.from_pretrained(pretrained_weights, output_hidden_states=True)
