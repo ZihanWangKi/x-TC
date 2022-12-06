@@ -152,6 +152,7 @@ def main(args):
         
     del counts['']
     updated_counts = {k: c for k, c in counts.items() if c >= args.vocab_min_occurrence}
+    print(len(updated_counts))
     word_rep = {}
     word_count = {}
 
