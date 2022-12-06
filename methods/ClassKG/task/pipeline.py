@@ -36,7 +36,8 @@ from compent.saver import Saver
 TOTAL_ITR = 12
 
 
-def main(rank, cfg_file, visdom_env_name, seed):
+def main(rank):
+    cfg_file = "yelp_polarity.yaml", visdom_env_name = "yelp_polarity", seed = 0
     set_seed_all(seed)
     set_multi_GPUs_envs(rank, world_size)
     cfg_file_path = os.path.join(ROOT_DIR, 'config', cfg_file)
@@ -101,8 +102,8 @@ if __name__ == '__main__':
     parser.add_argument("--random_state", type=int, default=42)
     args = parser.parse_args()
     print(args)
-    cfg_file = args.dataset + ".yaml"
-    visdom_env_name = args.dataset
+    #cfg_file = args.dataset + ".yaml"
+    #visdom_env_name = args.dataset
     torch.multiprocessing.set_start_method('spawn')
-    spawn(main, args = (cfg_file, visdom_env_name, args.random_state), nprocs = world_size, join = True)
+    spawn(main, args = (), nprocs = world_size, join = True)
     print('finish')
