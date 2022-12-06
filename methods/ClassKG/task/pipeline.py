@@ -37,7 +37,9 @@ TOTAL_ITR = 12
 
 
 def main(rank):
-    cfg_file = "yelp_polarity.yaml", visdom_env_name = "yelp_polarity", seed = 0
+    cfg_file = "yelp_polarity.yaml"
+    visdom_env_name = "yelp_polarity"
+    seed = 0
     set_seed_all(seed)
     set_multi_GPUs_envs(rank, world_size)
     cfg_file_path = os.path.join(ROOT_DIR, 'config', cfg_file)
