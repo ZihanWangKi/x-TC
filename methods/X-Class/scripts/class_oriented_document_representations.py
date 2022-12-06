@@ -149,6 +149,21 @@ def main(args):
     class_words = [[class_names[cls]] for cls in range(len(class_names))]
     class_words_representations = [[static_word_representations[word_to_index[class_names[cls]]]]
                                    for cls in range(len(class_names))]
+
+    #################
+    class_representations = [average_with_harmonic_series(class_words_representation)
+                             for class_words_representation in class_words_representations]
+    cosine_similarities = cosine_similarity_embeddings(static_word_representations,
+                                                       class_representations)
+    nearest_class = cosine_similarities.argmax(axis=1)
+    similarities = cosine_similarities.max(axis=1)
+    for cls in range(len(class_names)):
+        for i, word in enumerate(vocab_words):
+            if nearest_class[i] == cls:
+                if similarities[i] > 0.97:
+                    print(cls, i, word, similarities)
+    ################
+
     for t in range(1, args.T):
         class_representations = [average_with_harmonic_series(class_words_representation)
                                  for class_words_representation in class_words_representations]
@@ -167,8 +182,6 @@ def main(args):
             for i, word in enumerate(vocab_words):
                 if nearest_class[i] == cls:
                     if word not in masked_words:
-                        if similarities[i] > 0.95:
-                            print(cls, vocab_words[highest_similarity_word_index])
                         if similarities[i] > highest_similarity:
                             highest_similarity = similarities[i]
                             highest_similarity_word_index = i
@@ -190,7 +203,6 @@ def main(args):
                 class_words[cls] = class_words[cls][:-1]
                 class_words_representations[cls] = class_words_representations[cls][:-1]
                 cls_repr[cls] = average_with_harmonic_series(class_words_representations[cls])
-                print(class_words[cls])
                 break
             class_words[cls].append(vocab_words[highest_similarity_word_index])
             class_words_representations[cls].append(static_word_representations[highest_similarity_word_index])
