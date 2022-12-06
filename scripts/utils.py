@@ -288,8 +288,8 @@ def run_method(args, train_set, test_set):
         with open("../methods/ClassKG/config/{}.yaml".format(args.dataset), 'w') as f:
             ...
 
-        os.chdir("../methods/ClassKG/task")
-        os.system("python pipeline.py --dataset {} --random_state {}".format(args.dataset, args.random_state))
+        #os.chdir("../methods/ClassKG/task")
+        #os.system("python pipeline.py --dataset {} --random_state {}".format(args.dataset, args.random_state))
     elif args.method.startswith("gpt") and args.additional_method == None:
         assert args.prompt == True
         assert args.class_names == True
