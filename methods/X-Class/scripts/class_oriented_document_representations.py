@@ -167,6 +167,8 @@ def main(args):
             for i, word in enumerate(vocab_words):
                 if nearest_class[i] == cls:
                     if word not in masked_words:
+                        if similarities[i] > 0.95:
+                            print(cls, vocab_words[highest_similarity_word_index])
                         if similarities[i] > highest_similarity:
                             highest_similarity = similarities[i]
                             highest_similarity_word_index = i
