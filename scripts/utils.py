@@ -257,12 +257,15 @@ def run_method(args, train_set, test_set):
         elif ...:
             ...
     elif args.method == "ClassKG":
-        assert args.class_names == False
-        assert args.seed_words == True
         os.system("mkdir -p ../methods/ClassKG/data/processed/{}".format(args.dataset))
-
-        with open("seed_words.txt", mode='r', encoding='utf-8') as f:
-            seeds = list(map(lambda x: x.strip(), f.readlines()))
+        if args.seed_words == True:
+            assert args.class_names == False
+            with open("seed_words.txt", mode='r', encoding='utf-8') as f:
+                seeds = list(map(lambda x: x.strip(), f.readlines()))
+        elif args.class_names == True:
+            assert args.seed_words == False
+            with open("class_names.txt", mode='r', encoding='utf-8') as f:
+                seeds = list(map(lambda x: x.strip(), f.readlines()))
         seed_words = {}
         for i in range(len(seeds)):
             seed_words[i] = seeds[i].split(' ')
