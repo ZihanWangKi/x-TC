@@ -161,9 +161,9 @@ class Trainer_BERT(Trainer_Base):
                 if (total_itr == stop_itr):
                     train_over_flag = True
                     break
-                """
+                #"""
                 if (total_itr % self.cfg.classifier.eval_interval == 0):
-                    synchronize()
+                    #synchronize()
                     res_dict = self.evaler_on_all(self.model)
                     f1_micro = res_dict['f1_micro']
                     f1_macro = res_dict['f1_macro']
@@ -182,13 +182,13 @@ class Trainer_BERT(Trainer_Base):
                                                                             filename = 'itr_{}_{}'.format(ITR,
                                                                                                           itr_self_training))
 
-                    synchronize()
-                """
+                    #synchronize()
+                #"""
 
             if (train_over_flag):
                 break
-        """
-        synchronize()
+        #"""
+        #synchronize()
 
         self.logger.visdom_text(text = 'start evaling last', win_name = 'state')
         res_dict = self.evaler_on_all(self.model)
@@ -205,8 +205,8 @@ class Trainer_BERT(Trainer_Base):
                                 X_value = total_itr)
         self.logger.plot_record(acc, win_name = 'cls res ACC itr_{},ST:{}'.format(ITR, itr_self_training),
                                 X_value = total_itr)
-        synchronize()
-        """
+        #synchronize()
+        #"""
         self.checkpointer.load_from_filename(model = self.model, filename = 'itr_{}_{}'.format(ITR, itr_self_training))
         self.logger.visdom_text(text = 'start evaling last', win_name = 'state')
         res_dict = self.evaler_on_all(self.model)
