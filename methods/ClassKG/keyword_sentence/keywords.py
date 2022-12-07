@@ -65,7 +65,7 @@ class KeyWords():
 
     def syn_across_GPUs(self):
         ...
-        """"""
+        """
         self.logger.info('syn keywords before broadcast,rank')
         exclude = ['logger']
         synchronize()
