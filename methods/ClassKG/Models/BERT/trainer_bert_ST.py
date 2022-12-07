@@ -126,7 +126,7 @@ class Trainer_BERT(Trainer_Base):
                 eta_seconds = meters.time.global_avg * (self.cfg.classifier.total_steps - iteration)
                 eta_string = str(datetime.timedelta(seconds = int(eta_seconds)))
 
-                if total_itr % 100 == 0:
+                if total_itr % 300 == 0:
                     GPU_memory = torch.cuda.max_memory_allocated() / 1024.0 / 1024.0
                     memory = get_memory_used()
                     self.logger.info(
@@ -187,7 +187,7 @@ class Trainer_BERT(Trainer_Base):
 
             if (train_over_flag):
                 break
-
+        """
         synchronize()
 
         self.logger.visdom_text(text = 'start evaling last', win_name = 'state')
@@ -206,7 +206,7 @@ class Trainer_BERT(Trainer_Base):
         self.logger.plot_record(acc, win_name = 'cls res ACC itr_{},ST:{}'.format(ITR, itr_self_training),
                                 X_value = total_itr)
         synchronize()
-
+        """
         self.checkpointer.load_from_filename(model = self.model, filename = 'itr_{}_{}'.format(ITR, itr_self_training))
         self.logger.visdom_text(text = 'start evaling last', win_name = 'state')
         res_dict = self.evaler_on_all(self.model)
