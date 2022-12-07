@@ -89,6 +89,7 @@ def main(args):
         prompt = fp.read()
 
     vecs = []
+    pred = []
     if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
         for text in tqdm(data):
             tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
@@ -106,7 +107,7 @@ def main(args):
             vec = np.exp(vec)
             vec = np.log(vec / vec.sum())
             # _, pred_cls, _ = sorted(Q)[0]
-            # pred.append(pred_cls)
+            pred.append(np.argmax(vec))
             vecs.append(vec)
     else:
         for text in tqdm(data):
@@ -131,6 +132,18 @@ def main(args):
         max_cla = -1000000
         best_seed = 0
         for seed in range(args.iter):
+            if args.magic:
+                assignment_matrix = np.zeros((len(pred), len(dataset["class_names"])))
+                for i in range(len(pred)):
+                    assignment_matrix[i][pred[i]] = 1.0
+
+                gmm = GaussianMixture(n_components=len(dataset["class_names"]),
+                                      random_state=seed,warm_start=True)
+                gmm.converged_ = "HACK"
+
+                gmm._initialize(vecs, assignment_matrix)
+                gmm.lower_bound_ = -np.infty
+
             gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
             gmm.fit(vecs)
             documents_to_class = gmm.predict(vecs)
@@ -242,6 +255,7 @@ if __name__ == '__main__':
     # last layer of BERT
     parser.add_argument("--iter", type=int, default=100)
     parser.add_argument("--add_mask", action='store_true', default=False)
+    parser.add_argument("--magic", action='store_true', default=False)
     args = parser.parse_args()
     os.environ['PYTHONHASHSEED'] = str(args.random_state)
     random.seed(args.random_state)
