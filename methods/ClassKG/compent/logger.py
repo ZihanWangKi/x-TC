@@ -36,6 +36,7 @@ class Logger():
 
         self.logger = logger
         if (self.rank == 0):
+            ...
             #self.visdom = My_Visdom(env_name = name, port = visdom_port)
             #self.visdom.close_all_curves()
         self.inner_values = {}
