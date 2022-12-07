@@ -18,7 +18,7 @@ class Trainer_Base():
         self.number_classes = cfg.model.number_classes
         self.stop_itr_list = cfg.classifier.stop_itr
         if (self.distributed == True):
-            assert self.world_size > 1
+            #assert self.world_size > 1
             self.rank = get_rank()
 
     def get_stop_itr(self, ITR):
