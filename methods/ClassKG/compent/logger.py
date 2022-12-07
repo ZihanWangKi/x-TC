@@ -36,8 +36,8 @@ class Logger():
 
         self.logger = logger
         if (self.rank == 0):
-            self.visdom = My_Visdom(env_name = name, port = visdom_port)
-            self.visdom.close_all_curves()
+            #self.visdom = My_Visdom(env_name = name, port = visdom_port)
+            #self.visdom.close_all_curves()
         self.inner_values = {}
 
     def set_value(self, key, value):
@@ -56,25 +56,30 @@ class Logger():
             self.logger.info(info)
 
     def plot_record(self, value, win_name, X_value = None):
-        if (self.rank == 0):
-            self.visdom.plot_record(value, win_name, X_value)
+        ...
+        #if (self.rank == 0):
+        #    self.visdom.plot_record(value, win_name, X_value)
 
     def visdom_text(self, text, win_name, append = True):
-        text = str(text) + '\n\n'
-        if (self.rank == 0):
-            self.visdom.text(text, win_name, append = append)
+        ...
+        #text = str(text) + '\n\n'
+        #if (self.rank == 0):
+        #    self.visdom.text(text, win_name, append = append)
 
     def visdom_table(self, table, win_name):
-        if (self.rank == 0):
-            self.visdom.table(table, win_name)
+        ...
+        #if (self.rank == 0):
+        #    self.visdom.table(table, win_name)
 
     def clear_record(self, win_name):
-        if (self.rank == 0):
-            self.visdom.clear_record(win_name)
+        ...
+        #if (self.rank == 0):
+        #    self.visdom.clear_record(win_name)
 
     def close_all_curves(self):
-        if (self.rank == 0):
-            self.visdom.close_all_curves()
+        ...
+        #if (self.rank == 0):
+        #    self.visdom.close_all_curves()
 
 
 class Logger_Board():
