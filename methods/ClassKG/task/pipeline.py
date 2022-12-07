@@ -79,7 +79,7 @@ def main(rank):
                                            vote_labels = voted_label,
                                            GT_labels = GT_labels, ITR = cur_itr)
 
-        res_dict = broadcast_data(res_dict)
+        #res_dict = broadcast_data(res_dict)
         logger.visdom_text(text = 'start training longformer', win_name = 'state')
         sentences, labels = classifier_trainer.train_model(sentences = res_dict['sentences'],
                                                            labels = res_dict['pred_labels'],
