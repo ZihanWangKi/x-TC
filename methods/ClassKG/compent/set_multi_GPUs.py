@@ -10,6 +10,6 @@ def set_multi_GPUs_envs(rank,world_size):
     torch.cuda.set_device(rank)
     dist.init_process_group('nccl', rank = rank, world_size = world_size)
     synchronize()
-    assert get_world_size() > 1
+    #assert get_world_size() > 1
 
 
