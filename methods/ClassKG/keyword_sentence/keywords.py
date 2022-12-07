@@ -64,6 +64,8 @@ class KeyWords():
                 self.__dict__[k] = v
 
     def syn_across_GPUs(self):
+        ...
+        """"""
         self.logger.info('syn keywords before broadcast,rank')
         exclude = ['logger']
         synchronize()
@@ -75,6 +77,7 @@ class KeyWords():
             if (key not in exclude):
                 self.__dict__[key] = broadcast_data(self.__dict__[key])
         self.logger.info('syn keywords finish')
+        """
 
     @property
     def feature(self):
