@@ -260,7 +260,7 @@ if __name__ == '__main__':
                                   random_state=seed, warm_start=True)
             gmm.converged_ = "HACK"
 
-            gmm._initialize(train_vec, assignment_matrix)
+            gmm._initialize(np.array(train_vec), assignment_matrix)
             gmm.lower_bound_ = -np.infty
         else:
             gmm = GaussianMixture(n_components=n_class, random_state=seed)
