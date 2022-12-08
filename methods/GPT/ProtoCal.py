@@ -249,7 +249,7 @@ if __name__ == '__main__':
     best_seed = 0
     pred = []
     for i in range(len(train_vec)):
-        pred = np.argmax(train_vec[i])
+        pred.append(np.argmax(train_vec[i]))
     for seed in range(args.iter):
         if args.magic:
             assignment_matrix = np.zeros((len(pred), n_class))
