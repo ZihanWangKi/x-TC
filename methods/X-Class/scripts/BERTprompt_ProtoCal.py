@@ -138,7 +138,7 @@ def main(args):
                     assignment_matrix[i][pred[i]] = 1.0
 
                 gmm = GaussianMixture(n_components=len(dataset["class_names"]),
-                                      random_state=seed,warm_start=True)
+                                      random_state=seed, warm_start=True)
                 gmm.converged_ = "HACK"
 
                 gmm._initialize(vecs, assignment_matrix)

@@ -72,19 +72,52 @@ def main(dataset_name,
         for i in range(document_representations.shape[0]):
             document_class_assignment_matrix[i][document_class_assignment[i]] = 1.0
 
-        gmm = GaussianMixture(n_components=num_classes, covariance_type='tied',
-                              random_state=random_state,
-                              n_init=999, warm_start=True)
-        gmm.converged_ = "HACK"
+        if args.iter > 0:
+            max_cla = -1000000
+            best_seed = 0
+            for seed in range(args.iter):
+                gmm = GaussianMixture(n_components=num_classes, covariance_type=args.covariance,
+                                      random_state=seed, warm_start=True)
+                gmm.converged_ = "HACK"
 
-        gmm._initialize(document_representations, document_class_assignment_matrix)
-        gmm.lower_bound_ = -np.infty
-        gmm.fit(document_representations)
+                gmm._initialize(document_representations, document_class_assignment_matrix)
+                gmm.lower_bound_ = -np.infty
+                gmm.fit(document_representations)
 
-        documents_to_class = gmm.predict(document_representations)
-        centers = gmm.means_
-        save_dict_data["centers"] = centers
-        distance = -gmm.predict_proba(document_representations) + 1
+                documents_to_class = gmm.predict(document_representations)
+                centers = gmm.means_
+
+                cla = np.sum(centers * class_representations)
+                if cla > max_cla:
+                    max_cla = cla
+                    best_seed = seed
+
+            gmm = GaussianMixture(n_components=num_classes, covariance_type=args.covariance,
+                                  random_state=best_seed, warm_start=True)
+            gmm.converged_ = "HACK"
+
+            gmm._initialize(document_representations, document_class_assignment_matrix)
+            gmm.lower_bound_ = -np.infty
+            gmm.fit(document_representations)
+
+            documents_to_class = gmm.predict(document_representations)
+            centers = gmm.means_
+            save_dict_data["centers"] = centers
+            distance = -gmm.predict_proba(document_representations) + 1
+        else:
+            gmm = GaussianMixture(n_components=num_classes, covariance_type=args.covariance,
+                                  random_state=random_state,
+                                  n_init=999, warm_start=True)
+            gmm.converged_ = "HACK"
+
+            gmm._initialize(document_representations, document_class_assignment_matrix)
+            gmm.lower_bound_ = -np.infty
+            gmm.fit(document_representations)
+
+            documents_to_class = gmm.predict(document_representations)
+            centers = gmm.means_
+            save_dict_data["centers"] = centers
+            distance = -gmm.predict_proba(document_representations) + 1
     elif cluster_method == 'kmeans':
         kmeans = KMeans(n_clusters=num_classes, init=class_representations, random_state=random_state)
         kmeans.fit(document_representations)
@@ -116,6 +149,8 @@ if __name__ == '__main__':
     # attention mechanism + T
     parser.add_argument("--document_repr_type", default="mixture-100")
     parser.add_argument("--random_state", type=int, default=42)
+    parser.add_argument("--iter", type=int, default=0)
+    parser.add_argument("--covariance", default="tied")
 
     args = parser.parse_args()
     print(vars(args))
