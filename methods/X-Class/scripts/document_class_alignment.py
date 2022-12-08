@@ -92,6 +92,7 @@ def main(dataset_name,
                     max_cla = cla
                     best_seed = seed
 
+            print(max_cla, best_seed)
             gmm = GaussianMixture(n_components=num_classes, covariance_type=args.covariance,
                                   random_state=best_seed, warm_start=True)
             gmm.converged_ = "HACK"
