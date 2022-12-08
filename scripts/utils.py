@@ -380,6 +380,6 @@ def run_method(args, train_set, test_set):
                 f.write("\n")
         os.chdir("../methods/GPT")
         os.system(
-            "CUDA_VISIBLE_DEVICES={} python ProtoCal.py {} --model {} --split test --seed {}"
-            .format(args.gpu, args.dataset, args.method, args.random_state))
+            "CUDA_VISIBLE_DEVICES={} python ProtoCal.py {} --model {} --split test --seed {} {}"
+            .format(args.gpu, args.dataset, args.method, args.random_state, args.suffix))
 
