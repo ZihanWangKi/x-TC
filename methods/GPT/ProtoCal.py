@@ -136,6 +136,7 @@ if __name__ == '__main__':
     parser.add_argument('--key', type=str, default='api.key')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--iter', type=int, default=10)
+    parser.add_argument("--magic", action='store_true', default=False)
     args = parser.parse_args()
     print(args)
 
@@ -246,8 +247,23 @@ if __name__ == '__main__':
     train_vec = score(model, args.model, encoder, train_examples, stem, "train", args.batch)
     max_cla = -1000000
     best_seed = 0
+    pred = []
+    for i in range(len(train_vec)):
+        pred = np.argmax(train_vec[i])
     for seed in range(args.iter):
-        gmm = GaussianMixture(n_components=n_class, random_state=seed)
+        if args.magic:
+            assignment_matrix = np.zeros((len(pred), n_class))
+            for i in range(len(pred)):
+                assignment_matrix[i][pred[i]] = 1.0
+
+            gmm = GaussianMixture(n_components=n_class,
+                                  random_state=seed, warm_start=True)
+            gmm.converged_ = "HACK"
+
+            gmm._initialize(train_vec, assignment_matrix)
+            gmm.lower_bound_ = -np.infty
+        else:
+            gmm = GaussianMixture(n_components=n_class, random_state=seed)
         gmm.fit(train_vec)
         documents_to_class = gmm.predict(train_vec)
         centers = gmm.means_

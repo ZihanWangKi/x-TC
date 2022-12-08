@@ -143,8 +143,8 @@ def main(args):
 
                 gmm._initialize(vecs, assignment_matrix)
                 gmm.lower_bound_ = -np.infty
-
-            gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
+            else:
+                gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
             gmm.fit(vecs)
             documents_to_class = gmm.predict(vecs)
             centers = gmm.means_
