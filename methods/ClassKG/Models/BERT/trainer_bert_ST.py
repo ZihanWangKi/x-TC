@@ -60,7 +60,7 @@ class Trainer_BERT(Trainer_Base):
 
         itr_self_training = 0
         last_global_best = 0
-        while itr_self_training < 5:#10:
+        while itr_self_training < 10:
             dataloader_train = self.get_loader_from_origin_sentence(sentences, labels)
             sentences, labels, global_best = self.__do_train__(dataloader = dataloader_train, ITR = ITR,
                                                                itr_self_training = itr_self_training)
@@ -126,7 +126,7 @@ class Trainer_BERT(Trainer_Base):
                 eta_seconds = meters.time.global_avg * (self.cfg.classifier.total_steps - iteration)
                 eta_string = str(datetime.timedelta(seconds = int(eta_seconds)))
 
-                if total_itr % 300 == 0:
+                if total_itr % 100 == 0:
                     GPU_memory = torch.cuda.max_memory_allocated() / 1024.0 / 1024.0
                     memory = get_memory_used()
                     self.logger.info(
