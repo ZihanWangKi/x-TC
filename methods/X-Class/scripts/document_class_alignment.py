@@ -93,11 +93,7 @@ def main(dataset_name,
 
             print(max_cla, best_seed)
             gmm = GaussianMixture(n_components=num_classes, covariance_type=args.covariance,
-                                  random_state=best_seed, warm_start=True)
-            gmm.converged_ = "HACK"
-
-            gmm._initialize(document_representations, document_class_assignment_matrix)
-            gmm.lower_bound_ = -np.infty
+                                  random_state=best_seed)
             gmm.fit(document_representations)
 
             documents_to_class = gmm.predict(document_representations)
