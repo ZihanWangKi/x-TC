@@ -199,6 +199,7 @@ class Keywords_Updater_Base():
         for class_index in range(self.number_classes):
             for item in filtered_class_to_words[class_index]:
                 keyword, score = item
+                print(keyword)
                 keywords_to_label[keyword] = class_index
                 keyword_to_score[keyword] = score
 

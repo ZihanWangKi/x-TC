@@ -74,7 +74,7 @@ class Trainer_GCN(Trainer_Base):
             raise NotImplementedError
         # self.model = UnsupervisedGIN(self.cfg, input_dim = self.keywords.max_number_per_class + self.number_classes)
 
-        synchronize()
+        #synchronize()
         self.model.train()
         self.model = self.model.to(device)
         if (self.distributed):
@@ -114,7 +114,7 @@ class Trainer_GCN(Trainer_Base):
         loss_func = torch.nn.CrossEntropyLoss()
 
         # ------------------------- #
-        synchronize()
+        #synchronize()
 
 
         total_epoch = self.get_total_epoch(ITR)
@@ -180,7 +180,7 @@ class Trainer_GCN(Trainer_Base):
                     self.logger.plot_record(value = memory, win_name = 'memory')
                     # self.logger.plot_record(value = optimizer.param_groups[0]["lr"], win_name = 'lr')
 
-            synchronize()
+            #synchronize()
 
         # ------------------------------------- #
 
