@@ -253,7 +253,7 @@ if __name__ == '__main__':
     parser.add_argument("--lm_type", type=str, default='bbu')
     parser.add_argument("--vocab_min_occurrence", type=int, default=5)
     # last layer of BERT
-    parser.add_argument("--iter", type=int, default=100)
+    parser.add_argument("--iter", type=int, default=10)
     parser.add_argument("--add_mask", action='store_true', default=False)
     parser.add_argument("--magic", action='store_true', default=False)
     args = parser.parse_args()
