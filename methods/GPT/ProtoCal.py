@@ -250,37 +250,42 @@ if __name__ == '__main__':
     pred = []
     for i in range(len(train_vec)):
         pred.append(np.argmax(train_vec[i]))
-    for seed in range(args.iter):
-        if args.magic:
-            assignment_matrix = np.zeros((len(pred), n_class))
-            for i in range(len(pred)):
-                assignment_matrix[i][pred[i]] = 1.0
+    if args.magic:
+        assignment_matrix = np.zeros((len(pred), n_class))
+        for i in range(len(pred)):
+            assignment_matrix[i][pred[i]] = 1.0
 
-            gmm = GaussianMixture(n_components=n_class,
-                                  random_state=seed, warm_start=True)
-            gmm.converged_ = "HACK"
+        gmm = GaussianMixture(n_components=n_class, warm_start=True)
+        gmm.converged_ = "HACK"
 
-            gmm._initialize(np.array(train_vec), assignment_matrix)
-            gmm.lower_bound_ = -np.infty
-        else:
-            gmm = GaussianMixture(n_components=n_class, random_state=seed)
+        gmm._initialize(np.array(train_vec), assignment_matrix)
+        gmm.lower_bound_ = -np.infty
         gmm.fit(train_vec)
         documents_to_class = gmm.predict(train_vec)
         centers = gmm.means_
         row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-        cla = centers[row_ind, col_ind].sum()
-        if cla > max_cla:
-            max_cla = cla
-            best_seed = seed
+        print("class center :")
+        print(centers)
+    else:
+        for seed in range(args.iter):
+            gmm = GaussianMixture(n_components=n_class, random_state=seed)
+            gmm.fit(train_vec)
+            documents_to_class = gmm.predict(train_vec)
+            centers = gmm.means_
+            row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
+            cla = centers[row_ind, col_ind].sum()
+            if cla > max_cla:
+                max_cla = cla
+                best_seed = seed
 
-    gmm = GaussianMixture(n_components=n_class, random_state=best_seed)
-    gmm.fit(train_vec)
-    documents_to_class = gmm.predict(train_vec)
-    centers = gmm.means_
-    row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-    print("best seed : " + str(best_seed))
-    print("class center :")
-    print(centers)
+        gmm = GaussianMixture(n_components=n_class, random_state=best_seed)
+        gmm.fit(train_vec)
+        documents_to_class = gmm.predict(train_vec)
+        centers = gmm.means_
+        row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
+        print("best seed : " + str(best_seed))
+        print("class center :")
+        print(centers)
 
     if args.n_shot == 0:
         _, examples = load_examples(stem, args.split)
