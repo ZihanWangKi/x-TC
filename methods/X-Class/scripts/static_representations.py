@@ -148,7 +148,7 @@ def main(args):
 
     for text in tqdm(data):
         tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(args, tokenizer, text)
-        counts.update(word.translate(str.maketrans('','',string.punctuation)) for word in tokenized_text)
+        counts.update(word.translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' ')))) for word in tokenized_text)
         
     del counts['']
     updated_counts = {k: c for k, c in counts.items() if c >= args.vocab_min_occurrence}
@@ -162,7 +162,7 @@ def main(args):
         contextualized_word_representations = handle_sentence(model, args.layer, tokenized_text,
                                          tokenized_to_id_indicies, tokenids_chunks)
         for i in range(len(tokenized_text)):
-          word = tokenized_text[i]
+          word = tokenized_text[i].translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' '))))
           if word in updated_counts.keys():
             if word not in word_rep:
               word_rep[word] = 0
