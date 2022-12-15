@@ -150,6 +150,7 @@ def main(args):
             centers = gmm.means_
             row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
             cla = centers[row_ind, col_ind].sum()
+            print(cla, centers)
             if cla > max_cla:
                 max_cla = cla
                 best_seed = seed
