@@ -131,38 +131,46 @@ def main(args):
         vecs = np.array(vecs)
         max_cla = -1000000
         best_seed = 0
-        for seed in range(args.iter):
-            if args.magic:
-                assignment_matrix = np.zeros((len(pred), len(dataset["class_names"])))
-                for i in range(len(pred)):
-                    assignment_matrix[i][pred[i]] = 1.0
+        if args.magic:
+            assignment_matrix = np.zeros((len(pred), len(dataset["class_names"])))
+            for i in range(len(pred)):
+                assignment_matrix[i][pred[i]] = 1.0
 
-                gmm = GaussianMixture(n_components=len(dataset["class_names"]),
-                                      random_state=seed, warm_start=True)
-                gmm.converged_ = "HACK"
+            gmm = GaussianMixture(n_components=len(dataset["class_names"]),
+                                  random_state=seed, warm_start=True)
+            gmm.converged_ = "HACK"
 
-                gmm._initialize(vecs, assignment_matrix)
-                gmm.lower_bound_ = -np.infty
-            else:
-                gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
+            gmm._initialize(vecs, assignment_matrix)
+            gmm.lower_bound_ = -np.infty
+
             gmm.fit(vecs)
             documents_to_class = gmm.predict(vecs)
             centers = gmm.means_
             row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-            cla = centers[row_ind, col_ind].sum()
-            print(cla, centers)
-            if cla > max_cla:
-                max_cla = cla
-                best_seed = seed
+            print("best seed : " + str(best_seed))
+            print("class center :")
+            print(centers)
+        else:
+            for seed in range(args.iter):
+                gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
+                gmm.fit(vecs)
+                documents_to_class = gmm.predict(vecs)
+                centers = gmm.means_
+                row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
+                cla = centers[row_ind, col_ind].sum()
+                print(cla, centers)
+                if cla > max_cla:
+                    max_cla = cla
+                    best_seed = seed
 
-        gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=best_seed)
-        gmm.fit(vecs)
-        documents_to_class = gmm.predict(vecs)
-        centers = gmm.means_
-        row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
-        print("best seed : " + str(best_seed))
-        print("class center :")
-        print(centers)
+            gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=best_seed)
+            gmm.fit(vecs)
+            documents_to_class = gmm.predict(vecs)
+            centers = gmm.means_
+            row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
+            print("best seed : " + str(best_seed))
+            print("class center :")
+            print(centers)
     else:
         vecs = np.array(vecs)
         min_cla = 1000000
@@ -254,7 +262,7 @@ if __name__ == '__main__':
     parser.add_argument("--lm_type", type=str, default='bbu')
     parser.add_argument("--vocab_min_occurrence", type=int, default=5)
     # last layer of BERT
-    parser.add_argument("--iter", type=int, default=10)
+    parser.add_argument("--iter", type=int, default=100)
     parser.add_argument("--add_mask", action='store_true', default=False)
     parser.add_argument("--magic", action='store_true', default=False)
     args = parser.parse_args()
