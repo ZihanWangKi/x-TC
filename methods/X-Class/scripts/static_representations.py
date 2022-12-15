@@ -173,7 +173,12 @@ def main(args):
     word_avg = {}
     for k,v in word_rep.items():
       word_avg[k] = word_rep[k]/word_count[k]
-    
+
+    class_names = dataset["class_names"]
+    for cls in class_names:
+        print(word_avg[cls], word_count[cls])
+
+
     vocab_words = list(word_avg.keys())
     static_word_representations = list(word_avg.values())
     vocab_occurrence = list(word_count.values()) 
