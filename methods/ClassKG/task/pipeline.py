@@ -7,15 +7,13 @@ sys.path.append('..')
 
 from torch.multiprocessing import spawn
 
-GPUs = '3'
+#GPUs = '3'
 #cfg_file = '20News_Fine.yaml'
 #visdom_env_name = '20New_Fine'
 
-os.environ['CUDA_VISIBLE_DEVICES'] = GPUs
-
 os.environ['MASTER_ADDR'] = '127.0.0.1'
 os.environ['MASTER_PORT'] = '10877'
-world_size = len(GPUs.split(','))
+world_size = 1#len(GPUs.split(','))
 device = torch.device('cuda')
 
 from Models.Base.build_classifier import build_classifier_with_cfg
@@ -101,10 +99,12 @@ def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", default="ag_news", help="dataset name")
-    parser.add_argument("--total_iter", type=int, default=3)
+    parser.add_argument("--gpu", type=int, default=0)
+    parser.add_argument("--total_iter", type=int, default=1)
     parser.add_argument("--random_state", type=int, default=42)
     args = parser.parse_args()
     print(args)
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpu)
     cfg_file = args.dataset + ".yaml"
     visdom_env_name = args.dataset
     torch.multiprocessing.set_start_method('spawn')

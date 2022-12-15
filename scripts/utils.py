@@ -288,11 +288,50 @@ def run_method(args, train_set, test_set):
             json.dump(train_list, f, indent=2)
         with open("../methods/ClassKG/data/processed/{}/test.json".format(args.dataset), 'w') as f:
             json.dump(test_list, f, indent=2)
-        with open("../methods/ClassKG/config/{}.yaml".format(args.dataset), 'w') as f:
-            ...
 
-        #os.chdir("../methods/ClassKG/task")
-        #os.system("python pipeline.py --dataset {} --random_state {}".format(args.dataset, args.random_state))
+        import yaml
+        default_para = {
+            "data_dir_name": args.dataset,
+
+            "model": {
+                "number_classes": 2
+            },
+
+            "SSL": {
+                "enable": True,
+                "number_itr": 100000
+            },
+
+            "keywords_update": {
+                "extract_keywords_per_class": [1000],
+                "keywords_set_keep_max_num": [1000],
+                "IDF_n": 4,
+                "overwrite_conflict": True
+            },
+
+            "classifier": {
+                "n_epochs": 100,
+                "batch_size": 8,
+                "stop_itr": [400],
+                "lr": 5e-6,
+                "eval_interval": 80,
+                "type": "short"
+            },
+
+            "trainer_Graph": {
+                "epoch": [4, 10],
+                "batch_size": 256
+            },
+
+            "file_path": {
+                "save_dir": args.dataset
+            },
+        }
+        with open("../methods/ClassKG/config/{}.yaml".format(args.dataset), 'w') as f:
+            yaml.dump(data=default_para, stream=f, allow_unicode=True, default_flow_style=None)
+
+        os.chdir("../methods/ClassKG/task")
+        os.system("python pipeline.py --gpu {} --dataset {} --random_state {}".format(args.gpu, args.dataset, args.random_state))
     elif args.method.startswith("gpt") and args.additional_method == None:
         assert args.prompt == True
         assert args.class_names == True
