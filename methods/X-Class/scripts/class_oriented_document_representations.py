@@ -132,7 +132,7 @@ def main(args):
     static_repr_path = os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk")
     with open(static_repr_path, "rb") as f:
         vocab = pk.load(f)
-        roberta_representations = vocab["roberta_representations"]
+        roberta_representations = vocab["roberta"]
         static_word_representations = vocab["static_word_representations"]
         word_to_index = vocab["word_to_index"]
         vocab_words = vocab["vocab_words"]
