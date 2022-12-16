@@ -182,8 +182,19 @@ def main(args):
     print(cosine_similarity_embedding(word_avg["negative"], word_avg["positive"]))
 
     vocab_words = list(word_avg.keys())
-    static_word_representations = list(word_avg.values())
-    vocab_occurrence = list(word_count.values()) 
+    static_word_representations = np.array(word_avg.values())
+    vocab_occurrence = list(word_count.values())
+
+    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+        from sklearn.decomposition import PCA
+        if args.lm_type == "roberta-large":
+            len = 1024
+        else:
+            len =  768
+        _pca = PCA(n_components=1024, random_state=args.random_state)
+        static_word_representations = _pca.fit_transform(static_word_representations)[:][1:]
+        print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
+
 
     with open(os.path.join(data_folder, f"tokenization_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
