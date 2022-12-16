@@ -188,10 +188,10 @@ def main(args):
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
         from sklearn.decomposition import PCA
         if args.lm_type == "roberta-large":
-            len = 1024
+            Len = 1024
         else:
-            len =  768
-        _pca = PCA(n_components=1024, random_state=args.random_state)
+            Len =  768
+        _pca = PCA(n_components=Len, random_state=args.random_state)
         static_word_representations = _pca.fit_transform(static_word_representations)[:][1:]
         print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
 
