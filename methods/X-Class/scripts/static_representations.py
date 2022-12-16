@@ -182,7 +182,7 @@ def main(args):
     print(cosine_similarity_embedding(word_avg["negative"], word_avg["positive"]))
 
     vocab_words = list(word_avg.keys())
-    static_word_representations = np.array(word_avg.values())
+    static_word_representations = np.array(list(word_avg.values()))
     vocab_occurrence = list(word_count.values())
 
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
