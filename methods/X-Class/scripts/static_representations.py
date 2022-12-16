@@ -192,7 +192,7 @@ def main(args):
         else:
             Len =  768
         _pca = PCA(n_components=Len, random_state=args.random_state)
-        static_word_representations = _pca.fit_transform(static_word_representations)[:][1:]
+        static_word_representations = _pca.fit_transform(static_word_representations)[:, 1:]
         print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
 
     print(static_word_representations.shape)
