@@ -76,9 +76,11 @@ def weight_sentence_with_attention(vocab, tokenized_text, contextualized_word_re
 
     static_word_representations = vocab["static_word_representations"]
     word_to_index = vocab["word_to_index"]
+    import string
     for i, token in enumerate(tokenized_text):
-        if token in word_to_index:
-            static_representations.append(static_word_representations[word_to_index[token]])
+        t = token.translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' '))))
+        if t in word_to_index:
+            static_representations.append(static_word_representations[word_to_index[t]])
             contextualized_representations.append(contextualized_word_representations[i])
     if len(contextualized_representations) == 0:
         print("Empty Sentence (or sentence with no words that have enough frequency)")
