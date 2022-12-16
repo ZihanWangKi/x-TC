@@ -142,6 +142,8 @@ def main(args):
     print("Finish reading data")
 
     print(class_names)
+    for cls in class_names:
+        print(static_word_representations[cls])
 
     finished_class = set()
     masked_words = set(class_names)
