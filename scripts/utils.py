@@ -294,7 +294,7 @@ def run_method(args, train_set, test_set):
             "data_dir_name": args.dataset,
 
             "model": {
-                "number_classes": 2
+                "number_classes": len(seeds)
             },
 
             "SSL": {
@@ -312,9 +312,9 @@ def run_method(args, train_set, test_set):
             "classifier": {
                 "n_epochs": 100,
                 "batch_size": 8,
-                "stop_itr": [400],
+                "stop_itr": [500],
                 "lr": 5e-6,
-                "eval_interval": 80,
+                "eval_interval": 50,
                 "type": "short"
             },
 

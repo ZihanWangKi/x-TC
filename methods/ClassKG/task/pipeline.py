@@ -100,7 +100,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", default="ag_news", help="dataset name")
     parser.add_argument("--gpu", type=int, default=0)
-    parser.add_argument("--total_iter", type=int, default=1)
+    parser.add_argument("--total_iter", type=int, default=3)
     parser.add_argument("--random_state", type=int, default=42)
     args = parser.parse_args()
     print(args)
