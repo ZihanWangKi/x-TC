@@ -185,6 +185,7 @@ def main(args):
     static_word_representations = np.array(list(word_avg.values()))
     vocab_occurrence = list(word_count.values())
     print(static_word_representations.shape)
+    roberta_representations = np.array([])
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
         from sklearn.decomposition import PCA
         if args.lm_type == "roberta-large":
@@ -192,10 +193,10 @@ def main(args):
         else:
             Len =  768
         _pca = PCA(n_components=Len, random_state=args.random_state)
-        static_word_representations = _pca.fit_transform(static_word_representations)[:, 1:]
+        roberta_representations = _pca.fit_transform(static_word_representations)[:, 1:]
         print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
 
-    print(static_word_representations.shape)
+    print(roberta_representations.shape)
     with open(os.path.join(data_folder, f"tokenization_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
             "tokenization_info": tokenization_info,
@@ -203,6 +204,7 @@ def main(args):
 
     with open(os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
+            "roberta": roberta_representations,
             "static_word_representations": static_word_representations,
             "vocab_words": vocab_words,
             "word_to_index": {v: k for k, v in enumerate(vocab_words)},

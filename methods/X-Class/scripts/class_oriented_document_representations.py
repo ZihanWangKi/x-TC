@@ -132,6 +132,7 @@ def main(args):
     static_repr_path = os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk")
     with open(static_repr_path, "rb") as f:
         vocab = pk.load(f)
+        roberta_representations = vocab["roberta_representations"]
         static_word_representations = vocab["static_word_representations"]
         word_to_index = vocab["word_to_index"]
         vocab_words = vocab["vocab_words"]
@@ -141,17 +142,24 @@ def main(args):
 
     print("Finish reading data")
 
+    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+        representations = roberta_representations
+    else:
+        representations = static_word_representations
     finished_class = set()
     masked_words = set(class_names)
     cls_repr = [None for _ in range(len(class_names))]
     class_words = [[class_names[cls]] for cls in range(len(class_names))]
+    class_words_representations_ = [[representations[word_to_index[class_names[cls]]]]
+                                   for cls in range(len(class_names))]
     class_words_representations = [[static_word_representations[word_to_index[class_names[cls]]]]
                                    for cls in range(len(class_names))]
 
     #################
+    """
     class_representations = [average_with_harmonic_series(class_words_representation)
-                             for class_words_representation in class_words_representations]
-    cosine_similarities = cosine_similarity_embeddings(static_word_representations,
+                             for class_words_representation in class_words_representations_]
+    cosine_similarities = cosine_similarity_embeddings(representations,
                                                        class_representations)
     nearest_class = cosine_similarities.argmax(axis=1)
     similarities = cosine_similarities.max(axis=1)
@@ -160,12 +168,13 @@ def main(args):
             if nearest_class[i] == cls:
                 if similarities[i] > 0.97:
                     print(cls, i, word, similarities)
+    """
     ################
 
     for t in range(1, args.T):
         class_representations = [average_with_harmonic_series(class_words_representation)
-                                 for class_words_representation in class_words_representations]
-        cosine_similarities = cosine_similarity_embeddings(static_word_representations,
+                                 for class_words_representation in class_words_representations_]
+        cosine_similarities = cosine_similarity_embeddings(representations,
                                                            class_representations)
         nearest_class = cosine_similarities.argmax(axis=1)
         similarities = cosine_similarities.max(axis=1)
@@ -203,6 +212,7 @@ def main(args):
                 cls_repr[cls] = average_with_harmonic_series(class_words_representations[cls])
                 break
             class_words[cls].append(vocab_words[highest_similarity_word_index])
+            class_words_representations_[cls].append(representations[highest_similarity_word_index])
             class_words_representations[cls].append(static_word_representations[highest_similarity_word_index])
             masked_words.add(vocab_words[highest_similarity_word_index])
             cls_repr[cls] = average_with_harmonic_series(class_words_representations[cls])
