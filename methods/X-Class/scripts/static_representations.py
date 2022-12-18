@@ -196,8 +196,8 @@ def main(args):
         ew, ev = np.linalg.eig(np.cov(static_word_representations.T))
         pc = ev[:, np.argmax(ew)].reshape(-1, 1)
         pcT = pc.reshape(1, -1)
-        print(pcT.dot(pc).shape)
-        static_word_representations -= static_word_representations.dot(pcT.dot(pc))  #_pca.fit_transform(static_word_representations)[0, :]
+        print(pc.dot(pcT).shape)
+        static_word_representations -= static_word_representations.dot(pc.dot(pcT))  #_pca.fit_transform(static_word_representations)[0, :]
         #print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
 
     with open(os.path.join(data_folder, f"tokenization_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
