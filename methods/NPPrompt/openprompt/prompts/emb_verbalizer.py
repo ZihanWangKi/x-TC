@@ -161,7 +161,7 @@ class EmbVerbalizer(Verbalizer):
     def from_file(self, select_num: Optional[int] = 40, truncate: Optional[float] = -1., dataset_name: Optional[str] = " ",
                   path: Optional[str] = None, tmodel: Optional[str] = 'roberta'):
         print('Dataset name:', dataset_name)
-        dir = f"./datasets/" + dataset_name + "class_name.txt"
+        dir = f"./datasets/" + dataset_name + "/class_name.txt"
         with open(dir, "r") as fp:
             class_names = list(map(lambda x: ' ' + x.strip().lower(), fp.readlines()))
         class_names = [[_] for _ in class_names]
