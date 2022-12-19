@@ -51,7 +51,7 @@ if __name__ == '__main__':
     numpy.random.seed(args.random_state)
 
     methods = ["BERTprompt", "X-Class", "ConWea", "LOTClass", "WeSTClass", "ClassKG",
-               "gpt2-small", "gpt2-medium", "gpt2-large", "gpt2-xl"]
+               "gpt2-small", "gpt2-medium", "gpt2-large", "gpt2-xl", "NPPrompt"]
     assert args.method in methods
 
     main(args)
