@@ -1,10 +1,14 @@
 import os
 import pickle
 import json
+import string
+
 import pandas as pd
 import numpy as np
 from datasets import load_dataset, list_datasets
 import csv
+
+DATA_FOLDER_PATH = os.path.join('..', 'data')
 
 def split_data(args):
     if args.dataset in list_datasets():
@@ -24,10 +28,13 @@ def split_data(args):
             test_set = dataset
         #test_set = train_test["test"]
     else:
+        assert args.dataset in ['20News', 'NYT-Small', 'NYT-Locations', 'NYT-Topics']
+        dataset = load_dataset('text', data_files = {"text": os.path.join(DATA_FOLDER_PATH, args.dataset, 'dataset.txt'), "label": os.path.join(DATA_FOLDER_PATH, args.dataset, 'label.txt')})
+        train_test = dataset.train_test_split(train_size=args.train_size, shuffle=True, seed=args.random_state)
         ...
 
-    punctuation = ['.', ':', ',', '/', '?', '<', '>', ';', '[', ']', '{', '}', '-', '_', '`', '~', '+', '=', '\'', '\"',
-                   '|', '\\']
+    import string
+    punctuation =  string.punctuation
     def concat(example):
         example["x-TC"] = ""
         for arg in args.text_name:
@@ -421,4 +428,29 @@ def run_method(args, train_set, test_set):
         os.system(
             "CUDA_VISIBLE_DEVICES={} python ProtoCal.py {} --model {} --split test --seed {} {}"
             .format(args.gpu, args.dataset, args.method, args.random_state, args.suffix))
+    elif args.method.startswith("NPPrompt"):
+        assert args.prompt == True
+        assert args.class_names == True
+        assert args.seed_words == False
+        os.system("mkdir -p ../methods/NPPrompt/datasets/{}".format(args.dataset))
+        os.system("cp class_names.txt ../methods/NPPrompt/datasets/{}/class_names.txt".format(args.dataset))
+        os.system("cp prompt.txt ../methods/NPPrompt/datasets/{}/prompt.txt".format(args.dataset))
+        with open("../methods/NPPrompt/datasets/{}/train.txt".format(args.dataset), "w") as f:
+            for line in train_set["x-TC"]:
+                f.write(str(line))
+                f.write("\n")
+        with open("../methods/NPPrompt/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
+            for line in train_set[args.label_name]:
+                f.write(str(line))
+                f.write("\n")
+        with open("../methods/NPPrompt/datasets/{}/test.txt".format(args.dataset), "w") as f:
+            for line in test_set["x-TC"]:
+                f.write(str(line))
+                f.write("\n")
+        with open("../methods/NPPrompt/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
+            for line in test_set[args.label_name]:
+                f.write(str(line))
+                f.write("\n")
+        os.chdir("../methods/NPPrompt")
+        os.system("sh example_run.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
 
