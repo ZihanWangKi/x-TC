@@ -5,8 +5,7 @@ from openprompt.data_utils.huggingface_dataset import YahooAnswersTopicsProcesso
 import torch
 import argparse
 from openprompt import PromptDataLoader
-from openprompt.prompts import ManualVerbalizer, EmbVerbalizer
-from openprompt.prompts import ManualTemplate
+from openprompt.prompts import *
 from openprompt import PromptForClassification
 
 from openprompt.utils.reproduciblity import set_seed
