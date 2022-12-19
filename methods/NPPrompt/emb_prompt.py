@@ -189,7 +189,7 @@ else:
 """
 
 # no id, use provided template
-mytemplate = ManualTemplate(tokenizer=tokenizer).from_file(f"{args.openprompt_path}/datasets/" + args.dataset + "/prompt.txt")
+mytemplate = ManualTemplate(tokenizer=tokenizer).from_file_(f"{args.openprompt_path}/datasets/" + args.dataset + "/prompt.txt")
 
 if args.verbalizer == "ept":
     myverbalizer = EmbVerbalizer(tokenizer, model=plm, classes=class_labels, candidate_frac=cutoff, max_token_split=args.max_token_split, sumprob=args.sumprob, verbose=args.verbose).from_file(
