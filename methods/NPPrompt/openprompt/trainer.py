@@ -27,7 +27,7 @@ from openprompt.utils.logging import logger
 from openprompt.utils.metrics import classification_metrics, generation_metric
 from transformers import AdamW, get_linear_schedule_with_warmup
 from transformers.optimization import Adafactor, AdafactorSchedule
-
+from yacs.config import CfgNode
 
 class BaseRunner(object):
     r"""A base runner for training without training tricks.
