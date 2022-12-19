@@ -1,3 +1,8 @@
+import os, shutil
+import sys
+
+sys.path.append(".")
+
 from transformers.data.processors.utils import InputExample, InputFeatures
 
 from openprompt import PromptDataLoader, PromptForClassification
