@@ -7,7 +7,7 @@ from collections import namedtuple
 
 import torch
 from yacs.config import CfgNode
-from openprompt.utils.logging import logger
+#from openprompt.utils.logging import logger
 
 
 def round_list(l: List[float], max_sum: int):
@@ -73,7 +73,7 @@ def check_config_conflicts(config: CfgNode):
 
     if config.task == "generation":
         if config.dataloader.max_seq_length >= config.generation.max_length:
-            logger.warning("In generation, your config.generation.max_length is shorter than config.max_seq_length"
-                           "This can lead to unexpected behavior. You should consider increasing ``config.generation.max_length``."
-                           )
+            #logger.warning("In generation, your config.generation.max_length is shorter than config.max_seq_length"
+            #               "This can lead to unexpected behavior. You should consider increasing ``config.generation.max_length``."
+            #               )
             raise RuntimeError
