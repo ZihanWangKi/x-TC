@@ -8,7 +8,7 @@ from transformers.data.processors.utils import InputExample, InputFeatures
 from openprompt import PromptDataLoader, PromptForClassification
 from openprompt.pipeline_base import PromptModel
 
-from openprompt.prompts import ManualVerbalizer, ManualTemplate
+from openprompt.prompts import *
 from typing import List, Optional, Dict, Union
 from . import Verbalizer, PromptDataLoader
 import copy
