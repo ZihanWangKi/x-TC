@@ -433,8 +433,8 @@ def run_method(args, train_set, test_set):
         assert args.class_names == True
         assert args.seed_words == False
         os.system("mkdir -p ../methods/NPPrompt/datasets/{}".format(args.dataset))
-        os.system("cp class_names.txt ../methods/NPPrompt/datasets/{}/class_names.txt".format(args.dataset))
-        os.system("cp prompt.txt ../methods/NPPrompt/datasets/{}/prompt.txt".format(args.dataset))
+        os.system("cp class_names_NPP.txt ../methods/NPPrompt/datasets/{}/class_names.txt".format(args.dataset))
+        os.system("cp prompt_NPP.txt ../methods/NPPrompt/datasets/{}/prompt.txt".format(args.dataset))
         with open("../methods/NPPrompt/datasets/{}/train.txt".format(args.dataset), "w") as f:
             for line in train_set["x-TC"]:
                 f.write(str(line))
