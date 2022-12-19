@@ -17,7 +17,6 @@ from .trainer import ClassificationRunner
 from yacs.config import CfgNode
 from openprompt.utils.logging import logger
 from openprompt.utils.cuda import model_to_device
-from openprompt.prompts import load_template_generator, load_verbalizer_generator
 from openprompt.plms import load_plm_from_config
 
 
