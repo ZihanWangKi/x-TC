@@ -151,7 +151,7 @@ def main(args):
         counts.update(word.translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' ')))) for word in tokenized_text)
         
     del counts['']
-    updated_counts = {k: c for k, c in counts.items() if c >= 0}#args.vocab_min_occurrence}
+    updated_counts = {k: c for k, c in counts.items() if c >= args.vocab_min_occurrence}
     print(len(updated_counts))
     print(updated_counts)
     word_rep = {}
@@ -180,10 +180,11 @@ def main(args):
     #for cls in class_names:
     #    print(word_avg[cls], word_count[cls])
     #print(cosine_similarity_embedding(word_avg["negative"], word_avg["positive"]))
-    print(word_avg)
+    # print(word_avg)
     vocab_words = list(word_avg.keys())
     static_word_representations = np.array(list(word_avg.values()))
 
+    """
     def cosine_similarity(repr_a: np.ndarray, repr_b: np.ndarray):
         assert 1 <= repr_a.ndim <= 2 and 1 <= repr_b.ndim <= 2
         if repr_a.ndim == 1:
@@ -195,8 +196,11 @@ def main(args):
                                                                               np.linalg.norm(repr_b, axis=1))
         return np.squeeze(cosine_similarities)
     print(cosine_similarity(static_word_representations,static_word_representations))
+    
+    """
     vocab_occurrence = list(word_count.values())
 
+    """
     #roberta_representations = np.array([])
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
         from sklearn.decomposition import PCA
@@ -211,7 +215,7 @@ def main(args):
         print(pc.dot(pcT).shape)
         static_word_representations -= static_word_representations.dot(pc.dot(pcT))  #_pca.fit_transform(static_word_representations)[0, :]
         #print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
-
+    """
     with open(os.path.join(data_folder, f"tokenization_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
             "tokenization_info": tokenization_info,
