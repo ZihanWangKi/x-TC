@@ -1,1 +1,1 @@
- {} All in all , it was
+ {"placeholder": "text_a"} All in all , it was {"mask"} .
