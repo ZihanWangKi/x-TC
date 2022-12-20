@@ -1,2 +1,1 @@
- review: {"placeholder": "text_a"}
- sentiment: {"mask"}
+ {"placeholder": "text_a"} All in all , it was {"mask"} .
