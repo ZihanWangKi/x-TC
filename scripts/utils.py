@@ -47,7 +47,7 @@ def split_data(args):
     train_set = train_set.map(concat)
     test_set = test_set.map(concat)
     print("Finish data split!")
-    print("Sampled instance:", test_set[0])
+    print("Sampled instance:", train_set[0])
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
     return train_set, test_set
 
