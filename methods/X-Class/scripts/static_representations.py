@@ -183,6 +183,18 @@ def main(args):
 
     vocab_words = list(word_avg.keys())
     static_word_representations = np.array(list(word_avg.values()))
+
+    def cosine_similarity(repr_a: np.ndarray, repr_b: np.ndarray):
+        assert 1 <= repr_a.ndim <= 2 and 1 <= repr_b.ndim <= 2
+        if repr_a.ndim == 1:
+            repr_a = repr_a[np.newaxis, :]
+        if repr_b.ndim == 1:
+            repr_b = repr_b[np.newaxis, :]
+        assert repr_a.shape[1] == repr_b.shape[1]
+        cosine_similarities = np.dot(repr_a, np.transpose(repr_b)) / np.outer(np.linalg.norm(repr_a, axis=1),
+                                                                              np.linalg.norm(repr_b, axis=1))
+        return np.squeeze(cosine_similarities)
+    print((static_word_representations,static_word_representations))
     vocab_occurrence = list(word_count.values())
 
     #roberta_representations = np.array([])
