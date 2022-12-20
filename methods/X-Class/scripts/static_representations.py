@@ -176,11 +176,11 @@ def main(args):
       word_avg[k] = word_rep[k]/word_count[k]
 
     class_names = dataset["class_names"]
-    from utils import cosine_similarity_embedding
-    for cls in class_names:
-        print(word_avg[cls], word_count[cls])
-    print(cosine_similarity_embedding(word_avg["negative"], word_avg["positive"]))
-
+    #from utils import cosine_similarity_embedding
+    #for cls in class_names:
+    #    print(word_avg[cls], word_count[cls])
+    #print(cosine_similarity_embedding(word_avg["negative"], word_avg["positive"]))
+    print(word_avg)
     vocab_words = list(word_avg.keys())
     static_word_representations = np.array(list(word_avg.values()))
 
