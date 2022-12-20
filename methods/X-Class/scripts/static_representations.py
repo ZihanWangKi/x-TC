@@ -151,7 +151,7 @@ def main(args):
         counts.update(word.translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' ')))) for word in tokenized_text)
         
     del counts['']
-    updated_counts = {k: c for k, c in counts.items() if c >= 0)#args.vocab_min_occurrence}
+    updated_counts = {k: c for k, c in counts.items() if c >= 0}#args.vocab_min_occurrence}
     print(len(updated_counts))
     print(updated_counts)
     word_rep = {}
