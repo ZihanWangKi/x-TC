@@ -194,7 +194,7 @@ def main(args):
         cosine_similarities = np.dot(repr_a, np.transpose(repr_b)) / np.outer(np.linalg.norm(repr_a, axis=1),
                                                                               np.linalg.norm(repr_b, axis=1))
         return np.squeeze(cosine_similarities)
-    print((static_word_representations,static_word_representations))
+    print(cosine_similarity(static_word_representations,static_word_representations))
     vocab_occurrence = list(word_count.values())
 
     #roberta_representations = np.array([])
