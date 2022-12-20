@@ -11,8 +11,8 @@ VERBALIZER=ept #
 CALIBRATION=""
 FILTER=tfidf_filter # none
 VERBOSE=1
-MODEL="bert" # "roberta"
-MODEL_NAME_OR_PATH="bert-base-uncased" # "roberta-large" # "bert-base-uncased"
+MODEL="roberta" # "roberta"
+MODEL_NAME_OR_PATH="roberta-large" # "roberta-large" # "bert-base-uncased"
 # RESULTPATH="results_agnews.txt"
 OPENPROMPTPATH="."
 
