@@ -195,7 +195,7 @@ def main(args):
         cosine_similarities = np.dot(repr_a, np.transpose(repr_b)) / np.outer(np.linalg.norm(repr_a, axis=1),
                                                                               np.linalg.norm(repr_b, axis=1))
         return np.squeeze(cosine_similarities)
-    print(cosine_similarity(static_word_representations,static_word_representations))
+    #print(cosine_similarity(static_word_representations,static_word_representations))
     
 
     vocab_occurrence = list(word_count.values())
@@ -203,8 +203,8 @@ def main(args):
     embedding_norms = np.linalg.norm(static_word_representations, axis=1, keepdims=True)
     unit_embeddings = static_word_representations / embedding_norms
     mean_vec = embedding_norms * np.mean(unit_embeddings, axis=0, keepdims=True)
-    static_word_representations -= mean_vec
-    print(cosine_similarity(static_word_representations, static_word_representations))
+    #static_word_representations -= mean_vec
+    print(cosine_similarity(static_word_representations - mean_vec, static_word_representations - mean_vec))
 
 
     """
@@ -230,6 +230,7 @@ def main(args):
 
     with open(os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
+            "roberta": static_word_representations -
             "static_word_representations": static_word_representations,
             "vocab_words": vocab_words,
             "word_to_index": {v: k for k, v in enumerate(vocab_words)},
