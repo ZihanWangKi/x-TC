@@ -230,7 +230,7 @@ def main(args):
 
     with open(os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
-            "roberta": static_word_representations - mean_vec
+            "roberta": static_word_representations - mean_vec,
             "static_word_representations": static_word_representations,
             "vocab_words": vocab_words,
             "word_to_index": {v: k for k, v in enumerate(vocab_words)},
