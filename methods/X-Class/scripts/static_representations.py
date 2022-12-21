@@ -170,7 +170,8 @@ def main(args):
             if word not in word_rep:
               word_rep[word] = 0
               word_count[word] = 0
-            word_rep[word] += embedding[tokenizer._convert_token_to_id(word)].cpu().numpy() #contextualized_word_representations[i]
+            with torch.no_grad():
+                word_rep[word] += embedding[tokenizer._convert_token_to_id(word)].cpu().detach().numpy() #contextualized_word_representations[i]
             word_count[word] += 1
         
     word_avg = {}
