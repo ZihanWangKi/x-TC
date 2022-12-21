@@ -134,7 +134,7 @@ def main(args):
     static_repr_path = os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk")
     with open(static_repr_path, "rb") as f:
         vocab = pk.load(f)
-        roberta = vocab["roberta"]
+        #roberta = vocab["roberta"]
         static_word_representations = vocab["static_word_representations"]
         word_to_index = vocab["word_to_index"]
         vocab_words = vocab["vocab_words"]
@@ -144,7 +144,7 @@ def main(args):
 
     print("Finish reading data")
 
-    representations = roberta
+    representations = static_word_representations
     finished_class = set()
     masked_words = set(class_names)
     cls_repr = [None for _ in range(len(class_names))]

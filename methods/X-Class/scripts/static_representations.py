@@ -74,6 +74,7 @@ def sentence_encode(tokens_id, model, layer):
     all_layer_outputs = hidden_states[2]
 
     layer_embedding = tensor_to_numpy(all_layer_outputs[layer].squeeze(0))[1: -1]
+
     return layer_embedding
 
 
@@ -157,6 +158,7 @@ def main(args):
     word_rep = {}
     word_count = {}
 
+    embedding = model.embeddings.word_embeddings.weight
     for text in tqdm(data):
         tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(args, tokenizer, text)
         tokenization_info.append((tokenized_text, tokenized_to_id_indicies, tokenids_chunks))
@@ -168,7 +170,7 @@ def main(args):
             if word not in word_rep:
               word_rep[word] = 0
               word_count[word] = 0
-            word_rep[word] += contextualized_word_representations[i]
+            word_rep[word] += embedding[tokenizer._convert_token_to_id(word)].numpy() #contextualized_word_representations[i]
             word_count[word] += 1
         
     word_avg = {}
@@ -230,7 +232,7 @@ def main(args):
 
     with open(os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
-            "roberta": static_word_representations - mean_vec,
+            #"roberta": static_word_representations - mean_vec,
             "static_word_representations": static_word_representations,
             "vocab_words": vocab_words,
             "word_to_index": {v: k for k, v in enumerate(vocab_words)},
