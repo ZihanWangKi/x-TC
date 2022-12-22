@@ -50,7 +50,7 @@ class_labels = Proc.get_labels()
 #scriptformat = "txt"
 cutoff = 0.5#0.5 if (not args.nocut) else 0.0
 max_seq_l = 512#128
-batch_s = 200#800
+batch_s = 60#800
 num_labels = [i for i in range(len(class_labels))]
 
 """
