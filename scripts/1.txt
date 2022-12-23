@@ -4,7 +4,7 @@ L:LOTClass
 
 NCCL_P2P_DISABLE="1” NCCL_IB_DISABLE="1"
 
-
+dbpedia_14
 DATASETS_CLASS_NAMES = {
     "ag_news": ["Politics", "Sports", "Business", "Technology"], # from xclass/lotclass
     "dbpedia_14": [ # xclass, another prompt, https://github.com/peterwestuw/surface-form-competition/blob/ffc22c6352f41ae1519c370564c9f4cb993fed75/data_loaders.py#L598
