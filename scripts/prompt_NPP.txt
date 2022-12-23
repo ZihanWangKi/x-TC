@@ -1,2 +1,2 @@
- text: {"placeholder": "text_a"}
- topic: {"mask"}
+ review: {"placeholder": "text_a"}
+ sentiment: {"mask"}
