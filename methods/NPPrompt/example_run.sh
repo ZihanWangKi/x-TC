@@ -23,7 +23,7 @@ rm -f ${DATASET}_${MODEL}_cos.pt
 
 mkdir -p "results/$MODEL_NAME_OR_PATH"
 
-i=10
+i=100
 
 CUDA_VISIBLE_DEVICES=$GPU $PYTHONPATH emb_prompt.py \
         --model $MODEL \
