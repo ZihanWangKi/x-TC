@@ -228,6 +228,21 @@ for step, inputs in enumerate(pbar):
     allprobs.append(torch.softmax(stat, dim=-1).cpu())
 acc = sum([int(i == j) for i, j in zip(allpreds, alllabels)]) / len(allpreds)
 
+from sklearn.metrics import confusion_matrix, f1_score
+import numpy as np
+def f1(y_true, y_pred):
+    # y_true = y_true.astype(np.int64)
+    assert y_pred.size == y_true.size
+    confusion = confusion_matrix(y_true, y_pred)
+    print("-" * 80 + "Evaluating" + "-" * 80)
+    print(confusion)
+    f1_macro = f1_score(y_true, y_pred, average='macro')
+    f1_micro = f1_score(y_true, y_pred, average='micro')
+    return f1_macro, f1_micro
+
+f1_macro, f1_micro = np.round(f1(np.array(alllabels), np.array(allpreds)), 5)
+print('lm F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
+
 clas_tag = True
 try:
     matt_cor = matthews_corrcoef(alllabels, allpreds)
