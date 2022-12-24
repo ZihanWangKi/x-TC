@@ -1,5 +1,2 @@
-poor
 bad
-average
 good
-excellent
