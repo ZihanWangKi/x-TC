@@ -29,7 +29,7 @@ def split_data(args):
         #test_set = train_test["test"]
     else:
         assert args.dataset in ['20News', 'NYT-Small', 'NYT-Locations', 'NYT-Topics']
-        dataset = load_dataset('text', data_files = {"text": os.path.join(DATA_FOLDER_PATH, args.dataset, 'dataset.txt'), "label": os.path.join(DATA_FOLDER_PATH, args.dataset, 'label.txt')})
+        dataset = load_dataset('text', data_files = {"text": os.path.join(DATA_FOLDER_PATH, args.dataset, 'dataset.txt'), "label": os.path.join(DATA_FOLDER_PATH, args.dataset, 'labels.txt')})
         train_test = dataset.train_test_split(train_size=args.split_ratio, shuffle=True, seed=args.random_state)
         dataset = train_test["train"]
         if args.train_size < 1.0:
