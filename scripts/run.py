@@ -19,6 +19,8 @@ if __name__ == '__main__':
                         help="The exact name of the text in raw data, e.g. 'text'.")
     parser.add_argument("--label_name", default="label",
                         help="The exact name of the label in raw data, e.g. 'label-coarse'.")
+    parser.add_argument("--split_ratio", default=None,
+                        help="only for manually added dataset")
     parser.add_argument("--split", default="test",
                         help="test on test/validation/... split, please check your dataset.")
     parser.add_argument("--train_size", type=float, default=1.0,
