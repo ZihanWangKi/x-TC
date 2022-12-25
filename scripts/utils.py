@@ -31,7 +31,7 @@ def split_data(args):
         assert args.dataset in ['20News', 'NYT-Small', 'NYT-Locations', 'NYT-Topics']
         dir = os.path.join(DATA_FOLDER_PATH, args.dataset, 'dataset.txt')
         with open(dir, mode='r', encoding='utf-8') as text_file:
-            text_data = list(map(lambda x: int(x.strip()), text_file.readlines()))
+            text_data = list(map(lambda x: x.strip(), text_file.readlines()))
         dir = os.path.join(DATA_FOLDER_PATH, args.dataset, 'labels.txt')
         with open(dir, mode='r', encoding='utf-8') as label_file:
             label_data = list(map(lambda x: int(x.strip()), label_file.readlines()))
