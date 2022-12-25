@@ -50,7 +50,7 @@ def split_data(args):
         else:
             train_set = dataset
         dataset = train_test["test"]
-        if args.train_size < 1.0:
+        if args.test_size < 1.0:
             train_test = dataset.train_test_split(test_size=args.test_size,
                                                   shuffle=True, seed=args.random_state)
             test_set = train_test["test"]
