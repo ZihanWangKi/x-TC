@@ -1,10 +1,5 @@
-America
-Iraq
-Japan
-China
-Britain
-Russia
-Germany
-Canada
-France
-Italy
+politics
+art
+business
+science
+sport
