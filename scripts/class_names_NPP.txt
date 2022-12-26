@@ -1,5 +1,10 @@
-politics
-art
-business
-science
-sport
+america
+iraq
+japan
+china
+britain
+russia
+germany
+canada
+france
+italy
