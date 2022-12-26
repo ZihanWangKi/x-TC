@@ -41,15 +41,15 @@ def split_data(args):
         }
         dataset = Dataset.from_dict(data)
         #dataset = load_dataset('text', split="train", data_files={"text": os.path.join(DATA_FOLDER_PATH, args.dataset, 'dataset.txt'), "label": os.path.join(DATA_FOLDER_PATH, args.dataset, 'labels.txt')})
-        train_test = dataset.train_test_split(train_size=args.split_ratio, shuffle=True, seed=args.random_state)
-        dataset = train_test["train"]
+        train_test_split = dataset.train_test_split(train_size=args.split_ratio, shuffle=True, seed=args.random_state)
+        dataset = train_test_split["train"]
         if args.train_size < 1.0:
             train_test = dataset.train_test_split(train_size=args.train_size,
                                                   shuffle=True, seed=args.random_state)
             train_set = train_test["train"]
         else:
             train_set = dataset
-        dataset = train_test["test"]
+        dataset = train_test_split["test"]
         if args.test_size < 1.0:
             train_test = dataset.train_test_split(test_size=args.test_size,
                                                   shuffle=True, seed=args.random_state)
