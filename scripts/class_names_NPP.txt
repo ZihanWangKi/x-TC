@@ -1,5 +1,5 @@
-poor
-bad
-average
-good
-excellent
+computer
+sports
+science
+politics
+religion
