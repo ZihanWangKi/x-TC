@@ -1,2 +1,5 @@
-bad
-good
+computer
+sports
+science
+politics
+religion
