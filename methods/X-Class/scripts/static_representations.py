@@ -26,7 +26,7 @@ def prepare_sentence(args, tokenizer, text):
         print(prepare_sentence.sos_id, prepare_sentence.eos_id)
 
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-        #"""
+        """
         tokenized_text = []
         import regex as re
         for token in re.findall(tokenizer.pat, text):
@@ -35,8 +35,8 @@ def prepare_sentence(args, tokenizer, text):
             )  # Maps all our bytes to unicode strings, avoiding control tokens of the BPE (spaces in our case)
             #tokenized_text.extend(bpe_token for bpe_token in self.bpe(token).split(" "))
             tokenized_text.append(token)
-        #"""
-        #tokenized_text = tokenizer.tokenize(text)
+        """
+        tokenized_text = tokenizer.tokenize(text)
     else:
         tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     tokenized_to_id_indicies = []
@@ -47,8 +47,8 @@ def prepare_sentence(args, tokenizer, text):
     for index, token in enumerate(tokenized_text + [None]):
         if token is not None:
             if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-                #tokens = [token]
-                tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
+                tokens = [token]
+                # tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
             else:
                 tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
         if token is None or len(tokenids_chunk) + len(tokens) > max_tokens:
@@ -74,7 +74,6 @@ def sentence_encode(tokens_id, model, layer):
     all_layer_outputs = hidden_states[2]
 
     layer_embedding = tensor_to_numpy(all_layer_outputs[layer].squeeze(0))[1: -1]
-
     return layer_embedding
 
 
@@ -124,8 +123,8 @@ def main(args):
     print("Finish reading data")
 
     data_folder = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, args.dataset_name)
-    #if args.lm_type == 'bbu' or args.lm_type == 'blu':
-    dataset["class_names"] = [x.lower() for x in dataset["class_names"]]
+    if args.lm_type == 'bbu' or args.lm_type == 'blu':
+        dataset["class_names"] = [x.lower() for x in dataset["class_names"]]
 
     os.makedirs(data_folder, exist_ok=True)
     with open(os.path.join(data_folder, "dataset.pk"), "wb") as f:
@@ -149,83 +148,41 @@ def main(args):
 
     for text in tqdm(data):
         tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(args, tokenizer, text)
-        counts.update(word.translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' ')))) for word in tokenized_text)
-        
+        counts.update(word.translate(str.maketrans('', '', string.punctuation + chr(2 ** 8 + ord(' ')))) for word in
+                      tokenized_text)
+
     del counts['']
     updated_counts = {k: c for k, c in counts.items() if c >= args.vocab_min_occurrence}
     print(len(updated_counts))
-    print(updated_counts)
     word_rep = {}
     word_count = {}
 
-    embedding = model.embeddings.word_embeddings.weight
     for text in tqdm(data):
         tokenized_text, tokenized_to_id_indicies, tokenids_chunks = prepare_sentence(args, tokenizer, text)
         tokenization_info.append((tokenized_text, tokenized_to_id_indicies, tokenids_chunks))
         contextualized_word_representations = handle_sentence(model, args.layer, tokenized_text,
-                                         tokenized_to_id_indicies, tokenids_chunks)
+                                                              tokenized_to_id_indicies, tokenids_chunks)
         for i in range(len(tokenized_text)):
-          word = tokenized_text[i].translate(str.maketrans('','',string.punctuation+chr(2**8+ord(' '))))
-          if word in updated_counts.keys():
-            if word not in word_rep:
-              word_rep[word] = 0
-              word_count[word] = 0
-            with torch.no_grad():
-                word_rep[word] += embedding[tokenizer._convert_token_to_id(word)].cpu().detach().numpy() #contextualized_word_representations[i]
-            word_count[word] += 1
-        
+            word = tokenized_text[i].translate(str.maketrans('', '', string.punctuation + chr(2 ** 8 + ord(' '))))
+            if word in updated_counts.keys():
+                if word not in word_rep:
+                    word_rep[word] = 0
+                    word_count[word] = 0
+                word_rep[word] += contextualized_word_representations[i]
+                word_count[word] += 1
+
     word_avg = {}
-    for k,v in word_rep.items():
-      word_avg[k] = word_rep[k]/word_count[k]
+    for k, v in word_rep.items():
+        word_avg[k] = word_rep[k] / word_count[k]
 
     class_names = dataset["class_names"]
-    #from utils import cosine_similarity_embedding
-    #for cls in class_names:
-    #    print(word_avg[cls], word_count[cls])
-    #print(cosine_similarity_embedding(word_avg["negative"], word_avg["positive"]))
-    # print(word_avg)
+    for cls in class_names:
+        print(word_avg[cls], word_count[cls])
+
     vocab_words = list(word_avg.keys())
-    static_word_representations = np.array(list(word_avg.values()))
-
-
-    def cosine_similarity(repr_a: np.ndarray, repr_b: np.ndarray):
-        assert 1 <= repr_a.ndim <= 2 and 1 <= repr_b.ndim <= 2
-        if repr_a.ndim == 1:
-            repr_a = repr_a[np.newaxis, :]
-        if repr_b.ndim == 1:
-            repr_b = repr_b[np.newaxis, :]
-        assert repr_a.shape[1] == repr_b.shape[1]
-        cosine_similarities = np.dot(repr_a, np.transpose(repr_b)) / np.outer(np.linalg.norm(repr_a, axis=1),
-                                                                              np.linalg.norm(repr_b, axis=1))
-        return np.squeeze(cosine_similarities)
-    #print(cosine_similarity(static_word_representations,static_word_representations))
-    
-
+    static_word_representations = list(word_avg.values())
     vocab_occurrence = list(word_count.values())
 
-    embedding_norms = np.linalg.norm(static_word_representations, axis=1, keepdims=True)
-    unit_embeddings = static_word_representations / embedding_norms
-    mean_vec = embedding_norms * np.mean(unit_embeddings, axis=0, keepdims=True)
-    #static_word_representations -= mean_vec
-    print(cosine_similarity(static_word_representations - mean_vec, static_word_representations - mean_vec))
-
-
-    """
-    #roberta_representations = np.array([])
-    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-        from sklearn.decomposition import PCA
-        if args.lm_type == "roberta-large":
-            Len = 1024
-        else:
-            Len =  768
-        #_pca = PCA(n_components=Len, random_state=args.random_state)
-        ew, ev = np.linalg.eig(np.cov(static_word_representations.T))
-        pc = ev[:, np.argmax(ew)].reshape(-1, 1)
-        pcT = pc.reshape(1, -1)
-        print(pc.dot(pcT).shape)
-        static_word_representations -= static_word_representations.dot(pc.dot(pcT))  #_pca.fit_transform(static_word_representations)[0, :]
-        #print(f"Explained variance: {sum(_pca.explained_variance_ratio_)}")
-    """
     with open(os.path.join(data_folder, f"tokenization_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
             "tokenization_info": tokenization_info,
@@ -233,7 +190,6 @@ def main(args):
 
     with open(os.path.join(data_folder, f"static_repr_lm-{args.lm_type}-{args.layer}.pk"), "wb") as f:
         pk.dump({
-            #"roberta": static_word_representations - mean_vec,
             "static_word_representations": static_word_representations,
             "vocab_words": vocab_words,
             "word_to_index": {v: k for k, v in enumerate(vocab_words)},
