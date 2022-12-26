@@ -28,7 +28,7 @@ def split_data(args):
             test_set = dataset
         #test_set = train_test["test"]
     else:
-        assert args.dataset in ['20News', 'NYT-Small', 'NYT-Locations', 'NYT-Topics']
+        assert args.dataset in ['20News', 'NYT', 'NYT-Locations', 'NYT-Topics', '20News-fine', 'NYT-fine']
         dir = os.path.join(DATA_FOLDER_PATH, args.dataset, 'dataset.txt')
         with open(dir, mode='r', encoding='utf-8') as text_file:
             text_data = list(map(lambda x: x.strip(), text_file.readlines()))
