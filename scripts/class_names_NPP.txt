@@ -1,5 +1,9 @@
-computer
-sports
-science
+business
 politics
-religion
+sports
+health
+education
+estate
+arts
+science
+technology
