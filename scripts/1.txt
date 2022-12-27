@@ -122,3 +122,9 @@ business
 science
 sport
 
+20News:
+computer
+sports
+science
+politics
+religion
