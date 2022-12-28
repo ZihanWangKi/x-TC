@@ -1,9 +1,2 @@
-business
-politics
-sports
-health
-education
-estate
-arts
-science
-technology
+bad
+good
