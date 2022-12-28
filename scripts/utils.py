@@ -91,7 +91,7 @@ def run_method(args, train_set, test_set):
                 f.write(str(line))
                 f.write("\n")
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
-        os.system("cp class_names.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
+        os.system("cp class_names2.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
         with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
             for line in test_set["x-TC"]:
                 f.write(line)
@@ -126,7 +126,7 @@ def run_method(args, train_set, test_set):
 
             ####################
             os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
-            os.system("cp class_names2.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
+            os.system("cp class_names_BERT.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
             with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
                 for line in train_set["x-TC"]:
                     f.write(line)
@@ -150,7 +150,7 @@ def run_method(args, train_set, test_set):
                       format(args.gpu, args.dataset, args.random_state, args.suffix))
         else:
             os.system("mkdir -p ../methods/X-Class/data/datasets/{}_test".format(args.dataset))
-            os.system("cp class_names2.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
+            os.system("cp class_names_BERT.txt ../methods/X-Class/data/datasets/{}_test/classes.txt".format(args.dataset))
             with open("../methods/X-Class/data/datasets/{}_test/dataset.txt".format(args.dataset), "w") as f:
                 for line in test_set["x-TC"]:
                     f.write(line)
