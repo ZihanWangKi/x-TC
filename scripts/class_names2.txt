@@ -3,7 +3,7 @@ graphics
 microsoft
 ibm
 mac
-windows.x
+motif
 autos
 motorcycles
 baseball
