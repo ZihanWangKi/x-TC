@@ -18,7 +18,7 @@ for i in range(len(train_list)):
     text = text.replace('\'', "\\'")
     text = text.replace('\"', '\\"')
     text = text.replace('\f', '\\f')
-    texts.append(text.replace('\n', '\\n'))
+    texts.append(text)
     labels.append(label)
 
 print(labels[:10])
