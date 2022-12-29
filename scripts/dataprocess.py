@@ -11,11 +11,13 @@ for i in range(len(train_list)):
     texts.append(text)
     labels.append(label)
 
+print(labels[:10])
 
-os.system("mkdir ../data/20News-fine")
 with open("../data/NYT-fine/labels.txt", 'w') as f:
     for i in range(len(labels)):
-        f.writelines(str(labels[i]))
+        f.write(str(labels[i]))
+        f.write("\n")
 with open("../data/NYT-fine/dataset.txt", 'w') as f:
     for i in range(len(texts)):
-        f.writelines(str(texts[i]))
+        f.write(str(texts[i]))
+        f.write("\n")
