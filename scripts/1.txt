@@ -147,7 +147,7 @@ microsoft
 hardware
 apple
 motif
-sale
+#sale
 car
 bike
 baseball
@@ -159,8 +159,26 @@ space
 christian
 guns
 mideast
-stephanopoulos
-weiss
+#stephanopoulos
+#weiss
+
+atheism
+graphics
+ms-windows
+ibm
+mac
+windows.x
+autos
+motorcycles
+baseball
+hockey
+crypt
+electronics
+medicine
+space
+christian
+guns
+mideast
 
 NYT-fine:
 budget
