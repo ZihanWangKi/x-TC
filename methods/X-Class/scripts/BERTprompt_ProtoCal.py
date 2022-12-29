@@ -147,8 +147,8 @@ def main(args):
             centers = gmm.means_
             row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
             print("best seed : " + str(best_seed))
-            # print("class center :")
-            # print(centers)
+            print("class center :")
+            print(centers)
         else:
             for seed in range(args.iter):
                 gmm = GaussianMixture(n_components=len(dataset["class_names"]), random_state=seed)
@@ -157,7 +157,7 @@ def main(args):
                 centers = gmm.means_
                 row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
                 cla = centers[row_ind, col_ind].sum()
-                print(cla, centers)
+                # print(cla, centers)
                 if cla > max_cla:
                     max_cla = cla
                     best_seed = seed
