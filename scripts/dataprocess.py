@@ -12,7 +12,7 @@ for i in range(len(train_list)):
         continue
     elif label > 6:
         label -= 1
-    texts.append(text)
+    texts.append(text.replace('\n', '\\n'))
     labels.append(label)
 
 print(labels[:10])
