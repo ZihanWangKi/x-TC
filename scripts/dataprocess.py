@@ -12,6 +12,12 @@ for i in range(len(train_list)):
         continue
     elif label > 6:
         label -= 1
+    text = text.replace('\n', '\\n')
+    text = text.replace('\t', '\\t')
+    text = text.replace('\r', '\\r')
+    text = text.replace('\'', "\\'")
+    text = text.replace('\"', '\\"')
+    text = text.replace('\f', '\\f')
     texts.append(text.replace('\n', '\\n'))
     labels.append(label)
 
