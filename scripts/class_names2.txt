@@ -1,6 +1,6 @@
 atheism
 graphics
-ms-windows
+microsoft
 ibm
 mac
 windows.x
