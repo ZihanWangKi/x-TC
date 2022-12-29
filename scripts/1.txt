@@ -180,6 +180,24 @@ christian
 guns
 mideast
 
+atheism
+graphics
+microsoft
+ibm
+mac
+motif
+autos
+motorcycles
+baseball
+hockey
+crypt
+electronics
+medicine
+space
+christian
+guns
+mideast
+
 NYT-fine:
 budget
 gun
