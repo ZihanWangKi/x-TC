@@ -1,5 +1,5 @@
-computer
-sports
-science
 politics
-religion
+art
+business
+science
+sport
