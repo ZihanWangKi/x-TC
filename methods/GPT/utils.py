@@ -504,6 +504,17 @@ def fwd(model, encoder, examples, batch, cache = None):
     y = np.array(labels)
     f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
     print('lm F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
+
+    y_pred = np.array(predictions_dict["pmi"])
+    y = np.array(labels)
+    f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
+    print('pmi F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
+
+    y_pred = np.array(predictions_dict["dcpmi"])
+    y = np.array(labels)
+    f1_macro, f1_micro = np.round(f1(y, y_pred), 5)
+    print('dcpmi F1 score: f1_macro = {}, f1_micro = {}'.format(f1_macro, f1_micro))
+
     # save labels for later
     predictions_dict['labels'] = labels
     return results, predictions_dict
