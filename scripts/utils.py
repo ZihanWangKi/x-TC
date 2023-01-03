@@ -334,10 +334,10 @@ def run_method(args, train_set, test_set):
             },
 
             "keywords_update": {
-                "extract_keywords_per_class": [1000],
+                "extract_keywords_per_class": [0.1],
                 "keywords_set_keep_max_num": [1000],
                 "IDF_n": 4,
-                "overwrite_conflict": True
+                "overwrite_conflict": False
             },
 
             "classifier": {

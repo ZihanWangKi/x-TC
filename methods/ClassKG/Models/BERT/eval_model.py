@@ -37,7 +37,7 @@ class Eval_Model_For_BERT():
 
         model.train()
 
-        synchronize()
+        # synchronize()
         all_labels = accumulate_results_from_multiple_gpus(label_cur_GPU)
         all_preds = accumulate_results_from_multiple_gpus(pred_cur_GPU)
         all_sentences = accumulate_results_from_multiple_gpus(sentence_cur_GPU)
