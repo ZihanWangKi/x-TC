@@ -1,14 +1,2 @@
-Company
-Education
-Artist
-Athlete
-Politician
-Transportation
-Place
-Nature
-Village
-Species
-Plant
-Album
-Movie
-Book
+negative
+positive
