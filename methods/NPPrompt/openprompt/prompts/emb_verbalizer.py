@@ -29,7 +29,7 @@ class EmbVerbalizer(Verbalizer):
                  model: Optional[PreTrainedModel] = None,
                  classes: Sequence[str] = None,
                  prefix: Optional[str] = " ",
-                 multi_token_handler: Optional[str] = "first",
+                 multi_token_handler: Optional[str] = "mean",
                  max_token_split: Optional[int] = -1,
                  verbalizer_lr: Optional[float] = 5e-2,
                  candidate_frac: Optional[float] = 0.5,
