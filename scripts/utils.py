@@ -73,6 +73,17 @@ def split_data(args):
     print("Finish data split!")
     print("Sampled instance:", train_set[0])
     print("train size: {}, test size: {}".format(len(train_set), len(test_set)))
+
+    num = {}
+    for i in range(len(test_set[args.label_name])):
+        label = test_set[args.label_name][i]
+        if num.get(label):
+            num[label] += 1
+        else:
+            num[label] = 1
+    imbalance = num[max(num, key=num.get)] / num[min(num, key=num.get)]
+    print("imbalance ratio: {}".format(imbalance))
+
     return train_set, test_set
 
 
