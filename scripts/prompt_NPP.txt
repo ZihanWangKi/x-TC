@@ -1,2 +1,2 @@
  text: {"placeholder": "text_a"}
- country: {"mask"}
+ location: {"mask"}
