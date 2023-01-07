@@ -163,7 +163,7 @@ class EmbVerbalizer(Verbalizer):
         print('Dataset name:', dataset_name)
         dir = f"./datasets/" + dataset_name + "/class_names.txt"
         with open(dir, "r") as fp:
-            class_names_ = list(map(lambda x: ' ' + x.strip().lower(), fp.readlines()))
+            class_names_ = list(map(lambda x: ' ' + x.strip(), fp.readlines()))
         class_names = [[_] for _ in class_names_]
         print(class_names)
         """
