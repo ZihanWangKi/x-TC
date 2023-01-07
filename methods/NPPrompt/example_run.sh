@@ -11,8 +11,8 @@ VERBALIZER=ept #
 CALIBRATION=""
 FILTER=tfidf_filter # none
 VERBOSE=1
-MODEL="roberta" # "roberta"
-MODEL_NAME_OR_PATH=$4 # "roberta-large" # "bert-base-uncased"
+MODEL=$4 # "roberta"
+MODEL_NAME_OR_PATH=$5 # "roberta-large" # "bert-base-uncased"
 # RESULTPATH="results_agnews.txt"
 OPENPROMPTPATH="."
 
@@ -23,7 +23,7 @@ rm -f ${DATASET}_${MODEL}_cos.pt
 
 mkdir -p "results/$MODEL_NAME_OR_PATH"
 
-i=$5
+i=$6
 
 CUDA_VISIBLE_DEVICES=$GPU $PYTHONPATH emb_prompt.py \
         --model $MODEL \
