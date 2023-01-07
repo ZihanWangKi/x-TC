@@ -176,9 +176,9 @@ if __name__ == '__main__':
             for h in class_names:
                 o = {}
                 o['premise'] = premise
-                o['hypothesis'] = ' ' + h.lower()
+                o['hypothesis'] = ' ' + h
                 o['uncond_premise'] = uncond_premise #'\n topic:'
-                o['uncond_hypothesis'] = ' ' + h.lower()
+                o['uncond_hypothesis'] = ' ' + h
                 options.append(o)
             label = label
             examples.append({'options': options, 'label': label})
@@ -228,9 +228,9 @@ if __name__ == '__main__':
             for h in class_names:
                 o = {}
                 o['premise'] = premise
-                o['hypothesis'] = ' ' + h.lower()
+                o['hypothesis'] = ' ' + h
                 o['uncond_premise'] = uncond_premise #'\n topic:'
-                o['uncond_hypothesis'] = ' ' + h.lower()
+                o['uncond_hypothesis'] = ' ' + h
                 options.append(o)
             label = label
             examples.append({'options': options, 'label': label})
