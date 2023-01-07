@@ -82,6 +82,9 @@ def main(args):
     model.eval()
     model.cuda()
 
+    for cls in dataset["class_names"]:
+        print(tokenizer.encode(cls))
+
     #######################
     # check
     if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
