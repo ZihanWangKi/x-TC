@@ -1,2 +1,2 @@
  text: {"placeholder": "text_a"}
- location: {"mask"}
+ topic: {"mask"}
