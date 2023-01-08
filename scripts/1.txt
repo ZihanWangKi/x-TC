@@ -4,6 +4,21 @@ L:LOTClass
 
 NCCL_P2P_DISABLE="1” NCCL_IB_DISABLE="1"
 
+company
+education
+artist
+athlete
+politician
+transportation
+place
+nature
+village
+species
+plant
+album
+movie
+book
+
 dbpedia_14
 DATASETS_CLASS_NAMES = {
     "ag_news": ["Politics", "Sports", "Business", "Technology"], # from xclass/lotclass
