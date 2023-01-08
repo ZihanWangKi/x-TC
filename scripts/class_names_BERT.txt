@@ -1,10 +1,4 @@
-America
-Iraq
-Japan
-China
-Britain
-Russia
-Germany
-Canada
-France
-Italy
+politics
+sports
+business
+technology
