@@ -1,6 +1,6 @@
-atheism
+Atheism
 graphics
-microsoft
+Microsoft
 ibm
 mac
 motif
@@ -12,6 +12,6 @@ crypt
 electronics
 medicine
 space
-christian
+Christian
 guns
-mideast
+Mideast
