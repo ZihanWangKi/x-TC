@@ -1,2 +1,5 @@
-negative
-positive
+poor
+bad
+average
+good
+excellent
