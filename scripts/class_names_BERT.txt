@@ -1,4 +1,2 @@
-politics
-sports
-business
-technology
+negative
+positive
