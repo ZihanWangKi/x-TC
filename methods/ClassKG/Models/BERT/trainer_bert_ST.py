@@ -7,7 +7,7 @@ from torch.utils.data.distributed import DistributedSampler
 from transformers import AdamW, BertForSequenceClassification
 
 from Models.BERT.dataset_for_bert import Dataset_BERT, Collect_FN
-from Models.BERT.eval_model import Eval_Model_For_BERT
+from Models.BERT.eval_model import Eval_Model_For_BERT, True_Eval_Model_For_BERT
 from Models.Base.trainer_base import Trainer_Base
 from compent.checkpoint import CheckPointer_Normal
 from compent.comm import synchronize, get_rank
@@ -21,18 +21,22 @@ class Trainer_BERT(Trainer_Base):
     def __init__(self, cfg, logger, distributed, sentences_all):
         super(Trainer_BERT, self).__init__(cfg = cfg, logger = logger, distributed = distributed)
         self.checkpointer = CheckPointer_Normal(cfg = cfg, logger = logger, rank = get_rank())
-        if (sentences_all.has_test_data):
-            eval_sentence = sentences_all.test_sentence
-            eval_labels = sentences_all.test_label
-            self.logger.visdom_text(text = 'eval on test', win_name = 'eval')
-        else:
-            eval_sentence = sentences_all.unlabeled_sentence
-            eval_labels = sentences_all.unlabeled_GT_label
-            self.logger.visdom_text(text = 'eval on all data', win_name = 'eval')
-        dataloader_eval = self.__build_dataloader__(eval_sentence, eval_labels,
-                                                    for_train = False)
-        self.evaler_on_all = Eval_Model_For_BERT(self.cfg, self.logger, distributed = True, rank = self.rank,
-                                                 dataloader_eval = dataloader_eval)
+        #if (sentences_all.has_test_data):
+        #    eval_sentence = sentences_all.test_sentence
+        #    eval_labels = sentences_all.test_label
+        #    self.logger.visdom_text(text = 'eval on test', win_name = 'eval')
+        #else:
+        eval_sentence = sentences_all.unlabeled_sentence
+        eval_labels = sentences_all.unlabeled_GT_label
+        #self.logger.visdom_text(text = 'eval on all data', win_name = 'eval')
+        dataloader_eval = self.__build_dataloader__(eval_sentence, eval_labels, for_train = False)
+        true_eval_sentence = sentences_all.test_sentence
+        true_eval_labels = sentences_all.test_label
+        dataloader_true_eval = self.__build_dataloader__(true_eval_sentence, true_eval_labels, for_train=False)
+        self.evaler_on_all = Eval_Model_For_BERT(self.cfg, self.logger, distributed=True, rank=self.rank,
+                                                 dataloader_eval=dataloader_eval)
+        self.true_evaler_on_all = True_Eval_Model_For_BERT(self.cfg, self.logger, distributed = True, rank = self.rank,
+                                                 dataloader_eval = dataloader_true_eval)
 
     def __build_dataloader__(self, sentences, labels, for_train):
         collect_fn = Collect_FN(labels is not None)
@@ -218,6 +222,8 @@ class Trainer_BERT(Trainer_Base):
         self.logger.plot_record(f1_macro, win_name = 'classifier eval on all f1_macro',
                                 )
         self.logger.plot_record(acc, win_name = 'classifier eval on all ACC')
+
+        self.true_evaler_on_all(self.model)
 
         return res_dict['sentences'], res_dict['preds'], global_best
 
