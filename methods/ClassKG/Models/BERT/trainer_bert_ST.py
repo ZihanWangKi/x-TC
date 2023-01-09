@@ -7,7 +7,8 @@ from torch.utils.data.distributed import DistributedSampler
 from transformers import AdamW, BertForSequenceClassification
 
 from Models.BERT.dataset_for_bert import Dataset_BERT, Collect_FN
-from Models.BERT.eval_model import Eval_Model_For_BERT, True_Eval_Model_For_BERT
+from Models.BERT.eval_model import Eval_Model_For_BERT
+from Models.BERT.true_eval import True_Eval_Model_For_BERT
 from Models.Base.trainer_base import Trainer_Base
 from compent.checkpoint import CheckPointer_Normal
 from compent.comm import synchronize, get_rank

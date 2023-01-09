@@ -2,7 +2,8 @@ gpt
 X-Class
 L:LOTClass
 
-NCCL_P2P_DISABLE="1” NCCL_IB_DISABLE="1"
+export NCCL_P2P_DISABLE=1
+export NCCL_IB_DISABLE=1
 
 company
 education
