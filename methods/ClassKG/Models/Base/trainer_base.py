@@ -62,9 +62,9 @@ class Trainer_Base():
         for class_index, (sentences_cur_class, fill_num_cur_class) in enumerate(
                 zip(sentence_each_class, fill_number_each_class)):
             append_cur_class = []
-
-            for i in range(fill_num_cur_class):
-                append_cur_class.append(sentences_cur_class[i % len(sentences_cur_class)])
+            if len(sentences_cur_class) > 0:
+                for i in range(fill_num_cur_class):
+                    append_cur_class.append(sentences_cur_class[i % len(sentences_cur_class)])
             sentence_each_class[class_index] = sentences_cur_class + append_cur_class
         ans_sentences = []
         ans_labels = []
