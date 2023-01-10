@@ -1,2 +1,5 @@
-negative
-positive
+computer
+sports
+science
+politics
+religion
