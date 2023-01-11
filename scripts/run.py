@@ -28,6 +28,7 @@ if __name__ == '__main__':
     parser.add_argument("--test_size", type=float, default=1.0,
                        help="The ratio of the test set")
     parser.add_argument("--n_shot", type=int, default=0, help="extra parameter for few-labeled data methods")
+    parser.add_argument("--class_names_file", default="./class_names.txt")
     parser.add_argument("--class_names", action="store_true",
                         help="Set to True if you want to test class-names based methods."
                              "Please enter the class names into class_names.txt in the current directory."

@@ -380,7 +380,8 @@ def run_method(args, train_set, test_set):
         assert args.seed_words == False
         if args.n_shot == 0:
             os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
-            os.system("cp class_names_gpt.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+            os.system("cp args.class_names_file ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+            #os.system("cp class_names_gpt.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
             os.system("cp prompt_gpt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
             with open("../methods/GPT/data/{}/train.txt".format(args.dataset), "w") as f:
                 for line in train_set["x-TC"]:
@@ -404,7 +405,8 @@ def run_method(args, train_set, test_set):
                 .format(args.gpu, args.dataset, args.method, args.random_state))
         else:
             os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
-            os.system("cp class_names_gpt.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+            os.system("cp args.class_names_file ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+            #os.system("cp class_names_gpt.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
             os.system("cp prompt_gpt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
             A = np.random.permutation(np.arange(len(train_set["x-TC"])))
             n_shot = []
@@ -441,7 +443,8 @@ def run_method(args, train_set, test_set):
         assert args.class_names == True
         assert args.seed_words == False
         os.system("mkdir -p ../methods/GPT/data/{}".format(args.dataset))
-        os.system("cp class_names_gpt.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+        os.system("cp args.class_names_file ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
+        #os.system("cp class_names_gpt.txt ../methods/GPT/data/{}/class_names.txt".format(args.dataset))
         os.system("cp prompt_gpt.txt ../methods/GPT/data/{}/prompt.txt".format(args.dataset))
         with open("../methods/GPT/data/{}/train.txt".format(args.dataset), "w") as f:
             for line in train_set["x-TC"]:
