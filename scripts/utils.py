@@ -215,7 +215,7 @@ def run_method(args, train_set, test_set):
         assert args.seed_words == False
         os.system("rm -rf ../methods/LOTClass/datasets/{}".format(args.dataset))
         os.system("mkdir -p ../methods/LOTClass/datasets/{}".format(args.dataset))
-        os.system("cp class_names.txt ../methods/LOTClass/datasets/{}/label_names.txt".format(args.dataset))
+        os.system("cp {}../methods/LOTClass/datasets/{}/label_names.txt".format(args.class_names_file, args.dataset))
         with open("../methods/LOTClass/datasets/{}/train.txt".format(args.dataset), "w") as f:
             for line in train_set["x-TC"]:
                 f.write(line)
