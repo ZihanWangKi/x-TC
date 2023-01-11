@@ -8,16 +8,16 @@ texts = []
 labels = []
 for i in range(len(train_list)):
     text, label = train_list[i]
-    if label == 6 or label == 18 or label == 19:
-        continue
-    elif label > 6:
-        label -= 1
-    text = text.replace('\n', '\\n')
-    text = text.replace('\t', '\\t')
-    text = text.replace('\r', '\\r')
-    text = text.replace('\'', "\\'")
-    text = text.replace('\"', '\\"')
-    text = text.replace('\f', '\\f')
+    #if label == 6 or label == 18 or label == 19:
+    #    continue
+    #elif label > 6:
+    #    label -= 1
+    #text = text.replace('\n', '\\n')
+    #text = text.replace('\t', '\\t')
+    #text = text.replace('\r', '\\r')
+    #text = text.replace('\'', "\\'")
+    #text = text.replace('\"', '\\"')
+    #text = text.replace('\f', '\\f')
     texts.append(text)
     labels.append(label)
 
