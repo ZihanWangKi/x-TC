@@ -306,7 +306,8 @@ def run_method(args, train_set, test_set):
                 seeds = list(map(lambda x: x.strip(), f.readlines()))
         elif args.class_names == True:
             assert args.seed_words == False
-            with open("class_names.txt", mode='r', encoding='utf-8') as f:
+            with open(args.class_names_file, mode='r', encoding='utf-8') as f:
+            #with open("class_names.txt", mode='r', encoding='utf-8') as f:
                 seeds = list(map(lambda x: x.strip(), f.readlines()))
         seed_words = {}
         for i in range(len(seeds)):
