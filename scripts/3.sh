@@ -1,3 +1,2 @@
 taskset -c 90-110 python run.py  --method gpt2-xl --dataset 20News-fine --class_names_file ./default_class_names/20-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
-taskset -c 90-110 python run.py  --method gpt2-xl --dataset NYT-fine --class_names_file ./default_class_names/nyt-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu 3 --prompt --suffix "--iter 100"
 taskset -c 90-110 python run.py  --method gpt2-xl --dataset NYT-fine --class_names_file ./default_class_names/nyt-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal

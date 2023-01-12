@@ -92,7 +92,7 @@ def run_method(args, train_set, test_set):
         assert args.class_names
         assert args.seed_words == False
         os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
-        os.system("cp class_names2.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
+        os.system("cp {} ../methods/X-Class/data/datasets/{}/classes.txt".format(args.class_names_file, args.dataset))
         with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
             for line in train_set["x-TC"]:
                 f.write(line)
