@@ -38,6 +38,7 @@ if __name__ == '__main__':
                              "Please enter the seed words into seed_words.txt in the current directory."
                              "Enter the seed words belonging to the same class on the same line, separated by spaces,"
                              "and the order of lines corresponds to the label order.")
+    parser.add_argument("--prompt_file", default="./prompt.txt")
     parser.add_argument("--prompt", action="store_true",
                         help="Set to True if you want to test prompt based methods."
                              "Please enter the prompt into prompt.txt in the current directory."
