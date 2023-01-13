@@ -12,7 +12,7 @@ from torch.multiprocessing import spawn
 #visdom_env_name = '20New_Fine'
 
 os.environ['MASTER_ADDR'] = '127.0.0.1'
-os.environ['MASTER_PORT'] = '18877'
+os.environ['MASTER_PORT'] = '11877'
 world_size = 1#len(GPUs.split(','))
 device = torch.device('cuda')
 
