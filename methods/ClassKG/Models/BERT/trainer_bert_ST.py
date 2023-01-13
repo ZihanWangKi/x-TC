@@ -41,7 +41,7 @@ class Trainer_BERT(Trainer_Base):
                                                  dataloader_eval = dataloader_true_eval)
 
     def __build_dataloader__(self, sentences, labels, for_train):
-        collect_fn = Collect_FN(labels is not None)
+        collect_fn = Collect_FN(self.lm, labels is not None)
         dataset = Dataset_BERT(sentences, labels)
         sampler = DistributedSampler(dataset, shuffle = for_train)
         dataloader = DataLoader(dataset, batch_size = self.cfg.classifier.batch_size, sampler = sampler,
