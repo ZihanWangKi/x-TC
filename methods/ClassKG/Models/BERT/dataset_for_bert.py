@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import Dataset
-from transformers import BertTokenizer
+from transformers import BertTokenizer, RobertaTokenizer
 
 
 class Dataset_BERT(Dataset):
@@ -23,9 +23,12 @@ class Dataset_BERT(Dataset):
 
 
 class Collect_FN():
-    def __init__(self, with_label_hard, with_GT_labels = False):
+    def __init__(self, lm, with_label_hard, with_GT_labels = False):
         super(Collect_FN, self).__init__()
-        self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+        if lm.startswith("bert"):
+            self.tokenizer = BertTokenizer.from_pretrained(lm)#'bert-base-uncased')
+        else:
+            self.tokenizer = RobertaTokenizer.from_pretrained(lm)
         self.with_label = with_label_hard
         self.with_GT_labels = with_GT_labels
 

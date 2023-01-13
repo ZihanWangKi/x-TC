@@ -12,7 +12,7 @@ from torch.multiprocessing import spawn
 #visdom_env_name = '20New_Fine'
 
 os.environ['MASTER_ADDR'] = '127.0.0.1'
-os.environ['MASTER_PORT'] = '11877'
+#os.environ['MASTER_PORT'] = '11877'
 world_size = 1#len(GPUs.split(','))
 device = torch.device('cuda')
 
@@ -34,7 +34,7 @@ from compent.saver import Saver
 #TOTAL_ITR = 12
 
 
-def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed):
+def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed, lm):
     # cfg_file = "yelp_polarity.yaml"
     # visdom_env_name = "yelp_polarity"
     # seed = 0
@@ -59,7 +59,7 @@ def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed):
     GCN_trainer = Trainer_GCN(cfg = cfg, logger = logger, distributed = True, sentences_all = sentence_all,
                               keywords = keywords)
     classifier = build_classifier_with_cfg(cfg)
-    classifier_trainer = classifier(cfg, logger, distributed = True, sentences_all = sentence_all)
+    classifier_trainer = classifier(lm, cfg, logger, distributed = True, sentences_all = sentence_all)
     updater = Keywords_Updater_TFIDF(keywords = keywords, cfg = cfg, logger = logger)
 
     saver = Saver(save_dir = cfg.file_path.save_dir)
@@ -101,6 +101,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset", default="ag_news", help="dataset name")
     parser.add_argument("--gpu", type=int, default=0)
     parser.add_argument("--total_iter", type=int, default=3)
+    parser.add_argument("--lm", type=str, default="bert-base-uncased")
     parser.add_argument("--random_state", type=int, default=42)
     args = parser.parse_args()
     print(args)
@@ -108,5 +109,5 @@ if __name__ == '__main__':
     cfg_file = args.dataset + ".yaml"
     visdom_env_name = args.dataset
     torch.multiprocessing.set_start_method('spawn')
-    spawn(main, args = (cfg_file, visdom_env_name, args.total_iter, args.random_state), nprocs = world_size, join = True)
+    spawn(main, args = (cfg_file, visdom_env_name, args.total_iter, args.random_state, args.lm), nprocs = world_size, join = True)
     print('finish')

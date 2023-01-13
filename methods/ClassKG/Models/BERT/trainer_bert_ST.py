@@ -4,7 +4,7 @@ import time
 import torch
 from torch.utils.data import DataLoader
 from torch.utils.data.distributed import DistributedSampler
-from transformers import AdamW, BertForSequenceClassification
+from transformers import AdamW, BertForSequenceClassification, RobertaForSequenceClassification
 
 from Models.BERT.dataset_for_bert import Dataset_BERT, Collect_FN
 from Models.BERT.eval_model import Eval_Model_For_BERT
@@ -19,7 +19,8 @@ device = torch.device('cuda')
 
 
 class Trainer_BERT(Trainer_Base):
-    def __init__(self, cfg, logger, distributed, sentences_all):
+    def __init__(self, lm, cfg, logger, distributed, sentences_all):
+        self.lm = lm
         super(Trainer_BERT, self).__init__(cfg = cfg, logger = logger, distributed = distributed)
         self.checkpointer = CheckPointer_Normal(cfg = cfg, logger = logger, rank = get_rank())
         #if (sentences_all.has_test_data):
@@ -80,10 +81,17 @@ class Trainer_BERT(Trainer_Base):
         self.logger.info('start training')
 
         self.logger.info('finetune from pretrain, load pretrain model')
-        self.model = BertForSequenceClassification.from_pretrained('bert-base-uncased',
-                                                                   num_labels = self.cfg.model.number_classes,
-                                                                   gradient_checkpointing = True,
-                                                                   )
+        if self.lm.startswith("bert"):
+            self.model = BertForSequenceClassification.from_pretrained(self.lm,  # 'bert-base-uncased',
+                                                                       num_labels=self.cfg.model.number_classes,
+                                                                       gradient_checkpointing=True,
+                                                                       )
+        else:
+            self.model = RobertaForSequenceClassification.from_pretrained(self.lm,  # 'bert-base-uncased',
+                                                                       num_labels=self.cfg.model.number_classes,
+                                                                       gradient_checkpointing=True,
+                                                                       )
+
         self.model.train()
         self.model = self.model.to(device)
         if (self.distributed):
