@@ -1,3 +1,12 @@
-taskset -c 0-30 python run.py  --method gpt2-large --dataset NYT-fine --class_names_file ./default_class_names/nyt-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu 7 --prompt --suffix "--iter 100" --additional_method ProtoCal
-taskset -c 0-30 python run.py  --method gpt2-xl --dataset 20News-fine --class_names_file ./default_class_names/20-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu 7 --prompt --suffix "--iter 100" --additional_method ProtoCal
-taskset -c 0-30 python run.py  --method gpt2-xl --dataset NYT-fine --class_names_file ./default_class_names/nyt-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu 7 --prompt --suffix "--iter 100" --additional_method ProtoCal
+
+taskset -c 30-60 python run.py  --method gpt2-small  --class_names_file ./agnews/1.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+taskset -c 30-60 python run.py  --method gpt2-medium  --class_names_file ./agnews/1.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+
+taskset -c 30-60 python run.py  --method gpt2-small  --class_names_file ./agnews/2.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+taskset -c 30-60 python run.py  --method gpt2-medium  --class_names_file ./agnews/2.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+
+taskset -c 30-60 python run.py  --method gpt2-small  --class_names_file ./agnews/3.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+taskset -c 30-60 python run.py  --method gpt2-medium  --class_names_file ./agnews/3.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+
+taskset -c 30-60 python run.py  --method gpt2-small  --class_names_file ./agnews/4.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
+taskset -c 30-60 python run.py  --method gpt2-medium  --class_names_file ./agnews/4.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu 3 --prompt --suffix "--iter 100" --additional_method ProtoCal
