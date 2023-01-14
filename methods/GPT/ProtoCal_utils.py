@@ -333,7 +333,7 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
         max_len = 2048
         gpt3 = True
     else:
-        max_len = 256
+        max_len = 1024
         gpt3 = False
 
     options = []
