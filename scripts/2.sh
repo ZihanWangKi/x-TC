@@ -15,4 +15,3 @@ taskset -c 30-60 python run.py  --method gpt2-medium --dataset dbpedia_14 --clas
 taskset -c 30-60 python run.py  --method gpt2-medium --dataset dbpedia_14 --class_names_file ./dbpedia/3.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu 1 --prompt --suffix "--iter 100" --additional_method ProtoCal
 taskset -c 30-60 python run.py  --method gpt2-medium --dataset dbpedia_14 --class_names_file ./dbpedia/4.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu 1 --prompt --suffix "--iter 100"
 taskset -c 30-60 python run.py  --method gpt2-medium --dataset dbpedia_14 --class_names_file ./dbpedia/4.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu 1 --prompt --suffix "--iter 100" --additional_method ProtoCal
-
