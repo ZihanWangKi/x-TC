@@ -12,7 +12,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data import TensorDataset, DataLoader, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from nltk.corpus import stopwords
-from transformers import BertTokenizer, AdamW, get_linear_schedule_with_warmup
+from transformers import BertTokenizer, RobertaTokenizer, AdamW, get_linear_schedule_with_warmup
 import numpy as np
 import os
 import shutil
@@ -50,7 +50,10 @@ class LOTClassTrainer(object):
         assert abs(eff_batch_size - 128) < 10, f"Make sure the effective training batch size is around 128, current: {eff_batch_size}"
         print(f"Effective training batch size: {eff_batch_size}")
         self.pretrained_lm = args.pretrained_lm #'bert-base-uncased'
-        self.tokenizer = BertTokenizer.from_pretrained(self.pretrained_lm, do_lower_case=True)
+        if self.pretrained_lm.startswith("bert"):
+            self.tokenizer = BertTokenizer.from_pretrained(self.pretrained_lm, do_lower_case=True)
+        else:
+            self.tokenizer = RobertaTokenizer.from_pretrained(self.pretrained_lm, do_lower_case=True)
         self.vocab = self.tokenizer.get_vocab()
         self.vocab_size = len(self.vocab)
         self.mask_id = self.vocab[self.tokenizer.mask_token]
