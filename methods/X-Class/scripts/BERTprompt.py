@@ -83,7 +83,7 @@ def main(args):
     model.cuda()
 
     for cls in dataset["class_names"]:
-        print(tokenizer.encode(cls))
+        print(cls, tokenizer.encode(cls))
 
     #######################
     # check
