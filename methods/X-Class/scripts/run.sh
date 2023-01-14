@@ -22,3 +22,4 @@ python prepare_text_classifer_training.py --dataset_name ${dataset} --suffix pca
 ./run_train_text_classifier.sh ${gpu} ${dataset} pca${pca}.clusgmm.${lm}-${layer}.${weight_type}-100.${seed}.0.5 ${seed} ${final_lm} ${max_len}
 python evaluate.py --dataset ${dataset} --stage Rep --suffix ${lm}-${layer}-${weight_type}-100
 python evaluate.py --dataset ${dataset} --stage Align --suffix pca${pca}.clusgmm.${lm}-${layer}.${weight_type}-100.${seed}
+python evaluate.py --dataset ${dataset} --stage final --suffix pca${pca}.clusgmm.${lm}-${layer}.${weight_type}-100.${seed}
