@@ -137,7 +137,7 @@ def run_method(args, train_set, test_set):
 
             ####################
             os.system("mkdir -p ../methods/X-Class/data/datasets/{}".format(args.dataset))
-            os.system("cp class_names_BERT.txt ../methods/X-Class/data/datasets/{}/classes.txt".format(args.dataset))
+            os.system("cp {} ../methods/X-Class/data/datasets/{}/classes.txt".format(args.class_names_file, args.dataset))
             with open("../methods/X-Class/data/datasets/{}/dataset.txt".format(args.dataset), "w") as f:
                 for line in train_set["x-TC"]:
                     f.write(line)
@@ -155,7 +155,7 @@ def run_method(args, train_set, test_set):
                 for line in test_set[args.label_name]:
                     f.write(str(line))
                     f.write("\n")
-            os.system("cp prompt_BERT.txt ../methods/X-Class/data/datasets/{}/prompt.txt".format(args.dataset))
+            os.system("cp {} ../methods/X-Class/data/datasets/{}/prompt.txt".format(args.prompt_file, args.dataset))
             os.chdir("../methods/X-Class/scripts")
             os.system("CUDA_VISIBLE_DEVICES={} python BERTprompt_ProtoCal.py --dataset_name {} --random_state {} {}".
                       format(args.gpu, args.dataset, args.random_state, args.suffix))
