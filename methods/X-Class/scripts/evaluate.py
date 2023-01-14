@@ -11,7 +11,7 @@ from utils import (DATA_FOLDER_PATH, FINETUNE_MODEL_PATH,
                    evaluate_predictions)
 
 
-def evaluate(dataset, stage, suffix=None):
+def evaluate(dataset, stage, suffix=None, lm=None):
     data_dir = os.path.join(DATA_FOLDER_PATH, dataset)
     gold_labels = load_labels(data_dir)
     classes = load_classnames(data_dir)
@@ -30,7 +30,7 @@ def evaluate(dataset, stage, suffix=None):
             evaluate_predictions(gold_labels, documents_to_class)
     else:
         gold_labels = load_labels(data_dir + "_test")
-        with open(os.path.join(FINETUNE_MODEL_PATH, suffix, "eval_labels.json"), "r") as f:
+        with open(os.path.join(FINETUNE_MODEL_PATH, lm + "_" + suffix, "eval_labels.json"), "r") as f:
             pred_labels = json.load(f)
             evaluate_predictions(gold_labels, pred_labels)
 
@@ -40,6 +40,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset", type=str)
     parser.add_argument("--stage", type=str)
     parser.add_argument("--suffix", type=str)
+    parser.add_argument("--lm", type=str, default="bbc")
     args = parser.parse_args()
     print(vars(args))
-    evaluate(args.dataset, args.stage, args.suffix)
+    evaluate(args.dataset, args.stage, args.suffix, args.lm)
