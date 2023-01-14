@@ -1,0 +1,3 @@
+gpu=$1
+taskset -c 30-60 python run.py  --dataset imdb --class_names_file ./default_class_names/review.txt --prompt_file ./prompts/review.txt --split_ratio 0.7 --class_names --train_size 0.2 --test_size 0.2 --gpu ${gpu} --suffix "100 blu 24 blc 128 mixture 0 tied" #"64 bbu 12 bbc 128 mixture 0 tied" ${suffix}
+#taskset -c 30-60 python run.py  --dataset ${dataset} --class_names_file ./default_class_names/dbpedia.txt --prompt_file ./prompts/topic.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "100 blu 24 blc 128 mixture 0 tied" ${suffix}
