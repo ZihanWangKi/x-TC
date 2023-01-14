@@ -29,6 +29,7 @@ def evaluate(dataset, stage, suffix=None):
             documents_to_class = dictionary["documents_to_class"]
             evaluate_predictions(gold_labels, documents_to_class)
     else:
+        gold_labels = load_labels(data_dir + "_test")
         with open(os.path.join(FINETUNE_MODEL_PATH, suffix, "eval_labels.json"), "r") as f:
             pred_labels = json.load(f)
             evaluate_predictions(gold_labels, pred_labels)
