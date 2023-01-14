@@ -12,14 +12,14 @@ DATA_FOLDER_PATH = os.path.join('..', 'data')
 
 def split_data(args):
     if args.dataset in list_datasets():
-        dataset = load_dataset(args.dataset, split="train", cache_dir='/data/tianle/huggingfacedatasetscache')
+        dataset = load_dataset(args.dataset, split="train")
         if args.train_size < 1.0:
             train_test = dataset.train_test_split(train_size=args.train_size,
                                                   shuffle=True, seed=args.random_state)
             train_set = train_test["train"]
         else:
             train_set = dataset
-        dataset = load_dataset(args.dataset, split=args.split, cache_dir='/data/tianle/huggingfacedatasetscache')
+        dataset = load_dataset(args.dataset, split=args.split)
         if args.test_size < 1.0:
             train_test = dataset.train_test_split(test_size=args.test_size,
                                                   shuffle=True, seed=args.random_state)
