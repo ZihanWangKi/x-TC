@@ -1,2 +1,1 @@
- review: {}
- overall rating: 
+ {} Is this review positive or negative? 
