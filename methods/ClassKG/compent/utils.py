@@ -17,6 +17,7 @@ import dgl
 def set_seed_all(seed = None):
     if (seed is None):
         seed = int(time.time())
+    print("seed: " + str(seed))
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
