@@ -129,6 +129,7 @@ class LOTClassTrainer(object):
             print(f"Converting texts into tensors.")
             chunk_size = ceil(len(docs) / self.num_cpus)
             chunks = [docs[x:x+chunk_size] for x in range(0, len(docs), chunk_size)]
+            self.encode(chunks[0])
             results = Parallel(n_jobs=self.num_cpus)(delayed(self.encode)(docs=chunk) for chunk in chunks)
             input_ids = torch.cat([result[0] for result in results])
             attention_masks = torch.cat([result[1] for result in results])
