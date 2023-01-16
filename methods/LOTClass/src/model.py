@@ -1,6 +1,6 @@
 from transformers import BertPreTrainedModel, BertModel
-from transformers.models.bert.modeling_bert import BertOnlyMLMHead
-#from transformers.modeling_bert import BertOnlyMLMHead
+#from transformers.models.bert.modeling_bert import BertOnlyMLMHead
+from transformers.modeling_bert import BertOnlyMLMHead
 from torch import nn
 import sys
 
