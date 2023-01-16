@@ -287,7 +287,6 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     for t in targets:
         vec.append(logits[0, -1, t].item())
     #print(vec)
-    vec = np.array(vec)
     #vec = np.exp(vec)
     #vec = np.log(vec / vec.sum())
     #print(vec)
@@ -303,7 +302,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     except:
         ce_list = [ce_list]
 
-    return vec.tolist()
+    return vec
 
 
 def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=None, dcpmi=False):
@@ -419,9 +418,9 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
         'domain_cond': lm_domain_cond_pred,
     }
     """
-    vec = cond_ce
+    vec = np.array(cond_ce)
     if dcpmi:
-        vec -= domain_cond_ce
+        vec -= np.array(domain_cond_ce)
     vec = np.exp(vec)
     vec = np.log(vec / vec.sum())
     return vec
