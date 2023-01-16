@@ -19,6 +19,7 @@ import shutil
 import sys
 from tqdm import tqdm
 from model import LOTClassModel
+from model_roberta import LOTClassModel_roberta
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -60,10 +61,16 @@ class LOTClassTrainer(object):
         self.inv_vocab = {k:v for v, k in self.vocab.items()}
         self.read_label_names(args.dataset_dir, args.label_names_file)
         self.num_class = len(self.label_name_dict)
-        self.model = LOTClassModel.from_pretrained(self.pretrained_lm,
-                                                   output_attentions=False,
-                                                   output_hidden_states=False,
-                                                   num_labels=self.num_class)
+        if self.pretrained_lm.startswith("bert"):
+            self.model = LOTClassModel.from_pretrained(self.pretrained_lm,
+                                                       output_attentions=False,
+                                                       output_hidden_states=False,
+                                                       num_labels=self.num_class)
+        else:
+            self.model = LOTClassModel_roberta.from_pretrained(self.pretrained_lm,
+                                                               output_attentions=False,
+                                                               output_hidden_states=False,
+                                                               num_labels=self.num_class)
         self.read_data(args.dataset_dir, args.train_file, args.test_file, args.test_label_file)
         self.with_test_label = True if args.test_label_file is not None else False
         self.temp_dir = f'tmp_{self.dist_port}'
