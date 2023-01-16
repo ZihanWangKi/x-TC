@@ -74,6 +74,8 @@ def main():
     trainer.category_vocabulary(top_pred_num=args.top_pred_num, category_vocab_size=args.category_vocab_size)
     # Training with masked category prediction
     trainer.mcp(top_pred_num=args.top_pred_num, match_threshold=args.match_threshold, epochs=args.mcp_epochs)
+    if args.test_file is not None:
+        trainer.write_results(loader_name="mcp_model.pt", out_file=args.out_file)
     # Self-training 
     trainer.self_train(epochs=args.self_train_epochs, loader_name=args.final_model)
     # Write test set results
