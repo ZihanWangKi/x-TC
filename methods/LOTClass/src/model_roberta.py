@@ -10,7 +10,7 @@ class LOTClassModel_roberta(RobertaPreTrainedModel):
         super().__init__(config)
         self.num_labels = config.num_labels
         self.roberta = RobertaModel(config, add_pooling_layer=False)
-        self.cls = RobertaLMHead(config)
+        self.lm_head = RobertaLMHead(config)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation = nn.Tanh()
