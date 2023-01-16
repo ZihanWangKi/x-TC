@@ -1,1 +1,2 @@
- The following review expresses what sentiment? {} 
+ {}
+ The review expresses what sentiment? 
