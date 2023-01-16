@@ -1,4 +1,4 @@
-politician
-athlete
-businessman
-scientist
+politics
+sport
+business
+technology
