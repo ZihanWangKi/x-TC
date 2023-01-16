@@ -1,1 +1,2 @@
- What label best describes this text? {} 
+ {}
+ What label best describes this text?
