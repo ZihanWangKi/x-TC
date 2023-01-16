@@ -288,8 +288,8 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
         vec.append(logits[0, -1, t].item())
     #print(vec)
     vec = np.array(vec)
-    vec = np.exp(vec)
-    vec = np.log(vec / vec.sum())
+    #vec = np.exp(vec)
+    #vec = np.log(vec / vec.sum())
     #print(vec)
     logits = logits.view(-1, logit_shape[-1])
     ce_list = F.cross_entropy(logits, labels[:, 1:].contiguous().view(-1), reduction='none')
@@ -306,7 +306,7 @@ def cross_entropy_list(sources, targets, model, cache=None, batch=False, calcula
     return vec.tolist()
 
 
-def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=None):
+def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=None, dcpmi=False):
     '''
 
     if prelog is true, then we're just logging calculations to do in one big batch calculate
@@ -379,11 +379,10 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
                                      model, cache=cache, batch=batch, calculate=calculate)
 
         ## get domain conditional CEs
-        """
         domain_cond_ce = cross_entropy_list([opt['uncond_premise'] for opt in options],
                                             [opt['uncond_hypothesis'] for opt in options],
                                             model, cache=cache, batch=batch, calculate=calculate)
-
+        """
         ## get unconditional CEs
         uncond_ce = cross_entropy_list([[25] for opt in options],
                                        [opt['uncond_hypothesis'] for opt in options],
@@ -420,11 +419,15 @@ def inference_autobatch(model, encoder, example, batch=1, prelog=False, cache=No
         'domain_cond': lm_domain_cond_pred,
     }
     """
-    lm_vec = cond_ce
-    return lm_vec
+    vec = cond_ce
+    if dcpmi:
+        vec -= domain_cond_ce
+    vec = np.exp(vec)
+    vec = np.log(vec / vec.sum())
+    return vec
 
 
-def fwd(model, encoder, examples, batch, cache=None):
+def fwd(model, encoder, examples, batch, cache=None, dcpmi=False):
     '''
     This is designed for gpt2-style language models
 
@@ -483,13 +486,13 @@ def fwd(model, encoder, examples, batch, cache=None):
     ## in the cache and calculating actual predictions
     print('actually calculating')
     for example in tqdm(examples):
-        vec = inference_autobatch(model, encoder, example, prelog=False, cache=cache, batch=batch)
+        vec = inference_autobatch(model, encoder, example, prelog=False, cache=cache, batch=batch, dcpmi=dcpmi)
         predictions_list.append(vec)
 
     return predictions_list
 
 
-def score(model, model_name, encoder, examples, stem, split, batch):
+def score(model, model_name, encoder, examples, stem, split, batch, dcpmi=False):
     hist_path = f'{stem}{model_name}-{split}.hist'
 
     if not os.path.exists(hist_path):
@@ -505,7 +508,7 @@ def score(model, model_name, encoder, examples, stem, split, batch):
     with open(hist_path, 'r') as f:
         cache = json.loads(f.read())
 
-    vecs = fwd(model, encoder, examples, batch, cache)
+    vecs = fwd(model, encoder, examples, batch, cache, dcpmi)
 
     print('=' * 50)
     print('saving cache to {}'.format(hist_path))

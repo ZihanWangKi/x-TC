@@ -137,6 +137,7 @@ if __name__ == '__main__':
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--iter', type=int, default=10)
     parser.add_argument("--magic", action='store_true', default=False)
+    parser.add_argument("--dcpmi", action='store_true', default=False)
     args = parser.parse_args()
     print(args)
 
@@ -244,7 +245,7 @@ if __name__ == '__main__':
     else:
         n_class, train_examples = load_examples_n_shot(stem, "train", args.n_shot)
 
-    train_vec = score(model, args.model, encoder, train_examples, stem, "train", args.batch)
+    train_vec = score(model, args.model, encoder, train_examples, stem, "train", args.batch, args.dcpmi)
     max_cla = -1000000
     best_seed = 0
     pred = []
@@ -291,7 +292,7 @@ if __name__ == '__main__':
         _, examples = load_examples(stem, args.split)
     else:
         _, examples = load_examples_n_shot(stem, args.split, args.n_shot)
-    test_vec = score(model, args.model, encoder, examples, stem, args.split, args.batch)
+    test_vec = score(model, args.model, encoder, examples, stem, args.split, args.batch, args.dcpmi)
 
     documents_to_class = gmm.predict(test_vec)
     pred = [col_ind[documents_to_class[i]] for i in range(len(test_vec))]
