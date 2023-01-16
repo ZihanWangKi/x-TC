@@ -1,11 +1,11 @@
 company
 school
 artist
-sports
+athlete
 politics
 transportation
 building
-river
+nature
 village
 animal
 plant
