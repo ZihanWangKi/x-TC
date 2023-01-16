@@ -1,5 +1,5 @@
 from transformers import RobertaModel, RobertaPreTrainedModel
-from transformers.models.bert.modeling_bert import BertOnlyMLMHead
+from transformers.models.roberta.modeling_roberta import RobertaLMHead
 from torch import nn
 import sys
 
@@ -10,7 +10,7 @@ class LOTClassModel_roberta(RobertaPreTrainedModel):
         super().__init__(config)
         self.num_labels = config.num_labels
         self.bert = RobertaModel(config, add_pooling_layer=False)
-        self.cls = BertOnlyMLMHead(config)
+        self.cls = RobertaLMHead(config)
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation = nn.Tanh()
