@@ -19,6 +19,7 @@ import shutil
 import sys
 from tqdm import tqdm
 from model import LOTClassModel
+from model_roberta import LOTClassModel_roberta
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -49,9 +50,11 @@ class LOTClassTrainer(object):
         self.eval_batch_size = args.eval_batch_size
         self.accum_steps = args.accum_steps
         eff_batch_size = self.train_batch_size * self.world_size * self.accum_steps
+        """
         assert abs(
             eff_batch_size - 128) < 10, f"Make sure the effective training batch size is around 128, current: {eff_batch_size}"
         print(f"Effective training batch size: {eff_batch_size}")
+        """
         self.pretrained_lm = args.pretrained_lm  # 'bert-base-uncased'
         if self.pretrained_lm.startswith("bert"):
             self.tokenizer = BertTokenizer.from_pretrained(self.pretrained_lm, do_lower_case=True)
@@ -63,10 +66,16 @@ class LOTClassTrainer(object):
         self.inv_vocab = {k: v for v, k in self.vocab.items()}
         self.read_label_names(args.dataset_dir, args.label_names_file)
         self.num_class = len(self.label_name_dict)
-        self.model = LOTClassModel.from_pretrained(self.pretrained_lm,
-                                                   output_attentions=False,
-                                                   output_hidden_states=False,
-                                                   num_labels=self.num_class)
+        if self.pretrained_lm.startswith("bert"):
+            self.model = LOTClassModel.from_pretrained(self.pretrained_lm,
+                                                       output_attentions=False,
+                                                       output_hidden_states=False,
+                                                       num_labels=self.num_class)
+        else:
+            self.model = LOTClassModel_roberta.from_pretrained(self.pretrained_lm,
+                                                               output_attentions=False,
+                                                               output_hidden_states=False,
+                                                               num_labels=self.num_class)
         self.read_data(args.dataset_dir, args.train_file, args.test_file, args.test_label_file)
         self.with_test_label = True if args.test_label_file is not None else False
         self.temp_dir = f'tmp_{self.dist_port}'
@@ -128,7 +137,8 @@ class LOTClassTrainer(object):
             print(f"Converting texts into tensors.")
             chunk_size = ceil(len(docs) / self.num_cpus)
             chunks = [docs[x:x + chunk_size] for x in range(0, len(docs), chunk_size)]
-            results = Parallel(n_jobs=self.num_cpus)(delayed(self.encode)(docs=chunk) for chunk in chunks)
+            # results = Parallel(n_jobs=self.num_cpus)(delayed(self.encode)(docs=chunk) for chunk in chunks)
+            results = [self.encode(docs=chunk) for chunk in chunks]
             input_ids = torch.cat([result[0] for result in results])
             attention_masks = torch.cat([result[1] for result in results])
             print(f"Saving encoded texts into {loader_file}")
@@ -153,8 +163,8 @@ class LOTClassTrainer(object):
                 print("Locating label names in the corpus.")
                 chunk_size = ceil(len(docs) / self.num_cpus)
                 chunks = [docs[x:x + chunk_size] for x in range(0, len(docs), chunk_size)]
-                results = Parallel(n_jobs=self.num_cpus)(
-                    delayed(self.label_name_occurrence)(docs=chunk) for chunk in chunks)
+                # results = Parallel(n_jobs=self.num_cpus)(delayed(self.label_name_occurrence)(docs=chunk) for chunk in chunks)
+                results = [self.label_name_occurrence(docs=chunk) for chunk in chunks]
                 input_ids_with_label_name = torch.cat([result[0] for result in results])
                 attention_masks_with_label_name = torch.cat([result[1] for result in results])
                 label_name_idx = torch.cat([result[2] for result in results])
@@ -176,10 +186,13 @@ class LOTClassTrainer(object):
         wordpcs = []
         idx = 1  # index starts at 1 due to [CLS] token
         for i, wordpc in enumerate(doc):
-            wordpcs.append(wordpc[2:] if wordpc.startswith("##") else wordpc)
+            tmp = wordpc[2:] if wordpc.startswith("##") else wordpc
+            tmp = tmp[1:] if tmp.startswith(chr(2 ** 8 + ord(' '))) else tmp
+            wordpcs.append(tmp)
             if idx >= self.max_len - 1:  # last index will be [SEP] token
                 break
-            if i == len(doc) - 1 or not doc[i + 1].startswith("##"):
+            if i == len(doc) - 1 or (self.pretrained_lm.startswith("bert") and not doc[i + 1].startswith("##")) or doc[
+                i + 1].startswith(chr(2 ** 8 + ord(' '))):
                 word = ''.join(wordpcs)
                 if word in self.label2class:
                     label_idx[idx] = self.label2class[word]
@@ -696,8 +709,12 @@ from sklearn.metrics import f1_score
 
 
 def f1(y_true, y_pred):
+    from sklearn.metrics import confusion_matrix
     y_true = y_true.astype(np.int64)
     assert y_pred.size == y_true.size
+    confusion = confusion_matrix(y_true, y_pred)
+    print("-" * 80 + "Evaluating" + "-" * 80)
+    print(confusion)
     f1_macro = f1_score(y_true, y_pred, average='macro')
     f1_micro = f1_score(y_true, y_pred, average='micro')
     return f1_macro, f1_micro
