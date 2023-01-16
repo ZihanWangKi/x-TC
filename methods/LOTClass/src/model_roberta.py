@@ -1,6 +1,6 @@
 from transformers import RobertaModel, RobertaPreTrainedModel
-from transformers.modeling_roberta import RobertaLMHead
-#from transformers.models.roberta.modeling_roberta import RobertaLMHead
+#from transformers.modeling_roberta import RobertaLMHead
+from transformers.models.roberta.modeling_roberta import RobertaLMHead
 from torch import nn
 import sys
 
