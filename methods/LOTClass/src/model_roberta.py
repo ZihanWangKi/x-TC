@@ -35,7 +35,7 @@ class LOTClassModel_roberta(RobertaPreTrainedModel):
             trans_states = self.dropout(trans_states)
             logits = self.classifier(trans_states)
         elif pred_mode == "mlm":
-            logits = self.cls(last_hidden_states)
+            logits = self.lm_head(last_hidden_states)
         else:
             sys.exit("Wrong pred_mode!")
         return logits
