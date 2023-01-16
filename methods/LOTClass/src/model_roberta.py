@@ -12,14 +12,16 @@ class LOTClassModel_roberta(RobertaPreTrainedModel):
         self.roberta = RobertaModel(config, add_pooling_layer=False)
         self.lm_head = RobertaLMHead(config)
         #self.bert = self.roberta
-        self.cls = self.lm_head
         self.dropout = nn.Dropout(config.hidden_dropout_prob)
         self.dense = nn.Linear(config.hidden_size, config.hidden_size)
         self.activation = nn.Tanh()
         self.classifier = nn.Linear(config.hidden_size, config.num_labels)
         self.init_weights()
         # MLM head is not trained
+        self.cls = self.lm_head
         for param in self.cls.parameters():
+            param.requires_grad = False
+        for param in self.lm_head.parameters():
             param.requires_grad = False
 
     def forward(self, input_ids, pred_mode, attention_mask=None, token_type_ids=None,
