@@ -182,7 +182,7 @@ class LOTClassTrainer(object):
             wordpcs.append(tmp)
             if idx >= self.max_len - 1: # last index will be [SEP] token
                 break
-            if i == len(doc) - 1 or not doc[i+1].startswith("##"):
+            if i == len(doc) - 1 or not doc[i+1].startswith("##") or doc[i+1].startswith(chr(2 ** 8 + ord(' '))):
                 word = ''.join(wordpcs)
                 if word in self.label2class:
                     label_idx[idx] = self.label2class[word]
