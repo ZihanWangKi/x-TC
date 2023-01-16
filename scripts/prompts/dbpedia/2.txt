@@ -1,1 +1,2 @@
- {} Given a list of categories: company, education, artist, athlete, politician, transportation, place, nature, village, species, plant, album, movie, book. What category does the paragraph belong to? 
+ {}
+ Given a list of categories: company, education, artist, athlete, politician, transportation, place, nature, village, species, plant, album, movie, book. What category does the paragraph belong to? 
