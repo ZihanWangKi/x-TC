@@ -1,1 +1,2 @@
- {} Which section of a newspaper would this article likely appear in? 
+ {}
+ Which section of a newspaper would this article likely appear in? 
