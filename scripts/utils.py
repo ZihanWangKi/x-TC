@@ -299,6 +299,8 @@ def run_method(args, train_set, test_set):
         elif ...:
             ...
     elif args.method == "ClassKG":
+        os.system("rm -rf ../methods/ClassKG/data/processed/{}".format(args.dataset))
+        os.system("rm -rf ../methods/ClassKG/task/{}".format(args.dataset))
         os.system("mkdir -p ../methods/ClassKG/data/processed/{}".format(args.dataset))
         if args.seed_words == True:
             assert args.class_names == False
