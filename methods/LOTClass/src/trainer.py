@@ -683,8 +683,12 @@ class LOTClassTrainer(object):
 
 from sklearn.metrics import f1_score
 def f1(y_true, y_pred):
+    from sklearn.metrics import confusion_matrix
     y_true = y_true.astype(np.int64)
     assert y_pred.size == y_true.size
+    confusion = confusion_matrix(y_true, y_pred)
+    print("-" * 80 + "Evaluating" + "-" * 80)
+    print(confusion)
     f1_macro = f1_score(y_true, y_pred, average='macro')
     f1_micro = f1_score(y_true, y_pred, average='micro')
     return f1_macro, f1_micro
