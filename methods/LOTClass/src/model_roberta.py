@@ -1,5 +1,5 @@
 from transformers import RobertaModel, RobertaPreTrainedModel
-from transformers.modeling_bert import BertOnlyMLMHead
+from transformers.models.bert.modeling_bert import BertOnlyMLMHead
 from torch import nn
 import sys
 
