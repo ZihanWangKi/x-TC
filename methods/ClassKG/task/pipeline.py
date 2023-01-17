@@ -111,3 +111,7 @@ if __name__ == '__main__':
     torch.multiprocessing.set_start_method('spawn')
     spawn(main, args = (cfg_file, visdom_env_name, args.total_iter, args.random_state, args.lm), nprocs = world_size, join = True)
     print('finish')
+
+enlo', 'threats', 'graduated', 'algerian', 'voc', 'unseeable', 'vasquez', 'gwy', 'harlem', 'campaigns', 'residential', '3lw', 'annapolis', 'seoraksan', 'gaubatz', 'portogruaro', 'multiunit', 'caldina', 'earning'
+, 'landings', 'stefan', 'apportionment', 'hexes', 'v89', 'kitchin', 'beverage', 'completing', 'vicksburg', 'chaze', 'brod', 'hilton', 'bhardwaj', 'sovetskaya', 'venus', 'origin', 'czechoslovakia', 'feistritz', 'ovoid', 'dovestone', 'movie']
+[7.9373747  7.9373747  8.63052188 ... 8.63052188 8.63052188 4.80188048]
