@@ -470,28 +470,54 @@ def run_method(args, train_set, test_set):
             "CUDA_VISIBLE_DEVICES={} python ProtoCal.py {} --model {} --split test --seed {} {}"
             .format(args.gpu, args.dataset, args.method, args.random_state, args.suffix))
     elif args.method.startswith("NPPrompt"):
-        assert args.prompt == True
-        assert args.class_names == True
-        assert args.seed_words == False
-        os.system("mkdir -p ../methods/NPPrompt/datasets/{}".format(args.dataset))
-        os.system("cp class_names_NPP.txt ../methods/NPPrompt/datasets/{}/class_names.txt".format(args.dataset))
-        os.system("cp prompt_NPP.txt ../methods/NPPrompt/datasets/{}/prompt.txt".format(args.dataset))
-        with open("../methods/NPPrompt/datasets/{}/train.txt".format(args.dataset), "w") as f:
-            for line in train_set["x-TC"]:
-                f.write(str(line))
-                f.write("\n")
-        with open("../methods/NPPrompt/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
-            for line in train_set[args.label_name]:
-                f.write(str(line))
-                f.write("\n")
-        with open("../methods/NPPrompt/datasets/{}/test.txt".format(args.dataset), "w") as f:
-            for line in test_set["x-TC"]:
-                f.write(str(line))
-                f.write("\n")
-        with open("../methods/NPPrompt/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
-            for line in test_set[args.label_name]:
-                f.write(str(line))
-                f.write("\n")
-        os.chdir("../methods/NPPrompt")
-        os.system("sh example_run.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
+        if args.additional_method == None:
+            assert args.prompt == True
+            assert args.class_names == True
+            assert args.seed_words == False
+            os.system("mkdir -p ../methods/NPPrompt/datasets/{}".format(args.dataset))
+            os.system("cp class_names_NPP.txt ../methods/NPPrompt/datasets/{}/class_names.txt".format(args.dataset))
+            os.system("cp prompt_NPP.txt ../methods/NPPrompt/datasets/{}/prompt.txt".format(args.dataset))
+            with open("../methods/NPPrompt/datasets/{}/train.txt".format(args.dataset), "w") as f:
+                for line in train_set["x-TC"]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/NPPrompt/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
+                for line in train_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/NPPrompt/datasets/{}/test.txt".format(args.dataset), "w") as f:
+                for line in test_set["x-TC"]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/NPPrompt/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.chdir("../methods/NPPrompt")
+            os.system("sh example_run.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
+        elif args.additional_method == "ProtoCal":
+            assert args.prompt == True
+            assert args.class_names == True
+            assert args.seed_words == False
+            os.system("mkdir -p ../methods/NPPrompt/datasets/{}".format(args.dataset))
+            os.system("cp class_names_NPP.txt ../methods/NPPrompt/datasets/{}/class_names.txt".format(args.dataset))
+            os.system("cp prompt_NPP.txt ../methods/NPPrompt/datasets/{}/prompt.txt".format(args.dataset))
+            with open("../methods/NPPrompt/datasets/{}/train.txt".format(args.dataset), "w") as f:
+                for line in train_set["x-TC"]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/NPPrompt/datasets/{}/train_labels.txt".format(args.dataset), "w") as f:
+                for line in train_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/NPPrompt/datasets/{}/test.txt".format(args.dataset), "w") as f:
+                for line in test_set["x-TC"]:
+                    f.write(str(line))
+                    f.write("\n")
+            with open("../methods/NPPrompt/datasets/{}/test_labels.txt".format(args.dataset), "w") as f:
+                for line in test_set[args.label_name]:
+                    f.write(str(line))
+                    f.write("\n")
+            os.chdir("../methods/NPPrompt")
+            os.system("sh example_run_ProtoCal.sh {} {} {} {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
 
