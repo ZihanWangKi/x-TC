@@ -80,7 +80,7 @@ class Keywords_Updater_TFIDF(Keywords_Updater_Base):
 
         # indicator = TF * IDF_vector
         indicator = TF * numpy.power(IDF_vector, self.IDF_n)
-
+        print(indicator)
         diff = self.__update_keywords_with_indicator_M2__(indicator, word_list, incremental = incremental)
 
         self.keywords.syn_across_GPUs()
