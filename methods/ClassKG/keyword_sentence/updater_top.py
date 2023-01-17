@@ -71,9 +71,7 @@ class Keywords_Updater_TFIDF(Keywords_Updater_Base):
         # sentences, labels = self.upsample_balance(sentences, labels)
 
         word_list, word_to_index = self.get_words_list(sentences)
-        print(word_list)
         IDF_vector = self.cal_IDF(sentences, word_list, word_to_index)
-        print(IDF_vector)
         # LI = self.cal_LI(sentences, labels, word_list, word_to_index)
         # TF = self.cal_TF_normal_with_doc_num(sentences, labels, word_list, word_to_index)
         TF = self.cal_TF_normal_with_words_num(sentences, labels, word_list,

@@ -2,22 +2,22 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 
 
-
+"""
 def split_sentence_into_words(sentence: str):
     sentence = sentence.lower()
     vectorizer = CountVectorizer()
     tokener = vectorizer.build_tokenizer()
     words = tokener(sentence)
     return words
+"""
 
-
-# seps = ['.', ',', '!', '?', ':', '/', '@', '&', '*', '$', '#', '(', ')', '<', '>', '[', ']', '{', '}']
-# def split_sentence_into_words_old(sentence: str):
-#     sentence = sentence.lower()
-#     for item in seps:
-#         sentence = sentence.replace(item, ' ')
-#     words = sentence.split()
-#     return words
+seps = ['.', ',', '!', '?', ':', '/', '@', '&', '*', '$', '#', '(', ')', '<', '>', '[', ']', '{', '}']
+def split_sentence_into_words_old(sentence: str):
+     sentence = sentence.lower()
+     for item in seps:
+         sentence = sentence.replace(item, ' ')
+     words = sentence.split()
+     return words
 
 
 
