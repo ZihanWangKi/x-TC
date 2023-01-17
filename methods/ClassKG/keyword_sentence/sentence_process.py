@@ -12,7 +12,7 @@ def split_sentence_into_words(sentence: str):
 """
 
 seps = ['.', ',', '!', '?', ':', '/', '@', '&', '*', '$', '#', '(', ')', '<', '>', '[', ']', '{', '}']
-def split_sentence_into_words_old(sentence: str):
+def split_sentence_into_words(sentence: str):
      sentence = sentence.lower()
      for item in seps:
          sentence = sentence.replace(item, ' ')
