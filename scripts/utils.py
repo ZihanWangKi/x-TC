@@ -376,7 +376,7 @@ def run_method(args, train_set, test_set):
             yaml.dump(data=default_para, stream=f, allow_unicode=True, default_flow_style=None)
 
         os.chdir("../methods/ClassKG/task")
-        os.system("python pipeline.py --gpu {} --dataset {} --random_state {}".format(args.gpu, args.dataset, args.random_state))
+        os.system("python pipeline.py --gpu {} --dataset {} --random_state {}".format(args.gpu, args.dataset, args.random_state, args.suffix))
     elif args.method.startswith("gpt") and args.additional_method == None:
         assert args.prompt == True
         assert args.class_names == True

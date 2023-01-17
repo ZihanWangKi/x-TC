@@ -208,6 +208,7 @@ class KeyWords():
             if (label not in self.label_to_keywords):
                 self.label_to_keywords[label] = []
             self.label_to_keywords[label].append(keyword)
+            print(keyword)
         assert len(self.label_to_keywords) == self.number_classes, 'some classes does not have keywords'
 
         self.keywords_to_index = {}
