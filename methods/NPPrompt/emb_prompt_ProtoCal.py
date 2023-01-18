@@ -273,7 +273,7 @@ for step, inputs in enumerate(pbar):
     for i in range(len(vec)):
         vec[i] = np.exp(vec[i])
         vec[i] = np.log(vec[i] / vec[i].sum())
-    allpreds.extend(gmm.predict(vec).tolist())
+    allpreds.extend(col_ind[_] for _ in gmm.predict(vec).tolist())
     #allpreds.extend(torch.argmax(stat, dim=-1).cpu().tolist())
     allprobs.append(torch.softmax(stat, dim=-1).cpu())
 acc = sum([int(i == j) for i, j in zip(allpreds, alllabels)]) / len(allpreds)
