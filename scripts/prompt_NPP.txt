@@ -1,2 +1,2 @@
- review: {"placeholder": "text_a"}
- sentiment: {"mask"}
+ text: {"placeholder": "text_a"}
+ location: {"mask"}
