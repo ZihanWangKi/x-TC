@@ -110,5 +110,5 @@ if __name__ == '__main__':
     cfg_file = args.dataset + ".yaml"
     visdom_env_name = args.dataset
     torch.multiprocessing.set_start_method('spawn')
-    spawn(main, args = (cfg_file, visdom_env_name, args.total_iter, args.random_state, args.lm), nprocs = world_size, join = True)
+    spawn(main, args = (cfg_file, visdom_env_name, args.total_iter, args.random_state, args.lm, args.clustering), nprocs = world_size, join = True)
     print('finish')
