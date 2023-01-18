@@ -45,12 +45,13 @@ class Trainer_GCN(Trainer_Base):
                                   model = model)
             trainer.do_train()
 
-    def train_model(self, sentences, vote_labels, ITR, GT_labels = None):
+    def train_model(self, sentences, vote_labels, ITR, GT_labels = None, clustering=False):
         dataloader_origin_data = self.__build_dataloader__(sentences = sentences, labels = vote_labels,
                                                            GT_labels = GT_labels, for_train = False)
         self.eval_on_origin_data = Eval_Model_On_Labeling_Quality(cfg = self.cfg, logger = self.logger,
                                                                   distributed = True, rank = self.rank,
-                                                                  dataloader_train = dataloader_origin_data)
+                                                                  dataloader_train = dataloader_origin_data,
+                                                                  clustering=clustering)
 
         sentences, vote_labels, GT_labels = self.upsample_balance_with_one_extra(sentences = sentences,
                                                                                  labels = vote_labels,

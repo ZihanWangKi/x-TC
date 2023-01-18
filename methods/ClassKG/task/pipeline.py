@@ -34,7 +34,7 @@ from compent.saver import Saver
 #TOTAL_ITR = 12
 
 
-def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed, lm):
+def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed, lm, clustering):
     # cfg_file = "yelp_polarity.yaml"
     # visdom_env_name = "yelp_polarity"
     # seed = 0
@@ -75,7 +75,7 @@ def main(rank, cfg_file, visdom_env_name, TOTAL_ITR, seed, lm):
         logger.visdom_text(text = 'start training GIN', win_name = 'state')
         res_dict = GCN_trainer.train_model(sentences = voted_sentences,
                                            vote_labels = voted_label,
-                                           GT_labels = GT_labels, ITR = cur_itr)
+                                           GT_labels = GT_labels, ITR = cur_itr, clustering = clustering)
 
         #res_dict = broadcast_data(res_dict)
         logger.visdom_text(text = 'start training longformer', win_name = 'state')
@@ -102,6 +102,7 @@ if __name__ == '__main__':
     parser.add_argument("--gpu", type=int, default=0)
     parser.add_argument("--total_iter", type=int, default=3)
     parser.add_argument("--lm", type=str, default="bert-base-uncased")
+    parser.add_argument("--clustering", action="store_true", default=False)
     parser.add_argument("--random_state", type=int, default=42)
     args = parser.parse_args()
     print(args)

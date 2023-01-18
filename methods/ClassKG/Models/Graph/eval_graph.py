@@ -61,7 +61,7 @@ device = torch.device('cuda')
 
 
 class Eval_Model_On_Labeling_Quality():
-    def __init__(self, cfg, logger, distributed, rank, dataloader_train):
+    def __init__(self, cfg, logger, distributed, rank, dataloader_train, clustering=False):
         self.logger = logger
         self.dataloader = dataloader_train
         self.rank = rank
@@ -97,6 +97,22 @@ class Eval_Model_On_Labeling_Quality():
         all_preds = accumulate_results_from_multiple_gpus(pred_cur_GPU)
         all_sentences = accumulate_results_from_multiple_gpus(sentences_cur_GPU)
         all_soft_preds = accumulate_results_from_multiple_gpus(soft_label_cur_GPU)
+
+        if self.clustering:
+            import numpy as np
+            from sklearn.mixture import GaussianMixture
+            assignment_matrix = np.zeros((len(pred), len(all_soft_preds[0])))
+            for i in range(len(pred)):
+                assignment_matrix[i][pred[i]] = 1.0
+
+            gmm = GaussianMixture(n_components=len(all_soft_preds[0]), warm_start=True)
+            gmm.converged_ = "HACK"
+
+            gmm._initialize(np.array(all_soft_preds), assignment_matrix)
+            gmm.lower_bound_ = -np.infty
+            gmm.fit(all_soft_preds)
+            all_preds = gmm.predict(all_soft_preds).tolist()
+
         if not is_main_process():
             return None
 
