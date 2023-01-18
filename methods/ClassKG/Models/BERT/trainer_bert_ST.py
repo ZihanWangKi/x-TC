@@ -88,9 +88,10 @@ class Trainer_BERT(Trainer_Base):
                                                                        )
         else:
             self.model = RobertaForSequenceClassification.from_pretrained(self.lm,  # 'bert-base-uncased',
-                                                                       num_labels=self.cfg.model.number_classes,
-                                                                       gradient_checkpointing=True,
-                                                                       )
+                                                                          num_labels=self.cfg.model.number_classes,
+                                                                          #gradient_checkpointing=True,
+                                                                          )
+            #self.model._set_gradient_checkpointing(value=True)
 
         self.model.train()
         self.model = self.model.to(device)
