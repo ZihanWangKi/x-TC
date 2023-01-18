@@ -66,6 +66,7 @@ class Eval_Model_On_Labeling_Quality():
         self.dataloader = dataloader_train
         self.rank = rank
         self.distributed = distributed
+        self.clustering = clustering
         assert self.distributed == True
 
     def __call__(self, model):
