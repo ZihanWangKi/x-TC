@@ -8,11 +8,12 @@ device = torch.device('cuda')
 
 
 class Eval_Model_For_BERT():
-    def __init__(self, cfg, logger, distributed, rank, dataloader_eval):
+    def __init__(self, cfg, logger, distributed, rank, dataloader_eval, lm):
         self.logger = logger
         self.dataloader = dataloader_eval
         self.rank = rank
         self.distributed = distributed
+        self.lm = lm
         assert self.distributed == True
 
     def __call__(self, model):
@@ -27,9 +28,12 @@ class Eval_Model_For_BERT():
                 label_id = batch['labels'].tolist()
                 input_ids = batch['input_ids']
                 attention_mask = batch['attention_mask']
-                token_type_ids = batch['token_type_ids']
                 sentence_cur_GPU += batch['sentences']
-                outputs = model(input_ids = input_ids, attention_mask = attention_mask, token_type_ids = token_type_ids)
+                if self.lm.startswith("bert"):
+                    token_type_ids = batch['token_type_ids']
+                    outputs = model(input_ids=input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids)
+                else:
+                    outputs = model(input_ids=input_ids, attention_mask=attention_mask)
                 pred_score = outputs.logits
                 pred = torch.argmax(pred_score, dim = 1).tolist()
                 label_cur_GPU += label_id

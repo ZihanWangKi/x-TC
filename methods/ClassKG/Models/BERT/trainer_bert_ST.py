@@ -36,9 +36,9 @@ class Trainer_BERT(Trainer_Base):
         true_eval_labels = sentences_all.test_label
         dataloader_true_eval = self.__build_dataloader__(true_eval_sentence, true_eval_labels, for_train=False)
         self.evaler_on_all = Eval_Model_For_BERT(self.cfg, self.logger, distributed=True, rank=self.rank,
-                                                 dataloader_eval=dataloader_eval)
+                                                 dataloader_eval=dataloader_eval, lm=lm)
         self.true_evaler_on_all = True_Eval_Model_For_BERT(self.cfg, self.logger, distributed = True, rank = self.rank,
-                                                 dataloader_eval = dataloader_true_eval)
+                                                 dataloader_eval = dataloader_true_eval, lm=lm)
 
     def __build_dataloader__(self, sentences, labels, for_train):
         collect_fn = Collect_FN(self.lm, labels is not None)
