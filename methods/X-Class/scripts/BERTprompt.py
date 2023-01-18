@@ -11,7 +11,7 @@ from preprocessing_utils import load, load_labels
 from utils import INTERMEDIATE_DATA_FOLDER_PATH, DATA_FOLDER_PATH, MODELS, tensor_to_numpy, evaluate_predictions
 from transformers import ElectraTokenizer, ElectraForPreTraining, BertTokenizer, BertForMaskedLM, RobertaForMaskedLM, RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
-def prepare_sentence(args, tokenizer, text, prompt):
+def prepare_sentence(args, tokenizer, text, prompt, uncond=False):
     # setting for BERT
     if args.lm_type == "bart-base" or args.lm_type == "bart-large":
         model_max_tokens = 1024
@@ -19,6 +19,9 @@ def prepare_sentence(args, tokenizer, text, prompt):
         model_max_tokens = 512
 
     import copy
+    prompt_ = copy.deepcopy(prompt)
+    if uncond:
+        prompt_ =  '\n' + prompt.split('\n')[-1]
     backup = copy.deepcopy(text)
 
     l = 1
@@ -26,7 +29,7 @@ def prepare_sentence(args, tokenizer, text, prompt):
     while l <= r:
         mid = (l+r) >> 1
         text = backup[:mid]
-        text = prompt.format(text)
+        text = prompt_.format(text)
         if args.add_mask:
             text = text.strip()
             if args.lm_type == "roberta-large" or args.lm_type == "roberta-base" or args.lm_type == "bart-base"  or args.lm_type == "bart-large":
@@ -142,6 +145,24 @@ def main(args):
                 Q.append((-val, i, cls_name))
             _, pred_cls, _ = sorted(Q)[0]
             pred.append(pred_cls)
+        if args.dcpmi == True:
+            for text in tqdm(data):
+                tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
+                masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+                with torch.no_grad():
+                    output = model(tokens_tensor.cuda())
+                tokens_tensor = prepare_sentence(args, tokenizer, text, prompt, uncond=True)
+                masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+                with torch.no_grad():
+                    output = model(tokens_tensor.cuda())
+                predictions = output[0]
+                Q = []
+                for i in range(len(dataset["class_names"])):
+                    cls_name = dataset["class_names"][i]
+                    val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
+                    Q.append((-val, i, cls_name))
+                _, pred_cls, _ = sorted(Q)[0]
+                pred.append(pred_cls)
     else:
         for text in tqdm(data):
             tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
@@ -173,6 +194,7 @@ if __name__ == '__main__':
     # last layer of BERT
     parser.add_argument("--layer", type=int, default=12)
     parser.add_argument("--add_mask", action='store_true', default=False)
+    parser.add_argument("--dcpmi", action='store_true', default=False)
     args = parser.parse_args()
     print(vars(args))
     main(args)
