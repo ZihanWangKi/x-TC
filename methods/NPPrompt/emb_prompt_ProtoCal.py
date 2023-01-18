@@ -214,11 +214,13 @@ train_dataloader = PromptDataLoader(dataset=dataset["train"], template=mytemplat
 pbar = tqdm(train_dataloader)
 
 train_vec = []
+pred = []
 
 for step, inputs in enumerate(pbar):
     if use_cuda:
         inputs = inputs.cuda()
     stat = prompt_model(inputs)  # batch_size * num_class, 30 * 6
+    pred.extend(torch.argmax(stat, dim=-1).cpu().tolist())
     train_vec.extend(stat.cpu().numpy().tolist())
 
 from sklearn.mixture import GaussianMixture
@@ -229,6 +231,23 @@ for i in range(len(train_vec)):
     train_vec[i] = np.exp(train_vec[i])
     train_vec[i] = np.log(train_vec[i] / train_vec[i].sum())
 
+assignment_matrix = np.zeros((len(pred), len(class_labels)))
+for i in range(len(pred)):
+    assignment_matrix[i][pred[i]] = 1.0
+
+gmm = GaussianMixture(n_components=len(class_labels), warm_start=True)
+gmm.converged_ = "HACK"
+
+gmm._initialize(np.array(train_vec), assignment_matrix)
+gmm.lower_bound_ = -np.infty
+gmm.fit(train_vec)
+documents_to_class = gmm.predict(train_vec)
+centers = gmm.means_
+#row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
+print("class center :")
+print(centers)
+
+"""
 max_cla = -1000000
 best_seed = 0
 for seed in range(args.iter):
@@ -250,7 +269,7 @@ row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
 print("best seed : " + str(best_seed))
 print("class center :")
 print(centers)
-
+"""
 test_dataloader = PromptDataLoader(dataset=dataset["test"], template=mytemplate, tokenizer=tokenizer,
                                    tokenizer_wrapper_class=WrapperClass, max_seq_length=max_seq_l, decoder_max_length=3,
                                    batch_size=batch_s, shuffle=False, teacher_forcing=False, predict_eos_token=False,
@@ -273,7 +292,7 @@ for step, inputs in enumerate(pbar):
     for i in range(len(vec)):
         vec[i] = np.exp(vec[i])
         vec[i] = np.log(vec[i] / vec[i].sum())
-    allpreds.extend(col_ind[_] for _ in gmm.predict(vec).tolist())
+    allpreds.extend(_ for _ in gmm.predict(vec).tolist())
     #allpreds.extend(torch.argmax(stat, dim=-1).cpu().tolist())
     allprobs.append(torch.softmax(stat, dim=-1).cpu())
 acc = sum([int(i == j) for i, j in zip(allpreds, alllabels)]) / len(allpreds)
