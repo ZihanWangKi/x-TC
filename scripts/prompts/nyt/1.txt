@@ -1,0 +1,2 @@
+ {}
+ What label best describes this news article? 
