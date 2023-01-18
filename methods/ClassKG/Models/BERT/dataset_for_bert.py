@@ -40,7 +40,7 @@ class Collect_FN():
             sentences, labels, GT_labels = map(list, zip(*batchs))
         else:
             sentences = batchs
-        encoding = self.tokenizer(sentences, return_tensors = 'pt', padding = True, truncation = True, max_length=128)
+        encoding = self.tokenizer(sentences, return_tensors = 'pt', padding = True, truncation = True)
         # input_ids = encoding['input_ids']
         # attention_mask = encoding['attention_mask']
         # ans = {'input_ids': input_ids, 'attention_mask': attention_mask}
