@@ -227,9 +227,11 @@ from sklearn.mixture import GaussianMixture
 from scipy.optimize import linear_sum_assignment
 
 import numpy as np
+"""
 for i in range(len(train_vec)):
     train_vec[i] = np.exp(train_vec[i])
     train_vec[i] = np.log(train_vec[i] / train_vec[i].sum())
+"""
 
 assignment_matrix = np.zeros((len(pred), len(class_labels)))
 for i in range(len(pred)):
@@ -289,9 +291,11 @@ for step, inputs in enumerate(pbar):
     labels = inputs['label']
     alllabels.extend(labels.cpu().tolist())
     vec = stat.cpu().numpy()
+    """
     for i in range(len(vec)):
         vec[i] = np.exp(vec[i])
         vec[i] = np.log(vec[i] / vec[i].sum())
+    """
     allpreds.extend(_ for _ in gmm.predict(vec).tolist())
     #allpreds.extend(torch.argmax(stat, dim=-1).cpu().tolist())
     allprobs.append(torch.softmax(stat, dim=-1).cpu())
