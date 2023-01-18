@@ -132,26 +132,9 @@ def main(args):
 
     pred = []
     if args.lm_type != "electra-base" and args.lm_type != "electra-small" and args.lm_type != "electra-large":
-        for text in tqdm(data):
-            tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
-            masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
-            with torch.no_grad():
-                output = model(tokens_tensor.cuda())
-            predictions = output[0]
-            Q = []
-            for i in range(len(dataset["class_names"])):
-                cls_name = dataset["class_names"][i]
-                val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
-                Q.append((-val, i, cls_name))
-            _, pred_cls, _ = sorted(Q)[0]
-            pred.append(pred_cls)
-        if args.dcpmi == True:
+        if not args.dcpmi:
             for text in tqdm(data):
                 tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
-                masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
-                with torch.no_grad():
-                    output = model(tokens_tensor.cuda())
-                tokens_tensor = prepare_sentence(args, tokenizer, text, prompt, uncond=True)
                 masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
                 with torch.no_grad():
                     output = model(tokens_tensor.cuda())
@@ -160,6 +143,26 @@ def main(args):
                 for i in range(len(dataset["class_names"])):
                     cls_name = dataset["class_names"][i]
                     val = predictions[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
+                    Q.append((-val, i, cls_name))
+                _, pred_cls, _ = sorted(Q)[0]
+                pred.append(pred_cls)
+        else:
+            for text in tqdm(data):
+                tokens_tensor = prepare_sentence(args, tokenizer, text, prompt)
+                masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+                with torch.no_grad():
+                    output_1 = model(tokens_tensor.cuda())
+                tokens_tensor = prepare_sentence(args, tokenizer, text, prompt, uncond=True)
+                masked_index = (tokens_tensor == tokenizer.mask_token_id).nonzero()[0, 1]
+                with torch.no_grad():
+                    output_2 = model(tokens_tensor.cuda())
+                predictions_1 = output_1[0]
+                predictions_2 = output_2[0]
+                Q = []
+                for i in range(len(dataset["class_names"])):
+                    cls_name = dataset["class_names"][i]
+                    val = predictions_1[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item() \
+                        - predictions_2[0, masked_index, tokenizer._convert_token_to_id(cls_name)].item()
                     Q.append((-val, i, cls_name))
                 _, pred_cls, _ = sorted(Q)[0]
                 pred.append(pred_cls)
