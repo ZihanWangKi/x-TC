@@ -26,8 +26,7 @@ def main(dataset_name,
          cluster_method,
          lm_type,
          document_repr_type,
-         random_state,
-         skip_GMM):
+         random_state):
     save_dict_data = {}
 
     # pca = 0 means no pca
