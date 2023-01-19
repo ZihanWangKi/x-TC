@@ -26,7 +26,8 @@ def main(dataset_name,
          cluster_method,
          lm_type,
          document_repr_type,
-         random_state):
+         random_state,
+         skip_GMM):
     save_dict_data = {}
 
     # pca = 0 means no pca
@@ -125,6 +126,10 @@ def main(dataset_name,
         for i, _emb_a in enumerate(document_representations):
             for j, _emb_b in enumerate(centers):
                 distance[i][j] = np.linalg.norm(_emb_a - _emb_b)
+    else:
+        cosine_similarities = cosine_similarity_embeddings(document_representations, class_representations)
+        documents_to_class = np.argmax(cosine_similarities, axis=1)
+        distance = -np.max(cosine_similarities, axis=1)
 
     save_dict_data["documents_to_class"] = documents_to_class
     save_dict_data["distance"] = distance
@@ -139,7 +144,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset_name", default="nyt_topics")
     parser.add_argument("--pca", type=int, default=64, help="number of dimensions projected to in PCA, "
                                                             "-1 means not doing PCA.")
-    parser.add_argument("--cluster_method", choices=["gmm", "kmeans"], default="gmm")
+    parser.add_argument("--cluster_method", choices=["gmm", "kmeans", "none"], default="gmm")
     # language model + layer
     parser.add_argument("--lm_type", default="bbu-12")
     # attention mechanism + T
