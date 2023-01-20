@@ -1,6 +1,6 @@
 gpu=$1
 
-taskset -c 60-90 python run.py  --dataset yelp_polarity --class_names_file ./default_class_names/review.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "64 roberta-base 12 roberta-base 128 mixture gmm"
+#taskset -c 60-90 python run.py  --dataset yelp_polarity --class_names_file ./default_class_names/review.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "64 roberta-base 12 roberta-base 128 mixture gmm"
 taskset -c 60-90 python run.py  --dataset yelp_polarity --class_names_file ./default_class_names/review.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "100 roberta-large 24 roberta-large 128 mixture gmm"
 
 taskset -c 60-90 python run.py   --class_names_file ./default_class_names/ag.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu ${gpu} --suffix "64 roberta-base 12 roberta-base 128 mixture gmm"
