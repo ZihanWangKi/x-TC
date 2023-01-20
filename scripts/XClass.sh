@@ -39,15 +39,8 @@ gpu=$1
 
 taskset -c 30-60 python run.py  --dataset NYT-Topics --class_names_file ./default_class_names/nyt-top.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
 taskset -c 30-60 python run.py  --dataset NYT-Locations --class_names_file ./default_class_names/nyt-loc.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
-
-
 taskset -c 30-60 python run.py  --dataset NYT-fine --class_names_file ./default_class_names/nyt-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
-taskset -c 30-60 python run.py  --dataset 20News-fine --class_names_file ./default_class_names/20-fine.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
-taskset -c 30-60 python run.py  --dataset 20News --class_names_file ./default_class_names/20.txt --split_ratio 0.7 --class_names --train_size 0.5 --test_size 1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
 
 #taskset -c 30-60 python run.py  --class_names_file ./default_class_names/ag.txt --split_ratio 0.7 --class_names --train_size 0.05 --test_size 1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
-
-taskset -c 30-60 python run.py  --dataset yelp_review_full --class_names_file ./default_class_names/review_5.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
-taskset -c 30-60 python run.py  --dataset imdb --class_names_file ./default_class_names/review.txt --split_ratio 0.7 --class_names --train_size 0.2 --test_size 0.2 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
 
 #taskset -c 30-60 python run.py  --dataset dbpedia_14 --text_name title content --class_names_file ./default_class_names/dbpedia.txt --split_ratio 0.7 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "64 bbu 12 bbc 128 mixture none"
