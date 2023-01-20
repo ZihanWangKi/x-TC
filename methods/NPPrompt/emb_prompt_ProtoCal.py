@@ -227,12 +227,12 @@ from sklearn.mixture import GaussianMixture
 from scipy.optimize import linear_sum_assignment
 
 import numpy as np
-"""
+
 for i in range(len(train_vec)):
     train_vec[i] = np.exp(train_vec[i])
     train_vec[i] = np.log(train_vec[i] / train_vec[i].sum())
-"""
 
+"""
 assignment_matrix = np.zeros((len(pred), len(class_labels)))
 for i in range(len(pred)):
     assignment_matrix[i][pred[i]] = 1.0
@@ -248,8 +248,8 @@ centers = gmm.means_
 #row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
 print("class center :")
 print(centers)
-
 """
+
 max_cla = -1000000
 best_seed = 0
 for seed in range(args.iter):
@@ -271,7 +271,7 @@ row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
 print("best seed : " + str(best_seed))
 print("class center :")
 print(centers)
-"""
+
 test_dataloader = PromptDataLoader(dataset=dataset["test"], template=mytemplate, tokenizer=tokenizer,
                                    tokenizer_wrapper_class=WrapperClass, max_seq_length=max_seq_l, decoder_max_length=3,
                                    batch_size=batch_s, shuffle=False, teacher_forcing=False, predict_eos_token=False,
@@ -291,12 +291,11 @@ for step, inputs in enumerate(pbar):
     labels = inputs['label']
     alllabels.extend(labels.cpu().tolist())
     vec = stat.cpu().numpy()
-    """
     for i in range(len(vec)):
         vec[i] = np.exp(vec[i])
         vec[i] = np.log(vec[i] / vec[i].sum())
-    """
-    allpreds.extend(_ for _ in gmm.predict(vec).tolist())
+    allpreds.extend(col_ind[_] for _ in gmm.predict(vec).tolist())
+    #allpreds.extend(_ for _ in gmm.predict(vec).tolist())
     #allpreds.extend(torch.argmax(stat, dim=-1).cpu().tolist())
     allprobs.append(torch.softmax(stat, dim=-1).cpu())
 acc = sum([int(i == j) for i, j in zip(allpreds, alllabels)]) / len(allpreds)
