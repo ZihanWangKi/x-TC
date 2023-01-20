@@ -39,7 +39,7 @@ def main(dataset_name,
     save_dict_data["document_repr_type"] = document_repr_type
     save_dict_data["random_state"] = random_state
 
-    naming_suffix = f"pca{pca}.clus{cluster_method}.{lm_type}.{document_repr_type}.{random_state}"
+    naming_suffix = f"pca{pca}.clusgmm.{lm_type}.{document_repr_type}.{random_state}"
     print(naming_suffix)
 
     data_dir = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, dataset_name)
