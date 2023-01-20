@@ -126,9 +126,13 @@ def main(dataset_name,
             for j, _emb_b in enumerate(centers):
                 distance[i][j] = np.linalg.norm(_emb_a - _emb_b)
     else:
-        cosine_similarities = cosine_similarity_embeddings(document_representations, class_representations)
-        documents_to_class = np.argmax(cosine_similarities, axis=1)
-        distance = -np.max(cosine_similarities, axis=1)
+        centers = class_representations
+        save_dict_data["centers"] = centers
+        distance = np.zeros((document_representations.shape[0], centers.shape[0]), dtype=float)
+        for i, _emb_a in enumerate(document_representations):
+            for j, _emb_b in enumerate(centers):
+                distance[i][j] = np.linalg.norm(_emb_a - _emb_b)
+        documents_to_class = np.argmin(distance, axis=1)
 
     save_dict_data["documents_to_class"] = documents_to_class
     save_dict_data["distance"] = distance
