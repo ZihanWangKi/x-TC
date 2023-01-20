@@ -25,6 +25,7 @@ def prepare_sentence(args, tokenizer, text):
         prepare_sentence.sos_id, prepare_sentence.eos_id = tokenizer.encode("", add_special_tokens=True)
         print(prepare_sentence.sos_id, prepare_sentence.eos_id)
 
+    """
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
         tokenized_text = []
         import regex as re
@@ -37,6 +38,15 @@ def prepare_sentence(args, tokenizer, text):
 
         #tokenized_text = tokenizer.tokenize(text)
     else:
+    """
+    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
+        if args.lm_type == "roberta-large":
+            _, tokenizer_class, pretrained_weights = MODELS["blu"]
+        else:
+            _, tokenizer_class, pretrained_weights = MODELS["bbu"]
+        bert_tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
+        tokenized_text = bert_tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
+    else:
         tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     tokenized_to_id_indicies = []
 
@@ -46,8 +56,9 @@ def prepare_sentence(args, tokenizer, text):
     for index, token in enumerate(tokenized_text + [None]):
         if token is not None:
             if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-                #tokens = [token]
-                tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
+                # tokens = [token]
+                # tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
+                tokens = tokenizer.tokenize(token)
             else:
                 tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
         if token is None or len(tokenids_chunk) + len(tokens) > max_tokens:
