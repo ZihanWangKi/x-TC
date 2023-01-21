@@ -35,14 +35,16 @@ def evaluate(dataset, stage, suffix=None, lm=None):
         se_gold_labels = []
         se_pred_labels = []
         num = [0 for _ in range(100)]
+        yes = 0
         for i in range(len(gold_labels)):
             if num[gold_labels[i]] < 4:
                 num[gold_labels[i]] += 1
-                se_gold_labels.append(gold_labels[i])
-                se_pred_labels.append(pred_labels[i])
-        print(len(gold_labels))
-
-        evaluate_predictions(se_gold_labels, se_pred_labels)
+                yes = yes + 1 if gold_labels[i] == pred_labels[i] else yes
+                #se_gold_labels.append(gold_labels[i])
+                #se_pred_labels.append(pred_labels[i])
+        #print(len(gold_labels))
+        print(1.0*yes/(4*26))
+        #evaluate_predictions(se_gold_labels, se_pred_labels)
 
 
 if __name__ == '__main__':
