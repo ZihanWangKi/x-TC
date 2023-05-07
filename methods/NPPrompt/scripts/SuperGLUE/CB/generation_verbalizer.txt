@@ -1,3 +1,0 @@
-{"text": "entailment"}
-{"text": "contradiction"}
-{"text": "neutral"}

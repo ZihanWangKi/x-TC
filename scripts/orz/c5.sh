@@ -1,6 +1,0 @@
-gpu=$1
-
-MASTER_PORT=18675 taskset -c 100-120 python run.py  --method ClassKG --dataset yelp_polarity --class_names_file ./default_class_names/review.txt --split_ratio 0.8 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "--lm roberta-large"
-MASTER_PORT=18675 taskset -c 100-120 python run.py  --method ClassKG --dataset yelp_polarity --class_names_file ./review/2.txt --split_ratio 0.8 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "--lm bert-large-uncased"
-MASTER_PORT=18675 taskset -c 100-120 python run.py  --method ClassKG --dataset yelp_polarity --class_names_file ./default_class_names/review.txt --split_ratio 0.8 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "--lm roberta-base"
-MASTER_PORT=18675 taskset -c 100-120 python run.py  --method ClassKG --dataset yelp_polarity --class_names_file ./default_class_names/review.txt --split_ratio 0.8 --class_names --train_size 0.01 --test_size 0.1 --gpu ${gpu} --suffix "--clustering "

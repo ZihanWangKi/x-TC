@@ -1,4 +1,0 @@
-*.txt
-!requirements.txt
-*.pt
-__pycache__/
