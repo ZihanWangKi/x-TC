@@ -1,7 +1,8 @@
 import os
+import json
 from typing import List, Optional
 from sklearn.metrics import confusion_matrix, f1_score
-from xclass_method import xclass
+from methods.xclass_method import xclass, xclassHyperparams
 
 # this file stores all utility functions, such as calculating the metrics, preprocessing the datasets
 
@@ -52,9 +53,10 @@ def data_process(dataset_name):
 
     return train_Dataset, train_Labels, test_Dataset, test_Labels
 
-def get_method(method_name):
+def get_method(method_name, hyperparameter_file_path, base_model):
     if method_name == "xclass":
-        method = xclass()
+        hyperparameters = xclassHyperparams.from_json(json.load(open(hyperparameter_file_path, mode='r')))
+        method = xclass() # TODO, pass in hyperparameters and base_model
     else:
         ...
 

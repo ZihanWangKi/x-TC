@@ -1,7 +1,15 @@
 import os
 import json
+from dataclasses import dataclass
+from dataclasses_json import dataclass_json
 
 gpu=7
+
+@dataclass
+@dataclass_json
+class xclassHyperparams:
+    layer: int = -1 # last layer
+    ...
 
 class xclass():
     def __init__(self):
