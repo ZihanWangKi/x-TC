@@ -2,7 +2,6 @@ import os
 import json
 from typing import List, Optional
 from sklearn.metrics import confusion_matrix, f1_score
-from methods.xclass_method import xclass, xclassHyperparams
 
 # this file stores all utility functions, such as calculating the metrics, preprocessing the datasets
 
@@ -12,17 +11,18 @@ class Dataset:
         self.texts = texts
         self.label_names = label_names
         self.prompt = prompt
-        
+
+
 class Labels:
     def __init__(self, labels: List[int]):
         self.labels = labels
 
-def data_process(dataset_name):
+def data_process(dataset_name, label_name_dir, prompt_dir):
     train_text_path = os.path.join("data", dataset_name, "train_text.txt")
     with open(train_text_path, mode='r', encoding='utf-8') as file:
         train_text = list(map(lambda x: x.strip(), file.readlines()))
 
-    label_names_path = os.path.join("data", dataset_name, "label_names.txt")
+    label_names_path = label_name_dir #os.path.join("data", dataset_name, "label_names.txt")
     with open(label_names_path, mode='r', encoding='utf-8') as file:
         label_names = list(map(lambda x: x.strip(), file.readlines()))
 
@@ -40,7 +40,7 @@ def data_process(dataset_name):
         with open(train_label_path, mode='r', encoding='utf-8') as file:
             train_label = list(map(lambda x: x.strip(), file.readlines()))
 
-    prompt_path = os.path.join("data", dataset_name, "prompt.txt")
+    prompt_path = prompt_dir # os.path.join("data", dataset_name, "prompt.txt")
     prompt = None
     if os.path.exists(prompt_path):
         with open(prompt_path, mode='r', encoding='utf-8') as file:
@@ -55,8 +55,13 @@ def data_process(dataset_name):
 
 def get_method(method_name, hyperparameter_file_path, base_model):
     if method_name == "xclass":
+        from methods.xclass_method import xclass, xclassHyperparams
         hyperparameters = xclassHyperparams.from_json(json.load(open(hyperparameter_file_path, mode='r')))
         method = xclass() # TODO, pass in hyperparameters and base_model
+    elif method_name == "prompt":
+        from methods.prompt_method import prompt, promptHyperparams
+        hyperparameters = promptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
+        method = prompt(hyperparameters, base_model)
     else:
         ...
 
