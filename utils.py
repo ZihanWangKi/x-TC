@@ -62,6 +62,10 @@ def get_method(method_name, hyperparameter_file_path, base_model):
         from methods.prompt_method import prompt, promptHyperparams
         hyperparameters = promptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
         method = prompt(hyperparameters, base_model)
+    elif method_name == "prompt_gpt":
+        from methods.prompt_gpt_method import prompt_gpt, prompt_gptHyperparams
+        hyperparameters = prompt_gptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
+        method = prompt_gpt(hyperparameters, base_model)
     else:
         ...
 

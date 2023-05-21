@@ -5,13 +5,13 @@ from utils import Dataset, Labels
 from dataclasses_json import dataclass_json
 from typing import Optional
 
-# support bert, bart, roberta
-# If you want to run gpt-based prompting please refer to prompt_gpt_method.py
+# support GPT-2 model
+# If you want to run bert-based prompting please refer to prompt_method.py
 
 # if you choose to customize your own prompt, please ensure that it contains
-# only a single {} bracket for the input text. We will then add a [MASK] token
-# after your prompt to generate the prediction, in order to ensure consistency
-# with GPT-based approaches.
+# only a single {} bracket for the input text. We will then add the possible
+# label names after your prompt to generate the prediction, in order to
+# ensure consistency with bert-based approaches.
 
 # if you customize your own prompt and switch on --dcpmi,
 # it's better to also provide the unconditional prompt,
@@ -21,18 +21,19 @@ from typing import Optional
 
 @dataclass_json
 @dataclass
-class promptHyperparams:
+class prompt_gptHyperparams:
     protocal: bool = False # use prototypical calibration or not
     max_iter: int = 100 # How many times the GMM is repeated, only for prototypical calibration
     dcpmi: bool = False # use dcpmi or not
     prompt: Optional[str] = None # you can overwrite the prompt here
     uncond_prompt: Optional[str] = None # unconditional prompt
+    batch: int = 10 # batch_size, not important
     random_state: int = 42
 
-class prompt():
-    def __init__(self, hyperparams: promptHyperparams, base_model):
+class prompt_gpt():
+    def __init__(self, hyperparams: prompt_gptHyperparams, base_model):
         retval = os.getcwd()
-        self.method_path = os.path.join(retval, "external", "prompt")
+        self.method_path = os.path.join(retval, "external", "prompt_gpt")
         self.hyperparams = hyperparams
         self.base_model = base_model
 
@@ -47,7 +48,7 @@ class prompt():
                 for line in train_dataset.label_names:
                     f.write(line)
                     f.write("\n")
-            with open(f"{dataset_path}/dataset.txt", "w") as f:
+            with open(f"{dataset_path}/train_dataset.txt", "w") as f:
                 for line in train_dataset.texts:
                     f.write(line)
                     f.write("\n")
@@ -59,8 +60,9 @@ class prompt():
 
             # train
             os.chdir(f"{self.method_path}")
-            os.system(f"python prompt_ProtoCal.py --dataset_name {dataset_name} --lm_type {self.base_model} "
-                      f"--random_state {self.hyperparams.random_state} --max_iter {self.hyperparams.max_iter} "
+            os.system(f"python ProtoCal.py {dataset_name} --model {self.base_model} --split train "
+                      f"--seed {self.hyperparams.random_state} --batch {self.hyperparams.batch} "
+                      f"--max_iter {self.hyperparams.max_iter} "
                       f"{'' if not self.hyperparams.dcpmi else '--dcpmi'} "
                       f"{'' if self.hyperparams.uncond_prompt is None else '--uncond_prompt_dir ' + dataset_path + '/uncond_prompt.txt'}")
 
@@ -73,7 +75,7 @@ class prompt():
                 for line in test_dataset.label_names:
                     f.write(line)
                     f.write("\n")
-            with open(f"{inference_path}/dataset.txt", "w") as f:
+            with open(f"{inference_path}/test_dataset.txt", "w") as f:
                 for line in test_dataset.texts:
                     f.write(line)
                     f.write("\n")
@@ -85,8 +87,9 @@ class prompt():
 
             # inference
             os.chdir(f"{self.method_path}")
-            os.system(f"python prompt_ProtoCal.py --dataset_name {dataset_name}_test --lm_type {self.base_model} "
-                      f"--random_state {self.hyperparams.random_state} --test_mode "
+            os.system(f"python ProtoCal.py {dataset_name}_test --model {self.base_model} --split test "
+                      f"--seed {self.hyperparams.random_state} --batch {self.hyperparams.batch} "
+                      f"--max_iter {self.hyperparams.max_iter} --test_mode "
                       f"{'' if not self.hyperparams.dcpmi else '--dcpmi'} "
                       f"{'' if self.hyperparams.uncond_prompt is None else '--uncond_prompt_dir ' + inference_path + '/uncond_prompt.txt'}")
         else:
@@ -94,7 +97,7 @@ class prompt():
                 for line in test_dataset.label_names:
                     f.write(line)
                     f.write("\n")
-            with open(f"{inference_path}/dataset.txt", "w") as f:
+            with open(f"{inference_path}/test_dataset.txt", "w") as f:
                 for line in test_dataset.texts:
                     f.write(line)
                     f.write("\n")
@@ -106,8 +109,8 @@ class prompt():
 
             # inference
             os.chdir(f"{self.method_path}")
-            os.system(f"python prompt.py --dataset_name {dataset_name}_test --lm_type {self.base_model} "
-                      f"--random_state {self.hyperparams.random_state} "
+            os.system(f"python score.py {dataset_name}_test --model {self.base_model} --split test "
+                      f"--seed {self.hyperparams.random_state} --batch {self.hyperparams.batch} "
                       f"{'' if not self.hyperparams.dcpmi else '--dcpmi'} "
                       f"{'' if self.hyperparams.uncond_prompt is None else '--uncond_prompt_dir ' + inference_path + '/uncond_prompt.txt'}")
 
