@@ -1,2 +1,0 @@
- {}
- Pick one category for the following text. The options are - company, education, artist, athlete, politician, transportation, place, nature, village, species, plant, album, movie, book. 

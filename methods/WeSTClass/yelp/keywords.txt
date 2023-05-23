@@ -1,2 +1,0 @@
-0:horrible,disappointing,subpar
-1:terrific,great,awesome

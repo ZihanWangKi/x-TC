@@ -1,6 +1,0 @@
-numpy
-nltk
-gensim
-sklearn
-keras
-spherecluster

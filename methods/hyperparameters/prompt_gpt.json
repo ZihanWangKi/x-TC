@@ -1,0 +1,9 @@
+{
+    "protocal": false,
+    "max_iter": 100,
+    "dcpmi": false,
+    "prompt": null,
+    "uncond_prompt": null,
+    "random_state": 42,
+    "batch": 10
+}

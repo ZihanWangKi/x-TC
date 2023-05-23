@@ -1,4 +1,0 @@
-0:government,military,war
-1:basketball,football,athletes
-2:stocks,markets,industries
-3:computer,telescope,software

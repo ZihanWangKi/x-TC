@@ -1,2 +1,0 @@
- {"text": "Another word"} 
- {"meta": "span1_text"}
