@@ -26,7 +26,7 @@ class lotclassHyperparams:
     accum_steps: int = 1 # gradient accumulation steps during training
     mcp_epochs: int = 3 # masked category prediction training epochs; 3-5 usually is good depending on dataset size (smaller dataset needs more epochs)
     self_train_epochs: int = 5 # self training epochs; 1-5 usually is good depending on dataset size (smaller dataset needs more epochs)
-    early_stop: bool = False # whether or not to enable early stop of self-training
+    early_stop: bool = False # whether to enable early stop of self-training
     random_state: int = 42
 
 class lotclass():

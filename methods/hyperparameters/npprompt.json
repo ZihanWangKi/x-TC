@@ -1,7 +1,6 @@
 {
     "select": 100,
-    "protocal": false,
-    "max_iter": 100,
+    "cluster": false,
     "prompt": null,
     "random_state": 42
 }
