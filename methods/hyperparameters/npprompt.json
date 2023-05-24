@@ -1,0 +1,7 @@
+{
+    "select": 100,
+    "protocal": false,
+    "max_iter": 100,
+    "prompt": null,
+    "random_state": 42
+}

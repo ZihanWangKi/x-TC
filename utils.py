@@ -70,6 +70,10 @@ def get_method(method_name, hyperparameter_file_path, base_model):
         from methods.lotclass_method import lotclass, lotclassHyperparams
         hyperparameters = lotclassHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
         method = lotclass(hyperparameters, base_model)
+    elif method_name == "npprompt":
+        from methods.npprompt_method import npprompt, nppromptHyperparams
+        hyperparameters = nppromptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
+        method = npprompt(hyperparameters, base_model)
     else:
         ...
 
