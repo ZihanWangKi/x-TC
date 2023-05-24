@@ -66,6 +66,10 @@ def get_method(method_name, hyperparameter_file_path, base_model):
         from methods.prompt_gpt_method import prompt_gpt, prompt_gptHyperparams
         hyperparameters = prompt_gptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
         method = prompt_gpt(hyperparameters, base_model)
+    elif method_name == "lotclass":
+        from methods.lotclass_method import lotclass, lotclassHyperparams
+        hyperparameters = lotclassHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
+        method = lotclass(hyperparameters, base_model)
     else:
         ...
 

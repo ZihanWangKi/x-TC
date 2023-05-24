@@ -1,0 +1,14 @@
+{
+    "eval_batch_size": 128,
+    "train_batch_size": 32,
+    "top_pred_num": 100,
+    "category_vocab_size": 100,
+    "match_threshold": 10,
+    "max_len": 128,
+    "update_interval": 50,
+    "accum_steps": 1,
+    "mcp_epochs": 3,
+    "self_train_epochs": 5,
+    "early_stop": false,
+    "random_state": 42
+}

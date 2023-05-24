@@ -6,7 +6,7 @@ from utils import Dataset, Labels, data_process, get_method, evaluate_prediction
 DATA_CHOICES = ['agnews_sampled', '20News', '20News-fine', 'NYT', 'NYT-fine',
                 'NYT-Locations', 'NYT-Topics', 'ag_news', 'dbpedia_14', 'imdb',
                 'yelp_polarity', 'yelp_review_full']
-METHOD_CHOICES = ['xclass', 'prompt', 'prompt_gpt']
+METHOD_CHOICES = ['xclass', 'prompt', 'prompt_gpt', 'lotclass']
 
 def apply(dataset_name, train_dataset, train_label, method):
     method.apply(dataset_name, train_dataset, train_label)
