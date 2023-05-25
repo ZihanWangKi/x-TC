@@ -1,4 +1,10 @@
 {
+    "vocab_min_occurrence": 1,
     "layer": -1,
-    ...
+    "T": 100,
+    "attention_mechanism": "mixture",
+    "pca": 64,
+    "cluster_method": "gmm",
+    "confidence_threshold": 0.5,
+    "random_state": 42
 }

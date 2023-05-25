@@ -56,8 +56,8 @@ def data_process(dataset_name, label_name_dir, prompt_dir):
 def get_method(method_name, hyperparameter_file_path, base_model):
     if method_name == "xclass":
         from methods.xclass_method import xclass, xclassHyperparams
-        hyperparameters = xclassHyperparams.from_json(json.load(open(hyperparameter_file_path, mode='r')))
-        method = xclass() # TODO, pass in hyperparameters and base_model
+        hyperparameters = xclassHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
+        method = xclass(hyperparameters, base_model)
     elif method_name == "prompt":
         from methods.prompt_method import prompt, promptHyperparams
         hyperparameters = promptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
@@ -74,8 +74,12 @@ def get_method(method_name, hyperparameter_file_path, base_model):
         from methods.npprompt_method import npprompt, nppromptHyperparams
         hyperparameters = nppromptHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
         method = npprompt(hyperparameters, base_model)
+    elif method_name == "classkg":
+        from methods.classkg_method import classkg, classkgHyperparams
+        hyperparameters = classkgHyperparams.from_dict(json.load(open(hyperparameter_file_path, mode='r')))
+        method = classkg(hyperparameters, base_model)
     else:
-        ...
+        ... # add new method here
 
     return method
 

@@ -1,6 +1,5 @@
-GPU=$1
-dataset_name=$2
-train_suffix=pca64.clusgmm.bbu-12.mixture-100.42.0.5
+dataset_name=$1
+train_suffix=$2
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 model_name_or_path=bert-base-cased
@@ -8,7 +7,7 @@ model_name_or_path=bert-base-cased
 # this is also defined in utils.py, make sure to change both when changing.
 output_dir=../inference/${dataset_name}
 
-CUDA_VISIBLE_DEVICES=$GPU python train_text_classifier.py \
+python train_text_classifier.py \
   --model_name_or_path ${model_name_or_path} \
   --task_name ${dataset_name} \
   --train_suffix ${train_suffix} \
