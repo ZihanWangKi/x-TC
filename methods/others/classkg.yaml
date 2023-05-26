@@ -1,0 +1,23 @@
+SSL:
+  enable: True
+  number_itr: 100000
+
+keywords_update:
+  extract_keywords_per_class: [1000]
+  keywords_set_keep_max_num: [1000]
+  IDF_n: 4
+  overwrite_conflict: False
+
+
+classifier:
+  n_epochs: 100
+  batch_size: 8
+  stop_itr: [400]
+  lr: 5e-6
+  eval_interval: 80
+  type: "short"
+
+
+trainer_Graph:
+  epoch: [4, 10]
+  batch_size: 256

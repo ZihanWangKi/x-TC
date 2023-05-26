@@ -1,0 +1,6 @@
+{
+    "total_iter": 3,
+    "cluster": false,
+    "config_file_path": "methods/others/classkg.yaml",
+    "random_state": 42
+}

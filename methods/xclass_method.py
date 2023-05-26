@@ -40,6 +40,7 @@ class xclass():
                 for line in train_label.labels:
                     f.write(str(line))
                     f.write("\n")
+        # better provide train labels, xclass will report performance on train data during training.
 
         # train
         os.chdir(f"{self.method_path}/scripts")

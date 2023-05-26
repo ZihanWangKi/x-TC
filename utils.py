@@ -38,7 +38,7 @@ def data_process(dataset_name, label_name_dir, prompt_dir):
     train_label = None
     if os.path.exists(train_label_path):
         with open(train_label_path, mode='r', encoding='utf-8') as file:
-            train_label = list(map(lambda x: x.strip(), file.readlines()))
+            train_label = list(map(lambda x: int(x.strip()), file.readlines()))
 
     prompt_path = prompt_dir # os.path.join("data", dataset_name, "prompt.txt")
     prompt = None
