@@ -55,19 +55,18 @@ class Trainer_BERT(Trainer_Base):
                                                                           num_labels=self.cfg.model.number_classes)
         self.checkpointer.load_from_filename(self.model, filename=checkpoint_name)
         # test and store pred
+        self.model = self.model.to(device)
         self.model.eval()
         with torch.no_grad():
             preds = []
-            sentence_cur_GPU = []
             for batch in self.test_dataloader:
                 batch = move_to_device(batch)
                 input_ids = batch['input_ids']
                 attention_mask = batch['attention_mask']
-                sentence_cur_GPU += batch['sentences']
                 if self.lm.startswith("bert"):
                     token_type_ids = batch['token_type_ids']
                     outputs = self.model(input_ids=input_ids, attention_mask=attention_mask,
-                                    token_type_ids=token_type_ids)
+                                         token_type_ids=token_type_ids)
                 else:
                     outputs = self.model(input_ids=input_ids, attention_mask=attention_mask)
                 pred_score = outputs.logits
