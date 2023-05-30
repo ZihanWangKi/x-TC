@@ -22,11 +22,11 @@ We benchmarked the following methods:
   - ClassKG ([github](https://github.com/zhanglu-cst/ClassKG))
   - NPPrompt ([github](https://arxiv.org/abs/2212.06950))
 
-To test a model (e.g., prompting) on a dataset (e.g., agnews_sampled), you may run
+To test a model (e.g., prompting) on a dataset (e.g., NYT-Topics), you may run
 ```
-method_name=prompt
-lm_name=bert-base-uncased
-data_name=agnews_sampled
+method_name=prompt_gpt
+lm_name=gpt2
+data_name=NYT-Topics
 
 CUDA_VISIBLE_DEVICES=${gpu} python run.py \
     --method ${method_name} \
