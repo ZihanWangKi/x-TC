@@ -2,7 +2,7 @@ import json
 import pickle
 
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
-from ProtoCal_utils import score, MODEL_PATH, INFERENCE_PATH, DATA_FOLDER_PATH
+from ProtoCal_utils import score
 import argparse
 import random
 import numpy as np
@@ -79,6 +79,11 @@ def load_examples(stem, split, uncond_prompt_dir):
     return len(class_names), examples
 
 def train(args):
+    retval = args.exp_name
+    DATA_FOLDER_PATH = os.path.join(retval, 'datasets')
+    MODEL_PATH = os.path.join(retval, 'models')
+    os.system(f"mkdir -p {MODEL_PATH}")
+
     model, encoder, name = get_model(args.model)
     stem = f'{DATA_FOLDER_PATH}/{args.dataset}/'
 
@@ -115,6 +120,12 @@ def train(args):
         pickle.dump(gmm, f)
 
 def test(args):
+    retval = args.exp_name
+    DATA_FOLDER_PATH = os.path.join(retval, 'datasets')
+    INFERENCE_PATH = os.path.join(retval, 'inference')
+    MODEL_PATH = os.path.join(retval, 'models')
+    os.system(f"mkdir -p {INFERENCE_PATH}")
+
     model, encoder, name = get_model(args.model)
     stem = f'{DATA_FOLDER_PATH}/{args.dataset}/'
 
@@ -146,6 +157,7 @@ if __name__ == '__main__':
     parser.add_argument("--dcpmi", action='store_true', default=False)
     parser.add_argument('--uncond_prompt_dir', type=str, default=None)
     parser.add_argument("--test_mode", action='store_true', default=False)
+    parser.add_argument('--exp_name', type=str, required=True)
     args = parser.parse_args()
     print(args)
 

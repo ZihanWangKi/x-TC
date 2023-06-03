@@ -1,13 +1,12 @@
 import json
 import os
 
-from PROJECT_ROOT import ROOT_DIR
 
 
 class Sentence_ALL():
-    def __init__(self, cfg):
+    def __init__(self, cfg, exp_name):
         data_dir_name = cfg.data_dir_name
-        self.data_dir = os.path.join(ROOT_DIR, 'data', 'processed', data_dir_name)
+        self.data_dir = os.path.join(exp_name, 'data', 'processed', data_dir_name)
 
         # try:
         #     with open(os.path.join(self.data_dir, 'labeled.json'), 'r') as f:

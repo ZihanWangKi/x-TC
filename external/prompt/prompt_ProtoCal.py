@@ -14,7 +14,6 @@ from sklearn.mixture import GaussianMixture
 from tqdm import tqdm
 
 from preprocessing_utils import load, load_labels
-from utils import DATA_FOLDER_PATH, INFERENCE_PATH, MODEL_PATH
 from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM,\
     RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
@@ -63,7 +62,7 @@ def prepare_sentence(args, tokenizer, text, prompt, uncond=False):
 
 def train(args):
     set_seed(args)
-    dataset = load(args.dataset_name)
+    dataset = load(args.exp_name, args.dataset_name)
     print("Finish reading data")
 
     dataset["class_names"] = [x for x in dataset["class_names"]]
@@ -95,6 +94,7 @@ def train(args):
         tmp = tokenizer.tokenize(cls)
         assert len(tmp) == 1, f"class name {cls} is more than one token in {args.lm_type}."
 
+    DATA_FOLDER_PATH = os.path.join(args.exp_name, "datasets")
     with open(os.path.join(DATA_FOLDER_PATH, args.dataset_name, 'prompt.txt'), "r") as fp:
         prompt = fp.read()
 
@@ -162,19 +162,22 @@ def train(args):
     print("class center :")
     print(centers)
 
-    with open(f'/{MODEL_PATH}/gmm_{args.dataset_name}_test_{args.lm_type}.pkl', 'wb') as f:
+    MODEL_PATH = os.path.join(args.exp_name, "models")
+    os.system(f"mkdir -p {MODEL_PATH}")
+    with open(f'{MODEL_PATH}/gmm_{args.dataset_name}_test_{args.lm_type}.pkl', 'wb') as f:
         pickle.dump(gmm, f)
 
 
 
 def test(args):
-    with open(f'/{MODEL_PATH}/gmm_{args.dataset_name}_{args.lm_type}.pkl', 'rb') as f:
+    MODEL_PATH = os.path.join(args.exp_name, "models")
+    with open(f'{MODEL_PATH}/gmm_{args.dataset_name}_{args.lm_type}.pkl', 'rb') as f:
         gmm = pickle.load(f)
 
     centers = gmm.means_
     row_ind, col_ind = linear_sum_assignment(centers.max() - centers)
 
-    dataset = load(args.dataset_name)
+    dataset = load(args.exp_name, args.dataset_name)
     print("Finish reading data")
 
     dataset["class_names"] = [x for x in dataset["class_names"]]
@@ -202,6 +205,7 @@ def test(args):
     model.eval()
     model.cuda()
 
+    DATA_FOLDER_PATH = os.path.join(args.exp_name, "datasets")
     with open(os.path.join(DATA_FOLDER_PATH, args.dataset_name, 'prompt.txt'), "r") as fp:
         prompt = fp.read()
 
@@ -249,7 +253,7 @@ def test(args):
     documents_to_class = gmm.predict(vecs)
     pred = [int(col_ind[documents_to_class[i]]) for i in range(len(vecs))]
 
-    inference_path = os.path.join(INFERENCE_PATH, args.dataset_name)
+    inference_path = os.path.join(args.exp_name, "inference", args.dataset_name)
     os.system(f"mkdir -p {inference_path}")
     json.dump(pred, open(f"{inference_path}/eval_labels.json", "w"))
 
@@ -263,6 +267,7 @@ if __name__ == '__main__':
     parser.add_argument("--uncond_prompt_dir", type=str, default=None)
     parser.add_argument("--max_iter", type=int, default=10)
     parser.add_argument("--test_mode", action='store_true', default=False)
+    parser.add_argument("--exp_name", type=str, required=True)
 
     args = parser.parse_args()
     print(vars(args))

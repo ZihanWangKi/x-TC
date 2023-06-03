@@ -10,7 +10,7 @@ from scipy.stats import entropy
 from tqdm import tqdm
 
 from static_representations import handle_sentence
-from utils import (INTERMEDIATE_DATA_FOLDER_PATH, MODELS,
+from utils import (MODELS,
                    cosine_similarity_embedding, cosine_similarity_embeddings,
                    evaluate_predictions, tensor_to_numpy)
 
@@ -126,6 +126,7 @@ def weight_sentence(model,
 
 
 def main(args):
+    INTERMEDIATE_DATA_FOLDER_PATH = os.path.join(args.exp_name, 'data', 'intermediate_data')
     data_folder = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, args.dataset_name)
     with open(os.path.join(data_folder, "dataset.pk"), "rb") as f:
         dataset = pk.load(f)
@@ -239,6 +240,7 @@ if __name__ == '__main__':
     parser.add_argument("--layer", type=int, default=12)
     parser.add_argument("--T", type=int, default=100)
     parser.add_argument("--attention_mechanism", type=str, default="mixture")
+    parser.add_argument('--exp_name', type=str, required=True)
 
     args = parser.parse_args()
     print(vars(args))

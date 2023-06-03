@@ -90,7 +90,7 @@ for step, inputs in enumerate(pbar):
     allprobs.append(torch.softmax(stat, dim=-1).cpu())
 acc = sum([int(i == j) for i, j in zip(allpreds, alllabels)]) / len(allpreds)
 
-retval = os.getcwd()
+retval = args.openprompt_path
 INFERENCE_PATH = os.path.join(retval, 'inference')
 inference_path = os.path.join(INFERENCE_PATH, args.dataset)
 os.system(f"mkdir -p {inference_path}")

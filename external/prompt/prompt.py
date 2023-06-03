@@ -11,7 +11,6 @@ import torch
 from tqdm import tqdm
 
 from preprocessing_utils import load, load_labels
-from utils import DATA_FOLDER_PATH, INFERENCE_PATH
 from transformers import BertTokenizer, BertForMaskedLM, RobertaForMaskedLM,\
     RobertaTokenizer, BartTokenizer, BartForConditionalGeneration
 
@@ -61,7 +60,7 @@ def prepare_sentence(args, tokenizer, text, prompt, uncond=False):
 
 def main(args):
     set_seed(args)
-    dataset = load(args.dataset_name)
+    dataset = load(args.exp_name, args.dataset_name)
     print("Finish reading data")
 
     dataset["class_names"] = [x for x in dataset["class_names"]]
@@ -93,6 +92,7 @@ def main(args):
         tmp = tokenizer.tokenize(cls)
         assert len(tmp) == 1, f"class name {cls} is more than one token in {args.lm_type}."
 
+    DATA_FOLDER_PATH = os.path.join(args.exp_name, "datasets")
     with open(os.path.join(DATA_FOLDER_PATH, args.dataset_name, 'prompt.txt'), "r") as fp:
         prompt = fp.read()
 
@@ -132,7 +132,7 @@ def main(args):
             _, pred_cls, _ = sorted(Q)[0]
             pred.append(pred_cls)
 
-    inference_path = os.path.join(INFERENCE_PATH, args.dataset_name)
+    inference_path = os.path.join(args.exp_name, "inference", args.dataset_name)
     os.system(f"mkdir -p {inference_path}")
     json.dump(pred, open(f"{inference_path}/eval_labels.json", "w"))
 
@@ -144,6 +144,7 @@ if __name__ == '__main__':
     parser.add_argument("--lm_type", type=str, choices=lm_types)
     parser.add_argument("--dcpmi", action='store_true', default=False)
     parser.add_argument("--uncond_prompt_dir", type=str, default=None)
+    parser.add_argument("--exp_name", type=str, required=True)
     # if you customize your own prompt and switch on --dcpmi, it's better to also input the unconditional prompt,
     # or we would use a simple way to get it through cutting the (default) prompt by '\n'.
     # e.g., the default prompt:

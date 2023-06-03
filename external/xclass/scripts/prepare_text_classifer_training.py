@@ -9,11 +9,10 @@ from shutil import copyfile
 import numpy as np
 
 from preprocessing_utils import load_clean_text
-from utils import (DATA_FOLDER_PATH, INTERMEDIATE_DATA_FOLDER_PATH,
-                   evaluate_predictions, most_common)
+from utils import (evaluate_predictions, most_common)
 
 
-def write_to_dir(text, labels, dataset_name, suffix_name):
+def write_to_dir(DATA_FOLDER_PATH, text, labels, dataset_name, suffix_name):
     assert len(text) == len(labels)
     new_dataset_name = f"{dataset_name}_{suffix_name}"
     # removes all potentially cached files in it
@@ -36,6 +35,8 @@ def write_to_dir(text, labels, dataset_name, suffix_name):
 
 
 def main(dataset_name, suffix, confidence_threshold):
+    DATA_FOLDER_PATH = os.path.join(args.exp_name, 'data', 'datasets')
+    INTERMEDIATE_DATA_FOLDER_PATH = os.path.join(args.exp_name, 'data', 'intermediate_data')
     data_dir = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, dataset_name)
 
     cleaned_text = load_clean_text(os.path.join(DATA_FOLDER_PATH, dataset_name))
@@ -67,7 +68,7 @@ def main(dataset_name, suffix, confidence_threshold):
     gold_classes = [gold_labels[i] for i in selected]
     evaluate_predictions(gold_classes, classes)
     ###
-    write_to_dir(text, classes, dataset_name, f"{suffix}.{confidence_threshold}")
+    write_to_dir(DATA_FOLDER_PATH, text, classes, dataset_name, f"{suffix}.{confidence_threshold}")
     # json.dump(selected, open("m_sel.json", "w"))
     # json.dump(documents_to_class.tolist(), open("m_pre.json", "w"))
 
@@ -76,6 +77,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset_name", default="agnews")
     parser.add_argument("--suffix", type=str, default="pca64.clusgmm.bbu-12.mixture-100.42")
     parser.add_argument("--confidence_threshold", type=float, default=0.5)
+    parser.add_argument('--exp_name', type=str, required=True)
     args = parser.parse_args()
     print(vars(args))
     main(args.dataset_name, args.suffix, args.confidence_threshold)

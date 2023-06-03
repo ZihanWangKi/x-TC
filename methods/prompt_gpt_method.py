@@ -1,6 +1,8 @@
 import os
 import json
 from dataclasses import dataclass
+from datetime import datetime
+
 from utils import Dataset, Labels
 from dataclasses_json import dataclass_json
 from typing import Optional
@@ -36,13 +38,16 @@ class prompt_gpt():
         self.method_path = os.path.join(retval, "external", "prompt_gpt")
         self.hyperparams = hyperparams
         self.base_model = base_model
+        exp = base_model.replace("/", "-") + f"/{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+        self.exp_name = os.path.join(retval, "experiment", "prompt_gpt", exp)
+        os.system(f"mkdir -p {self.exp_name}")
 
     def apply(self, dataset_name, train_dataset: Dataset, train_label: Labels):
         # apply() only for prototypical calibration
 
         if self.hyperparams.protocal:
             assert train_dataset.prompt is not None or self.hyperparams.prompt is not None
-            dataset_path = os.path.join(self.method_path, "datasets", dataset_name)
+            dataset_path = os.path.join(self.exp_name, "datasets", dataset_name)
             os.system(f"mkdir -p {dataset_path}")
             with open(f"{dataset_path}/classes.txt", "w") as f:
                 for line in train_dataset.label_names:
@@ -63,11 +68,12 @@ class prompt_gpt():
             os.system(f"python ProtoCal.py {dataset_name} --model {self.base_model} --split train "
                       f"--seed {self.hyperparams.random_state} --batch {self.hyperparams.batch} "
                       f"--max_iter {self.hyperparams.max_iter} "
+                      f"--exp_name {self.exp_name} "
                       f"{'' if not self.hyperparams.dcpmi else '--dcpmi'} "
                       f"{'' if self.hyperparams.uncond_prompt is None else '--uncond_prompt_dir ' + dataset_path + '/uncond_prompt.txt'}")
 
     def inference(self, dataset_name, test_dataset: Dataset):
-        inference_path = os.path.join(self.method_path, "datasets", dataset_name + "_test")
+        inference_path = os.path.join(self.exp_name, "datasets", dataset_name + "_test")
         os.system(f"mkdir -p {inference_path}")
         assert test_dataset.prompt is not None or self.hyperparams.prompt is not None
         if self.hyperparams.protocal:
@@ -90,6 +96,7 @@ class prompt_gpt():
             os.system(f"python ProtoCal.py {dataset_name}_test --model {self.base_model} --split test "
                       f"--seed {self.hyperparams.random_state} --batch {self.hyperparams.batch} "
                       f"--max_iter {self.hyperparams.max_iter} --test_mode "
+                      f"--exp_name {self.exp_name} "
                       f"{'' if not self.hyperparams.dcpmi else '--dcpmi'} "
                       f"{'' if self.hyperparams.uncond_prompt is None else '--uncond_prompt_dir ' + inference_path + '/uncond_prompt.txt'}")
         else:
@@ -111,11 +118,12 @@ class prompt_gpt():
             os.chdir(f"{self.method_path}")
             os.system(f"python score.py {dataset_name}_test --model {self.base_model} --split test "
                       f"--seed {self.hyperparams.random_state} --batch {self.hyperparams.batch} "
+                      f"--exp_name {self.exp_name} "
                       f"{'' if not self.hyperparams.dcpmi else '--dcpmi'} "
                       f"{'' if self.hyperparams.uncond_prompt is None else '--uncond_prompt_dir ' + inference_path + '/uncond_prompt.txt'}")
 
     def load_pred(self, dataset_name):
-        output_dir = os.path.join(self.method_path, "inference", f"{dataset_name}_test")
+        output_dir = os.path.join(self.exp_name, "inference", f"{dataset_name}_test")
         with open(os.path.join(output_dir, "eval_labels.json"), "r") as f:
             pred_labels = json.load(f)
         return pred_labels

@@ -9,8 +9,6 @@ from collections import Counter
 import numpy as np
 from tqdm import tqdm
 
-from utils import DATA_FOLDER_PATH
-
 
 # mainly for agnews
 def clean_html(string: str):
@@ -87,7 +85,8 @@ def text_statistics(text, name="default"):
     print(f"#######################################")
 
 
-def load(dataset_name):
+def load(exp_name, dataset_name):
+    DATA_FOLDER_PATH = os.path.join(exp_name, 'datasets')
     data_dir = os.path.join(DATA_FOLDER_PATH, dataset_name)
     text = load_text(data_dir)
     class_names = load_classnames(data_dir)
@@ -104,7 +103,3 @@ def load(dataset_name):
         "cleaned_text": cleaned_text,
     }
     return result
-
-
-if __name__ == '__main__':
-    data = load('agnews')

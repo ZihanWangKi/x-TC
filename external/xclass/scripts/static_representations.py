@@ -8,7 +8,7 @@ import torch
 from tqdm import tqdm
 
 from preprocessing_utils import load
-from utils import INTERMEDIATE_DATA_FOLDER_PATH, MODELS, tensor_to_numpy
+from utils import MODELS, tensor_to_numpy
 
 
 def prepare_sentence(args, tokenizer, text):
@@ -25,27 +25,8 @@ def prepare_sentence(args, tokenizer, text):
         prepare_sentence.sos_id, prepare_sentence.eos_id = tokenizer.encode("", add_special_tokens=True)
         print(prepare_sentence.sos_id, prepare_sentence.eos_id)
 
-    """
     if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-        tokenized_text = []
-        import regex as re
-        for token in re.findall(tokenizer.pat, text):
-            token = "".join(
-                tokenizer.byte_encoder[b] for b in token.encode("utf-8")
-            )  # Maps all our bytes to unicode strings, avoiding control tokens of the BPE (spaces in our case)
-            #tokenized_text.extend(bpe_token for bpe_token in self.bpe(token).split(" "))
-            tokenized_text.append(token)
-
-        #tokenized_text = tokenizer.tokenize(text)
-    else:
-    """
-    if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-        if args.lm_type == "roberta-large":
-            _, tokenizer_class, pretrained_weights = MODELS["blu"]
-        else:
-            _, tokenizer_class, pretrained_weights = MODELS["bbu"]
-        bert_tokenizer = tokenizer_class.from_pretrained(pretrained_weights)
-        tokenized_text = bert_tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
+        tokenized_text = tokenizer.tokenize(text)
     else:
         tokenized_text = tokenizer.basic_tokenizer.tokenize(text, never_split=tokenizer.all_special_tokens)
     tokenized_to_id_indicies = []
@@ -56,8 +37,6 @@ def prepare_sentence(args, tokenizer, text):
     for index, token in enumerate(tokenized_text + [None]):
         if token is not None:
             if args.lm_type == "roberta-large" or args.lm_type == "roberta-base":
-                # tokens = [token]
-                # tokens = [bpe_token for bpe_token in tokenizer.bpe(token).split(" ")]
                 tokens = tokenizer.tokenize(token)
             else:
                 tokens = tokenizer.wordpiece_tokenizer.tokenize(token)
@@ -129,9 +108,10 @@ def estimate_static(vocab, vocab_min_occurrence):
 
 
 def main(args):
-    dataset = load(args.dataset_name)
+    dataset = load(args.exp_name, args.dataset_name)
     print("Finish reading data")
 
+    INTERMEDIATE_DATA_FOLDER_PATH = os.path.join(args.exp_name, 'data', 'intermediate_data')
     data_folder = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, args.dataset_name)
     if args.lm_type.endswith('uncased'):
         dataset["class_names"] = [x.lower() for x in dataset["class_names"]]
@@ -210,6 +190,7 @@ if __name__ == '__main__':
     parser.add_argument("--vocab_min_occurrence", type=int, default=5)
     # last layer of BERT
     parser.add_argument("--layer", type=int, default=12)
+    parser.add_argument('--exp_name', type=str, required=True)
     args = parser.parse_args()
     print(vars(args))
     main(args)

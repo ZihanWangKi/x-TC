@@ -83,6 +83,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--dcpmi', action="store_true", default=False)
     parser.add_argument('--uncond_prompt_dir', type=str, default=None)
+    parser.add_argument('--exp_name', type=str, required=True)
     args = parser.parse_args()
     print(args)
 
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     torch.cuda.manual_seed_all(args.seed)
 
     model, encoder, name = get_model(args.model)
-    retval = os.getcwd()
+    retval = args.exp_name
     stem = f'{retval}/datasets/{args.dataset}/'
 
     examples = load_examples(stem, args.split, args.uncond_prompt_dir)

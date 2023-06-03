@@ -41,14 +41,13 @@ from transformers import \
     glue_convert_examples_to_features as convert_examples_to_features
 
 from preprocessing_utils import load_classnames, load_labels, load_text
-from utils import DATA_FOLDER_PATH
 
 
 class DProcessor(DataProcessor):
-    def __init__(self, task, train_suffix, test_suffix):
+    def __init__(self, task, train_suffix, test_suffix, data_dir):
         self.train_dir = f"{task}_{train_suffix}" if train_suffix is not None and train_suffix != "" else task
         self.test_dir = f"{task}_{test_suffix}" if test_suffix is not None and test_suffix != "" else task
-        self.labels = list(range(len(load_classnames(os.path.join(DATA_FOLDER_PATH, task)))))
+        self.labels = list(range(len(load_classnames(os.path.join(data_dir, task)))))
 
     def get_train_examples(self, data_dir):
         """See base class."""
@@ -357,7 +356,7 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False):
     if args.local_rank not in [-1, 0] and not evaluate:
         torch.distributed.barrier()  # Make sure only the first process in distributed training process the dataset, and the others will use the cache
 
-    processor = processors[task](task=task, train_suffix=args.train_suffix, test_suffix=args.test_suffix)
+    processor = processors[task](task=task, train_suffix=args.train_suffix, test_suffix=args.test_suffix, data_dir=args.data_dir)
     output_mode = output_modes[task]
     # Load data features from cache or dataset file
 
@@ -415,7 +414,7 @@ def main():
     # Required parameters
     parser.add_argument(
         "--data_dir",
-        default=DATA_FOLDER_PATH,
+        default=None,
         type=str,
         help="The input data dir. Should contain the .tsv files (or other data files) for the task.",
     )
@@ -594,7 +593,7 @@ def main():
     if args.task_name not in processors:
         raise ValueError("Task not found: %s" % (args.task_name))
     processor = processors[args.task_name](task=args.task_name, train_suffix=args.train_suffix,
-                                           test_suffix=args.test_suffix)
+                                           test_suffix=args.test_suffix, data_dir=args.data_dir)
     args.output_mode = output_modes[args.task_name]
     label_list = processor.get_labels()
     num_labels = len(label_list)

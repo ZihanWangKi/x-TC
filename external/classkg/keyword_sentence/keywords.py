@@ -6,7 +6,6 @@ import numpy
 import torch
 from sklearn.metrics import classification_report, f1_score
 
-from PROJECT_ROOT import ROOT_DIR
 from compent.comm import get_rank
 from compent.comm import synchronize, accumulate_results_from_multiple_gpus, broadcast_data
 from compent.utils import class_index_to_one_hot
@@ -15,10 +14,10 @@ from keyword_sentence.sentence import Sentence_ALL
 
 
 class KeyWords():
-    def __init__(self, cfg, logger):
+    def __init__(self, cfg, logger, exp_name):
         self.cfg = cfg
         data_dir_name = cfg.data_dir_name
-        self.data_dir = os.path.join(ROOT_DIR, 'data', 'processed', data_dir_name)
+        self.data_dir = os.path.join(exp_name, 'data', 'processed', data_dir_name)
         self.logger = logger
         self.number_classes = cfg.model.number_classes
         self.rank = get_rank()

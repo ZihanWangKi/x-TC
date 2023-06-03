@@ -1,6 +1,8 @@
 import os
 import json
 from dataclasses import dataclass
+from datetime import datetime
+
 from utils import Dataset, Labels
 from dataclasses_json import dataclass_json
 from typing import Optional
@@ -25,13 +27,16 @@ class npprompt():
         self.method_path = os.path.join(retval, "external", "npprompt")
         self.hyperparams = hyperparams
         self.base_model = base_model
+        exp = base_model.replace("/", "-") + f"/{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+        self.exp_name = os.path.join(retval, "experiment", "npprompt", exp)
+        os.system(f"mkdir -p {self.exp_name}")
 
     def apply(self, dataset_name, train_dataset: Dataset, train_label: Labels):
         # apply() only for prototypical calibration
 
         if self.hyperparams.cluster:
             assert train_dataset.prompt is not None or self.hyperparams.prompt is not None
-            dataset_path = os.path.join(self.method_path, "datasets", dataset_name)
+            dataset_path = os.path.join(self.exp_name, "datasets", dataset_name)
             os.system(f"mkdir -p {dataset_path}")
             with open(f"{dataset_path}/class_names.txt", "w") as f:
                 for line in train_dataset.label_names:
@@ -51,10 +56,11 @@ class npprompt():
             # train
             os.chdir(f"{self.method_path}")
             os.system(f"python emb_prompt_cluster.py --dataset {dataset_name} --model {model} --model_name_or_path {self.base_model} "
+                      f"--openprompt_path {self.exp_name} "
                       f"--select {self.hyperparams.select} --seed {self.hyperparams.random_state} ")
 
     def inference(self, dataset_name, test_dataset: Dataset):
-        inference_path = os.path.join(self.method_path, "datasets", dataset_name)
+        inference_path = os.path.join(self.exp_name, "datasets", dataset_name)
         os.system(f"mkdir -p {inference_path}")
         assert test_dataset.prompt is not None or self.hyperparams.prompt is not None
 
@@ -77,14 +83,16 @@ class npprompt():
         if self.hyperparams.cluster:
             os.chdir(f"{self.method_path}")
             os.system(f"python emb_prompt_cluster.py --dataset {dataset_name} --model {model} --model_name_or_path {self.base_model} "
+                      f"--openprompt_path {self.exp_name} "
                       f"--select {self.hyperparams.select} --seed {self.hyperparams.random_state} --test_mode")
         else:
             os.chdir(f"{self.method_path}")
             os.system(f"python emb_prompt.py --dataset {dataset_name} --model {model} --model_name_or_path {self.base_model} "
+                      f"--openprompt_path {self.exp_name} "
                       f"--select {self.hyperparams.select} --seed {self.hyperparams.random_state}")
 
     def load_pred(self, dataset_name):
-        output_dir = os.path.join(self.method_path, "inference", f"{dataset_name}")
+        output_dir = os.path.join(self.exp_name, "inference", f"{dataset_name}")
         with open(os.path.join(output_dir, "eval_labels.json"), "r") as f:
             pred_labels = json.load(f)
         return pred_labels

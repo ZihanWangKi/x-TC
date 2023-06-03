@@ -24,11 +24,6 @@ from scipy.optimize import linear_sum_assignment
 
 import numpy as np
 
-retval = os.getcwd()
-INFERENCE_PATH = os.path.join(retval, 'inference')
-MODEL_PATH = os.path.join(retval, 'models')
-os.system(f"mkdir -p {MODEL_PATH}")
-
 parser = argparse.ArgumentParser("")
 parser.add_argument("--shot", type=int, default=0)
 parser.add_argument("--seed", type=int, default=42)
@@ -53,6 +48,11 @@ parser.add_argument("--cluster", default="xclass", choices=["xclass", "protocal"
 parser.add_argument("--iter", default=100, type=int)
 parser.add_argument("--test_mode", default=False, action="store_true")
 args = parser.parse_args()
+
+retval = args.openprompt_path
+INFERENCE_PATH = os.path.join(retval, 'inference')
+MODEL_PATH = os.path.join(retval, 'models')
+os.system(f"mkdir -p {MODEL_PATH}")
 
 set_seed(args.seed)
 use_cuda = True
@@ -82,7 +82,7 @@ if use_cuda:
 
 if args.test_mode:
     dataset['test'] = Proc.get_test_examples(f"{args.openprompt_path}/datasets/" + args.dataset)
-    with open(f'/{MODEL_PATH}/gmm_{args.dataset}_{args.model_name_or_path}.pkl', 'rb') as f:
+    with open(f'{MODEL_PATH}/gmm_{args.dataset}_{args.model_name_or_path}.pkl', 'rb') as f:
         gmm = pickle.load(f)
 
     # centers = gmm.means_
@@ -184,5 +184,5 @@ print(centers)
     print(centers)
 """
 
-with open(f'/{MODEL_PATH}/gmm_{args.dataset}_{args.model_name_or_path}.pkl', 'wb') as f:
+with open(f'{MODEL_PATH}/gmm_{args.dataset}_{args.model_name_or_path}.pkl', 'wb') as f:
     pickle.dump(gmm, f)

@@ -16,7 +16,7 @@ from sklearn.mixture._gaussian_mixture import _estimate_gaussian_parameters
 from sklearn.preprocessing import normalize
 from tqdm import tqdm
 
-from utils import (INTERMEDIATE_DATA_FOLDER_PATH, cosine_similarity_embedding,
+from utils import (cosine_similarity_embedding,
                    cosine_similarity_embeddings, evaluate_predictions,
                    most_common, pairwise_distances)
 
@@ -42,6 +42,7 @@ def main(dataset_name,
     naming_suffix = f"pca{pca}.clusgmm.{lm_type}.{document_repr_type}.{random_state}"
     print(naming_suffix)
 
+    INTERMEDIATE_DATA_FOLDER_PATH = os.path.join(args.exp_name, 'data', 'intermediate_data')
     data_dir = os.path.join(INTERMEDIATE_DATA_FOLDER_PATH, dataset_name)
     print(data_dir)
 
@@ -124,6 +125,7 @@ if __name__ == '__main__':
     # attention mechanism + T
     parser.add_argument("--document_repr_type", default="mixture-100")
     parser.add_argument("--random_state", type=int, default=42)
+    parser.add_argument('--exp_name', type=str, required=True)
 
     args = parser.parse_args()
     print(vars(args))

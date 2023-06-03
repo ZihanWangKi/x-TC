@@ -1,6 +1,8 @@
 import os
 import json
 from dataclasses import dataclass
+from datetime import datetime
+
 from dataclasses_json import dataclass_json
 
 @dataclass_json
@@ -21,10 +23,13 @@ class xclass():
         self.method_path = os.path.join(retval, "external", "xclass")
         self.hyperparams = hyperparams
         self.base_model = base_model
+        exp = base_model.replace("/", "-") + f"/{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
+        self.exp_name = os.path.join(retval, "experiment", "xclass", exp)
+        os.system(f"mkdir -p {self.exp_name}")
 
     def apply(self, dataset_name, train_dataset, train_label):
         # not support prompt
-        xclass_dataset_path = os.path.join(self.method_path, "data", "datasets", dataset_name)
+        xclass_dataset_path = os.path.join(self.exp_name, "data", "datasets", dataset_name)
         os.system(f"mkdir -p {xclass_dataset_path}")
         with open(f"{xclass_dataset_path}/classes.txt", "w") as f:
             for line in train_dataset.label_names:
@@ -45,21 +50,25 @@ class xclass():
         # train
         os.chdir(f"{self.method_path}/scripts")
         os.system(f"python static_representations.py --dataset_name {dataset_name} --lm_type {self.base_model} "
+                  f"--exp_name {self.exp_name} "
                   f"--vocab_min_occurrence {self.hyperparams.vocab_min_occurrence} --layer {self.hyperparams.layer} "
                   f"--random_state {self.hyperparams.random_state}")
         os.system(f"python class_oriented_document_representations.py --dataset_name {dataset_name} --lm_type {self.base_model} "
+                  f"--exp_name {self.exp_name} "
                   f"--attention_mechanism {self.hyperparams.attention_mechanism} --layer {self.hyperparams.layer} "
                   f"--T {self.hyperparams.T} --random_state {self.hyperparams.random_state}")
         os.system(f"python document_class_alignment.py --dataset_name {dataset_name} --pca {self.hyperparams.pca} "
+                  f"--exp_name {self.exp_name} "
                   f"--lm_type {self.base_model}-{self.hyperparams.layer} --cluster_method {self.hyperparams.cluster_method} "
                   f"--document_repr_type {self.hyperparams.attention_mechanism}-{self.hyperparams.T} "
                   f"--random_state {self.hyperparams.random_state}")
         os.system(f"python prepare_text_classifer_training.py --dataset_name {dataset_name} "
+                  f"--exp_name {self.exp_name} "
                   f"--suffix pca{self.hyperparams.pca}.clus{self.hyperparams.cluster_method}.{self.base_model}-{self.hyperparams.layer}.{self.hyperparams.attention_mechanism}-{self.hyperparams.T}.{self.hyperparams.random_state} "
                   f"--confidence_threshold {self.hyperparams.confidence_threshold}")
 
     def inference(self, dataset_name, test_dataset):
-        xclass_inference_path = os.path.join(self.method_path, "data", "datasets", dataset_name + "_test")
+        xclass_inference_path = os.path.join(self.exp_name, "data", "datasets", dataset_name + "_test")
         os.system(f"mkdir -p {xclass_inference_path}")
         with open(f"{xclass_inference_path}/classes.txt", "w") as f:
             for line in test_dataset.label_names:
@@ -72,10 +81,11 @@ class xclass():
 
         # inference
         os.system(f"sh inference.sh {dataset_name} "
-                  f"pca{self.hyperparams.pca}.clus{self.hyperparams.cluster_method}.{self.base_model}-{self.hyperparams.layer}.{self.hyperparams.attention_mechanism}-{self.hyperparams.T}.{self.hyperparams.random_state}.{self.hyperparams.confidence_threshold}")
+                  f"pca{self.hyperparams.pca}.clus{self.hyperparams.cluster_method}.{self.base_model}-{self.hyperparams.layer}.{self.hyperparams.attention_mechanism}-{self.hyperparams.T}.{self.hyperparams.random_state}.{self.hyperparams.confidence_threshold} "
+                  f"{self.exp_name}")
 
     def load_pred(self, dataset_name):
-        output_dir = os.path.join(self.method_path, "inference", dataset_name)
+        output_dir = os.path.join(self.exp_name, "inference", dataset_name)
         with open(os.path.join(output_dir, "eval_labels.json"), "r") as f:
             pred_labels = json.load(f)
         return pred_labels

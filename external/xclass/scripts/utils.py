@@ -23,12 +23,6 @@ MODELS = {
     'roberta-base': (RobertaModel, RobertaTokenizer, 'roberta-base')
 }
 
-# all paths can be either absolute or relative to this utils file
-DATA_FOLDER_PATH = os.path.join('..', 'data', 'datasets')
-INTERMEDIATE_DATA_FOLDER_PATH = os.path.join('..', 'data', 'intermediate_data')
-# this is also defined in run_train_text_classifier.sh, make sure to change both when changing.
-FINETUNE_MODEL_PATH = os.path.join('..', 'models')
-
 
 def tensor_to_numpy(tensor):
     return tensor.clone().detach().cpu().numpy()
