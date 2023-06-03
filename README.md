@@ -20,7 +20,7 @@ We benchmarked the following methods:
   - LoTClass ([github](https://github.com/yumeng5/LOTClass))
   - XClass ([github](https://github.com/ZihanWangKi/XClass))
   - ClassKG ([github](https://github.com/zhanglu-cst/ClassKG))
-  - NPPrompt ([github](https://arxiv.org/abs/2212.06950))
+  - NPPrompt ([paper](https://arxiv.org/abs/2212.06950))
 
 To test a model (e.g., prompting) on a dataset (e.g., NYT-Topics), you may run
 ```
